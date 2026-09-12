@@ -9,12 +9,25 @@ yet, and 5,938 rows fits comfortably in memory as a sparse matrix --
 cosine similarity over it is milliseconds. Revisit if retrieval quality
 turns out to be the bottleneck once the eval harness can measure it.
 
-Known data-quality caveat (from README.md's read-through notes, not
-fixed here): some brand_text replies are truncated fragments of
-multi-tweet threads ("1/2", "2/2") and some resolutions happen entirely
-off-thread ("we've replied to your DM!"). Retrieval still returns these
-as-is -- stitching multi-part replies together is a separate, un-started
-piece of work, not silently patched over here.
+One customer tweet, one grounding example
+-----------------------------------------
+The file has 5,938 rows but only 4,504 unique customer tweets: a brand reply
+split across several tweets appears as several rows sharing one customer
+tweet. Ranked retrieval put those rows next to each other, so a k=3 lookup
+routinely spent two of its three slots on the *same customer situation*.
+Measured before this was fixed: 7 of 12 embedding queries returned a
+duplicate, and distinct neighbours averaged 2.17 of 3.
+
+So the corpus is collapsed to one row per customer tweet at load time, with
+that tweet's brand replies stitched back together in `brand_created_at`
+order. Ordering is taken from the data, not assumed from row order -- which
+is what makes stitching safe to do here rather than leaving the fragments
+apart. `k` now means k distinct past situations.
+
+Remaining caveat: some resolutions happen entirely off-thread ("we've
+replied to your DM!"), so a stitched reply can still contain no answer.
+That is a property of the dataset, and the deflection policy in
+09_draft_reply.py exists because of it.
 """
 import re
 
@@ -27,6 +40,11 @@ PAIRED_PATH = "data/dropbox_paired.csv"
 _URL_RE = re.compile(r"https?://\S+")
 _MENTION_RE = re.compile(r"@\w+")
 
+# Bumped whenever a change alters what top_k returns. Stored alongside every
+# reply-eval row, so results produced under different retrieval behaviour are
+# never silently averaged together -- the same reason rubric_version exists.
+RETRIEVAL_VERSION = "dedup1"
+
 
 def _clean(text: str) -> str:
     """Strip @mentions and URLs before vectorizing -- otherwise every
@@ -37,10 +55,32 @@ def _clean(text: str) -> str:
     return text
 
 
+def load_pairs(paired_path: str = PAIRED_PATH) -> pd.DataFrame:
+    """One row per customer tweet, with its brand replies stitched in
+    chronological order. Shared by both retrievers so they index exactly the
+    same corpus and stay comparable."""
+    df = pd.read_csv(paired_path)
+    df = df.dropna(subset=["customer_text", "brand_text"])
+
+    # Twitter's "Mon Nov 20 19:21:31 +0000 2017" format. errors="coerce" keeps
+    # an unparseable timestamp from dropping the row; those sort last, which
+    # is no worse than the arbitrary order they had before.
+    order = pd.to_datetime(df["brand_created_at"], format="%a %b %d %H:%M:%S %z %Y",
+                           errors="coerce")
+    df = df.assign(_order=order).sort_values(["customer_tweet_id", "_order"],
+                                             na_position="last")
+
+    stitched = (df.groupby("customer_tweet_id", sort=False)
+                  .agg(customer_text=("customer_text", "first"),
+                       brand_text=("brand_text", lambda s: " ".join(s.astype(str))),
+                       n_parts=("brand_text", "size"))
+                  .reset_index())
+    return stitched
+
+
 class ReplyRetriever:
     def __init__(self, paired_path: str = PAIRED_PATH):
-        self.df = pd.read_csv(paired_path)
-        self.df = self.df.dropna(subset=["customer_text", "brand_text"]).reset_index(drop=True)
+        self.df = load_pairs(paired_path)
         cleaned = self.df["customer_text"].map(_clean)
         self.vectorizer = TfidfVectorizer(min_df=2, max_df=0.5, ngram_range=(1, 2), stop_words="english")
         self.matrix = self.vectorizer.fit_transform(cleaned)

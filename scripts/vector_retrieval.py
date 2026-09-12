@@ -11,14 +11,19 @@ Why a vector store at all, given TF-IDF answers in ~2ms
 TF-IDF matches *wording*. The golden set contains a documented case it
 structurally cannot handle: "why did you remove the green check..." and
 "I'm missing the green check, now see only the white box" are about the
-same thing at a TF-IDF cosine similarity of **0.153** -- near-identical
-meaning, almost no shared vocabulary. Retrieval that scores those as
-unrelated hands the drafter the wrong grounding examples.
+same thing at a TF-IDF cosine similarity of **0.23** -- near-identical
+meaning, almost no shared vocabulary. Embeddings score the same pair
+0.53. Retrieval that treats those as unrelated hands the drafter the
+wrong grounding examples.
 
 Embeddings are the fix for that class. The vector *store* is not the
-interesting part at 5,938 rows -- a numpy array would do -- but Chroma
-gives persistence, metadata filtering and a stable query API for free,
-and keeps the door open to a corpus that doesn't fit in memory.
+interesting part at 4,504 documents -- a numpy array would do -- but
+Chroma gives persistence, metadata filtering and a stable query API for
+free, and keeps the door open to a corpus that doesn't fit in memory.
+
+Measured, and not a free win: 24_retrieval_ab.py shows +72% relative
+P@3 over TF-IDF, but that has not yet translated into better replies --
+see the retrieval section of README.md.
 
 Cost, stated honestly: this is the only part of the project that needs a
 model download (~80MB ONNX MiniLM, cached after the first run) and it
@@ -34,7 +39,7 @@ import os
 
 import pandas as pd
 
-from retrieval import PAIRED_PATH, _clean
+from retrieval import PAIRED_PATH, RETRIEVAL_VERSION, _clean, load_pairs
 
 CHROMA_PATH = "data/chroma"
 COLLECTION = "dropbox_pairs"
@@ -47,8 +52,10 @@ class VectorReplyRetriever:
                  build: bool = False):
         import chromadb  # imported lazily: the TF-IDF path must not require chromadb
 
-        self.df = pd.read_csv(paired_path)
-        self.df = self.df.dropna(subset=["customer_text", "brand_text"]).reset_index(drop=True)
+        # Same collapsed corpus as the TF-IDF path -- one row per customer
+        # tweet, replies stitched -- so the two retrievers index identical
+        # documents and the A/B compares retrieval, not corpus shape.
+        self.df = load_pairs(paired_path)
 
         self.client = chromadb.PersistentClient(path=persist_path)
         self.collection = self.client.get_or_create_collection(
@@ -59,7 +66,14 @@ class VectorReplyRetriever:
             # they ARE comparable.
             metadata={"hnsw:space": "cosine"},
         )
-        if build or self.collection.count() == 0:
+        # Document ids are positions in self.df, so an index built against a
+        # different corpus shape would map every hit to the wrong row and
+        # return confidently wrong neighbours. Count mismatch is the cheap
+        # detector; rebuild rather than ask the caller to remember.
+        if build or self.collection.count() != len(self.df):
+            if self.collection.count() not in (0, len(self.df)):
+                print(f"Index holds {self.collection.count()} docs but the corpus has "
+                      f"{len(self.df)} -- stale, rebuilding.")
             self._build()
 
     def _build(self):

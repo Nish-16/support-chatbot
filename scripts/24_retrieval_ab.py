@@ -22,15 +22,20 @@ What this does and does not prove
 ---------------------------------
 It measures *topical* retrieval on a 174-document corpus. That is a proxy: a
 good grounding example shares the customer's problem, and same-intent is the
-best available stand-in for that. It is not the production setting (5,938
-rows), and same-intent is not identical to same-problem -- two
+best available stand-in for that. It is not the production setting (4,504
+customer tweets), and same-intent is not identical to same-problem -- two
 `sync_app_bug` tweets can need different answers. Reported as a directional
 comparison between two retrievers on one axis, not as retrieval accuracy.
 
+Note also what this metric CANNOT see: it scores the ranking, not what the
+drafter ends up with. A retriever can rank better and still hand over worse
+grounding -- which is exactly what happened before neighbours were
+deduplicated by customer tweet. See the retrieval section of README.md.
+
 Also reported: the case that motivated the whole experiment. Two golden
 tweets about the missing green-check icon are near-identical in meaning and
-share almost no vocabulary. TF-IDF scores them 0.153. Whether embeddings fix
-that specific pair is a concrete, checkable claim.
+share almost no vocabulary. Whether embeddings fix that specific pair is a
+concrete, checkable claim, so the script checks it rather than asserting it.
 
 Usage: ./.venv/Scripts/python.exe scripts/24_retrieval_ab.py
        (needs the Chroma index -- scripts/vector_retrieval.py --build)
@@ -133,9 +138,11 @@ def evaluate(index, golden: pd.DataFrame, k: int = K) -> dict:
 
 
 def green_check(golden: pd.DataFrame):
-    """The motivating case, scored on the PRODUCTION indexes (5,938 rows), not
-    the 174-document A/B corpus -- that is the setting the 0.153 figure in the
-    consistency audit came from, and the only one comparable to it."""
+    """The motivating case, scored on the PRODUCTION indexes (4,504 customer
+    tweets after multi-part replies are collapsed), not the 174-document A/B
+    corpus. TF-IDF's score moves with the corpus it was fit on -- it read 0.125
+    over the un-collapsed 5,938 rows -- so what matters is the gap, not the
+    decimal."""
     by_id = golden.set_index("customer_tweet_id")["customer_text"]
     try:
         a, b = (by_id.loc[i] for i in GREEN_CHECK_IDS)
@@ -144,7 +151,7 @@ def green_check(golden: pd.DataFrame):
         return
 
     print("\n  The motivating case -- same meaning, disjoint vocabulary,")
-    print("  scored on the full 5,938-row production indexes:")
+    print("  scored on the full production indexes (4,504 customer tweets):")
     print(f"    A: {a}")
     print(f"    B: {b}")
 
@@ -202,7 +209,7 @@ def main():
 
     print("\n  CAVEAT: this measures topical retrieval on a 174-document corpus.")
     print("  Same-intent is a proxy for same-problem, and the production corpus")
-    print("  is 5,938 rows. Directional, not an accuracy figure.")
+    print("  is 4,504 customer tweets. Directional, not an accuracy figure.")
 
 
 if __name__ == "__main__":

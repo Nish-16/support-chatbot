@@ -44,7 +44,7 @@ import pandas as pd
 
 from groq_lib import make_client, MODEL, SKIPPABLE_ERRORS
 from rate_limiter import RateLimiter
-from retrieval import ReplyRetriever
+from retrieval import ReplyRetriever, RETRIEVAL_VERSION
 from vector_retrieval import get_retriever
 
 # 09_draft_reply.py and 10_baselines.py start with digits, so they can't
@@ -187,7 +187,13 @@ def load_done(judge_model: str, retriever_kind: str) -> set[tuple]:
     return set(zip(prev["customer_tweet_id"], prev["system"]))
 
 
-def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "tfidf"):
+def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "tfidf",
+         tag: str = ""):
+    # Stamped with the retrieval version, not just the retriever name: changing
+    # what top_k returns changes what is being measured just as much as swapping
+    # the retriever does. Rows written before dedupe+stitch carry a bare
+    # "tfidf"/"vector" and stay separate from these.
+    retriever_label = f"{retriever_kind}:{RETRIEVAL_VERSION}" + (f":{tag}" if tag else "")
     labels = pd.read_csv(LABELS_PATH)
     # Stratify by intent so the reply eval isn't dominated by whichever
     # intents happen to be most common -- reply quality varies a lot by
@@ -206,9 +212,9 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "
     sample = sample.head(n).reset_index(drop=True)
     print(f"Evaluating replies for {len(sample)} tweets x {len(SYSTEMS)} systems.")
     print(f"Drafter model: {MODEL}   |   Judge model: {judge_model}"
-          f"   |   Retriever: {retriever_kind}")
+          f"   |   Retriever: {retriever_label}")
 
-    done = load_done(judge_model, retriever_kind)
+    done = load_done(judge_model, retriever_label)
     client = make_client()
     # 8/min, not classify_runner's 15/min: the real Groq constraint on this
     # key is ~8,000 tokens/MINUTE, and a judge call (rubric + tweet + reply,
@@ -265,7 +271,7 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "
                     "judge_reason": scores.get("reason", ""),
                     "judge_model": judge_model,
                     "rubric_version": RUBRIC_VERSION,
-                    "retriever": retriever_kind,
+                    "retriever": retriever_label,
                 })
                 f.flush()
                 print(f"  [{i}/{len(sample)}] {system:8s} overall={scores.get('overall')} "
@@ -382,8 +388,14 @@ if __name__ == "__main__":
                         help=f"model used to grade replies (default: {DEFAULT_JUDGE_MODEL})")
     parser.add_argument("--retriever", choices=["tfidf", "vector"], default="tfidf",
                         help="grounding retrieval for the llm system (default: tfidf)")
+    parser.add_argument("--tag", default="",
+                        help="suffix for the retriever label, so the SAME configuration "
+                             "can be run twice. The drafter runs at temperature=0.3, so "
+                             "a repeat run measures how much of any A/B delta is just "
+                             "drafter sampling -- run it before trusting one.")
     args = parser.parse_args()
     if args.report_only:
         report()
     else:
-        main(args.n, judge_model=args.judge_model, retriever_kind=args.retriever)
+        main(args.n, judge_model=args.judge_model, retriever_kind=args.retriever,
+             tag=args.tag)

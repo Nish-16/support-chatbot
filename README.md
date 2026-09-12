@@ -273,53 +273,63 @@ searching the index, which is trivial at this size. That cost is fixed per
 query regardless of corpus size, and it is invisible next to the LLM call that
 follows it (~1-2s). It also adds an 83MB model download.
 
-#### Better neighbours did not produce better replies
+#### Better neighbours did not produce better replies — and the eval cannot tell why
 
-The obvious follow-through — and it failed. `13_reply_eval.py --retriever
-vector` re-drafted and re-judged the same tweets through the embedding path.
-Paired on the 13 tweets scored under both, same judge, same rubric v2:
+The obvious follow-through. `13_reply_eval.py --retriever vector` re-drafted
+and re-judged the same tweets through the embedding path. Paired on 19 tweets,
+same judge, rubric v2, the llm arm came out **−0.32 overall** for the vector
+retriever.
 
-| llm arm | TF-IDF | vector | delta |
+Before reporting that, I ran the control that the comparison actually needs:
+**TF-IDF against itself**, same corpus, same retriever, second run.
+
+| llm arm, paired, delta | relevance | grounding | overall |
 |---|---:|---:|---:|
-| relevance | 4.17 | 3.92 | −0.25 |
-| grounding | 4.92 | 4.58 | −0.33 |
-| overall | 4.17 | 4.00 | −0.17 |
-| deflection rate | 0.25 | 0.17 | **−0.08** |
+| TF-IDF vs **vector** | −0.32 | −0.37 | **−0.32** |
+| TF-IDF vs **itself, re-run** | −0.26 | −0.21 | **−0.26** |
 
-Every quality metric moved *down*; only the deflection rate improved. So a
-retriever that is measurably better at finding topically-correct neighbours
-made the replies no better, and slightly worse.
+**Re-running the identical configuration moves the score almost as much as
+switching retrievers.** The drafter runs at `temperature=0.3`, so every run
+writes different replies — 0% of them were identical across runs. At n≈19 this
+harness cannot distinguish the two retrievers, and any claim that one writes
+better replies than the other is unsupported. That includes the claim I would
+have shipped had I not run the control.
 
-**The control is what makes this readable.** The `simple` and `trivial` arms
-don't use this retriever, so their replies were byte-identical across the two
-runs — and the judge, at `temperature=0`, returned *exactly* the same score on
-all five metrics for all of them (delta 0.00 everywhere, 100% identical
-replies). The judge contributed zero variance here, so the llm arm's movement
-is real, not grading noise. That control was free: it fell out of running all
-three systems in both arms.
+The `simple` and `trivial` arms are the other half of the control: they don't
+use this retriever, their replies were byte-identical, and the judge at
+`temperature=0` returned **exactly** the same scores (delta 0.00 on all five
+metrics). So the judge contributes no variance at all here — **all** of the
+movement is the drafter's sampling.
 
-**Why, with evidence.** The corpus has 5,938 rows but only 4,504 unique
-customer tweets — multi-tweet replies appear as separate rows sharing one
-customer tweet. Embedding similarity puts those near-identical rows adjacent,
-so the vector retriever retrieves the *same customer situation* twice far more
-often, spending grounding slots on it:
+#### What the dedupe fix did and didn't do
 
-| retriever | distinct neighbours (of 3) | queries returning a duplicate |
+The first version of this comparison had a real defect. The corpus held 5,938
+rows but only **4,504 unique customer tweets**, because a reply split across
+several tweets is several rows sharing one customer tweet. Those rows rank
+adjacently, so k=3 spent slots on the same situation twice — 7 of 12 embedding
+queries returned a duplicate.
+
+`load_pairs()` now collapses the corpus to one row per customer tweet and
+stitches that tweet's replies in `brand_created_at` order — timestamps from the
+data, not an assumption about row order. Both retrievers share it.
+
+| | before | after |
 |---|---:|---:|
-| TF-IDF | 2.58 | 2/12 |
-| vector | 2.17 | 7/12 |
+| distinct neighbours of 3 (vector) | 2.17 | **3.00** |
+| queries returning a duplicate | 7/12 | **0/12** |
+| grounding characters supplied | 395 | **596** |
 
-Better neighbour *ranking*, fewer distinct grounding *situations*. That is a
-concrete, fixable defect — deduplicate by `customer_tweet_id` inside `top_k`
-(or stitch the fragments, §1) and re-run — not a verdict on embeddings. It is
-listed in §6 rather than patched, because the fix changes what both retrievers
-return and every stored reply-eval row would need re-earning at API cost.
+Mechanically it worked. **It changed reply scores by less than the noise floor**
+(vector pre vs post: −0.05 overall). So the duplicate neighbours were a genuine
+defect worth fixing, and they were *not* the explanation for anything in the
+score table — a hypothesis of mine that the data declined to support.
 
-**So TF-IDF remains the default**, now for a measured reason rather than a
-conservative one: it keeps `12_evaluate.py` and the headline reproducible with
-nothing but pandas and scikit-learn, and the retriever that retrieves better
-does not currently write better replies. n=13 is small — this rules out a large
-win, not a small one.
+**So TF-IDF remains the default**, on cost rather than quality: it is 150×
+faster per query, needs no 83MB download, and keeps `12_evaluate.py` and the
+headline reproducible with nothing but pandas and scikit-learn. Embeddings
+retrieve measurably better neighbours (§ above) and that advantage has not been
+shown to reach the replies — with an instrument that currently could not see it
+if it were there.
 
 ---
 
@@ -489,20 +499,26 @@ improve the classifier, and both attempts failed and were reverted (§5.7).
    errors are the taxonomy and the prompt, not model capacity.
 8. **The golden pool over-samples rare intents by construction**, so 81% is not
    an estimate of accuracy on real DropboxSupport traffic mix.
-9. **The reply judge has never been validated against a human.** Two judges
+9. **The reply-quality harness cannot resolve small differences.** Re-running
+   one identical configuration moves `overall` by −0.26 — as much as switching
+   retrievers does — because the drafter samples at `temperature=0.3`. The
+   agent-vs-baseline gap (~2 points) survives that easily; nothing finer does.
+   I found this only because I ran a configuration against itself as a control,
+   and it invalidated a retriever comparison I had already written up.
+10. **The reply judge has never been validated against a human.** Two judges
    agreeing 68%/84% is not evidence either is right — they can share a blind
    spot. Worse, the judge is visibly noisy: the trivial baseline sends **one
    identical string** 98 times, and the judge scored it across the **full 1–5
    range** (std 1.51) and called it a deflection 66 times out of 98. Some spread
    is legitimate (the rubric is intent-dependent), but it bounds how finely any
    reply-quality average can be read.
-10. **The reply-quality headline depends on which rubric you pick** — 4.87
+11. **The reply-quality headline depends on which rubric you pick** — 4.87
     under v1, 3.60 under v2, for the same replies (§3). I report v2 and show
     both.
-11. **LLM non-determinism.** Tweet `1274528` got different intents on two runs
+12. **LLM non-determinism.** Tweet `1274528` got different intents on two runs
     (0.90 and 0.85 confidence). `temperature=0` is set now but was not for every
     row. Single-run accuracy overstates stability.
-12. **One cache bug nearly produced a very convincing wrong result.** The
+13. **One cache bug nearly produced a very convincing wrong result.** The
     prediction cache was namespaced on taxonomy version alone, so the second
     model in the A/B would have read the first model's cached answers back and
     reported perfect agreement. The namespace is now `taxonomy:prompt:model`.
