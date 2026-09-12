@@ -239,10 +239,13 @@ def report():
     full = _read_out()
     metrics = ["relevance", "policy_compliance", "grounding", "tone", "overall"]
 
-    for judge, df in full.groupby("judge_model"):
+    # Grouped by rubric version as well as judge: the same judge scoring the
+    # same reply under v1 and under v2 gives two different numbers, and
+    # averaging them together reports a rubric that was never actually run.
+    for (judge, rubric), df in full.groupby(["judge_model", "rubric_version"]):
         same_family = judge.split("/")[0] == MODEL.split("/")[0]
         tag = "  <-- SAME FAMILY AS DRAFTER (biased)" if same_family else "  <-- independent of drafter"
-        print(f"\n{'=' * 64}\nJUDGE: {judge}{tag}\n"
+        print(f"\n{'=' * 64}\nJUDGE: {judge}   RUBRIC: {rubric}{tag}\n"
               f"n={df['customer_tweet_id'].nunique()} tweets\n{'=' * 64}\n")
         agg = df.groupby("system")[metrics].mean().round(2)
         agg["deflection_rate"] = df.groupby("system")["is_deflection"].mean().round(2)
@@ -252,12 +255,28 @@ def report():
     # With two judges on the same replies, their disagreement is a direct
     # measure of how much the choice of judge -- rather than the quality
     # of the reply -- drives the result.
-    judges = full["judge_model"].unique()
+    # Judges are only comparable within one rubric version: a v1 score and a
+    # v2 score of the same reply disagree because the rubric changed, which
+    # says nothing about the judges. Scope to the rubric the most judges share.
+    shared = full.groupby("rubric_version")["judge_model"].nunique().sort_values()
+    rubric = shared.index[-1] if len(shared) else None
+    scoped = full[full["rubric_version"] == rubric] if rubric else full
+    judges = scoped["judge_model"].unique()
     if len(judges) >= 2:
-        print(f"\n{'=' * 64}\nJUDGE-vs-JUDGE: does the verdict depend on who's grading?\n{'=' * 64}\n")
+        print(f"\n{'=' * 64}\nJUDGE-vs-JUDGE: does the verdict depend on who's grading?\n"
+              f"(rubric {rubric} -- the version both judges scored)\n{'=' * 64}\n")
         a, b = judges[0], judges[1]
-        left = full[full["judge_model"] == a].set_index(["customer_tweet_id", "system"])
-        right = full[full["judge_model"] == b].set_index(["customer_tweet_id", "system"])
+
+        def _side(judge: str) -> pd.DataFrame:
+            # A resumed run can re-score the same reply, so (tweet, system) is
+            # not unique on either side. Keep the last verdict per pair before
+            # intersecting -- otherwise duplicates multiply out and the two
+            # sides come back with different lengths.
+            side = scoped[scoped["judge_model"] == judge]
+            side = side.drop_duplicates(["customer_tweet_id", "system"], keep="last")
+            return side.set_index(["customer_tweet_id", "system"]).sort_index()
+
+        left, right = _side(a), _side(b)
         common = left.index.intersection(right.index)
         if len(common):
             la, rb = left.loc[common], right.loc[common]

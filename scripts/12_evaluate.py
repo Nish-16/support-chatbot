@@ -92,8 +92,10 @@ def load(path: str, label_col: str, keep_unscorable: bool, split: str) -> pd.Dat
 
     print(f"Evaluating {len(df)} rows from {path}  (label column: {label_col}, split: {split})")
     if dropped_status:
-        print(f"  {dropped_status} of {n_all} rows excluded as insufficient_context "
-              f"-- unroutable without the prior turn. Use --keep-unscorable to include them.")
+        breakdown = pd.read_csv(path)["v3_status"].value_counts().drop("resolved", errors="ignore")
+        print(f"  {dropped_status} of {n_all} rows excluded as unscorable "
+              f"({', '.join(f'{n} {k}' for k, n in breakdown.items())}) "
+              f"-- not routable from the tweet alone. Use --keep-unscorable to include them.")
     return df
 
 
