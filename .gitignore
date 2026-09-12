@@ -10,8 +10,10 @@ Hiver SDE Intern Assignment.docx
 # ad-hoc backups
 *.bak
 
-# markdown docs -- kept local, not tracked
+# markdown docs -- kept local, not tracked. README.md is the exception:
+# it is the repo's single document and carries the full report.
 *.md
+!README.md
 
 # local Claude Code config
 .claude/
