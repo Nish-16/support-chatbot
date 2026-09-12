@@ -12,3 +12,6 @@ Hiver SDE Intern Assignment.docx
 
 # markdown docs -- kept local, not tracked
 *.md
+
+# local Claude Code config
+.claude/
