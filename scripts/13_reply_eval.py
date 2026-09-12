@@ -45,6 +45,7 @@ import pandas as pd
 from groq_lib import make_client, MODEL, SKIPPABLE_ERRORS
 from rate_limiter import RateLimiter
 from retrieval import ReplyRetriever
+from vector_retrieval import get_retriever
 
 # 09_draft_reply.py and 10_baselines.py start with digits, so they can't
 # be imported by name -- load them by path instead of renaming files the
@@ -89,7 +90,7 @@ RUBRIC_VERSION = "v2"
 FIELDS = [
     "customer_tweet_id", "customer_text", "human_intent", "system", "reply",
     "relevance", "policy_compliance", "grounding", "tone", "overall",
-    "is_deflection", "judge_reason", "judge_model", "rubric_version",
+    "is_deflection", "judge_reason", "judge_model", "rubric_version", "retriever",
 ]
 
 JUDGE_PROMPT = """You are grading a public Twitter reply written by a customer-support agent for @DropboxSupport. Grade only the reply you are shown. You are NOT told which system wrote it; do not speculate.
@@ -140,21 +141,27 @@ def _read_out() -> pd.DataFrame:
     if "rubric_version" not in df.columns:
         df["rubric_version"] = "v1"
     df["rubric_version"] = df["rubric_version"].fillna("v1")
+    # Rows written before the retriever became switchable were all TF-IDF.
+    if "retriever" not in df.columns:
+        df["retriever"] = "tfidf"
+    df["retriever"] = df["retriever"].fillna("tfidf")
     return df
 
 
-def load_done(judge_model: str) -> set[tuple]:
-    """Rows already judged by THIS judge under THIS rubric. A rubric change
-    invalidates prior scores, so v1 rows do not suppress a v2 re-judge."""
+def load_done(judge_model: str, retriever_kind: str) -> set[tuple]:
+    """Rows already judged by THIS judge, under THIS rubric, grounded by THIS
+    retriever. Each of the three changes what is being measured, so a prior run
+    under a different one must not suppress a re-run."""
     if not os.path.exists(OUT_PATH):
         return set()
     prev = _read_out()
     prev = prev[(prev["judge_model"] == judge_model)
-                & (prev["rubric_version"] == RUBRIC_VERSION)]
+                & (prev["rubric_version"] == RUBRIC_VERSION)
+                & (prev["retriever"] == retriever_kind)]
     return set(zip(prev["customer_tweet_id"], prev["system"]))
 
 
-def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL):
+def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "tfidf"):
     labels = pd.read_csv(LABELS_PATH)
     # Stratify by intent so the reply eval isn't dominated by whichever
     # intents happen to be most common -- reply quality varies a lot by
@@ -172,9 +179,10 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL):
         sample = pd.concat([sample, rest.sample(min(n - len(sample), len(rest)), random_state=42)])
     sample = sample.head(n).reset_index(drop=True)
     print(f"Evaluating replies for {len(sample)} tweets x {len(SYSTEMS)} systems.")
-    print(f"Drafter model: {MODEL}   |   Judge model: {judge_model}")
+    print(f"Drafter model: {MODEL}   |   Judge model: {judge_model}"
+          f"   |   Retriever: {retriever_kind}")
 
-    done = load_done(judge_model)
+    done = load_done(judge_model, retriever_kind)
     client = make_client()
     # 8/min, not classify_runner's 15/min: the real Groq constraint on this
     # key is ~8,000 tokens/MINUTE, and a judge call (rubric + tweet + reply,
@@ -182,7 +190,10 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL):
     # ran ~12k tokens/min and lost rows to RateLimitError -- the gaps in the
     # first two runs were this, not model failures.
     limiter = RateLimiter(8, 60.0)
-    retriever = ReplyRetriever()
+    # Only the `llm` system uses this; `simple` has its own 1-NN retriever and
+    # `trivial` retrieves nothing, so switching this changes one arm of the
+    # comparison, which is exactly what a retriever A/B wants.
+    retriever = get_retriever(retriever_kind)
     trivial = TrivialBaseline()
     simple = SimpleBaseline()
 
@@ -227,6 +238,7 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL):
                     "judge_reason": scores.get("reason", ""),
                     "judge_model": judge_model,
                     "rubric_version": RUBRIC_VERSION,
+                    "retriever": retriever_kind,
                 })
                 f.flush()
                 print(f"  [{i}/{len(sample)}] {system:8s} overall={scores.get('overall')} "
@@ -242,10 +254,10 @@ def report():
     # Grouped by rubric version as well as judge: the same judge scoring the
     # same reply under v1 and under v2 gives two different numbers, and
     # averaging them together reports a rubric that was never actually run.
-    for (judge, rubric), df in full.groupby(["judge_model", "rubric_version"]):
+    for (judge, rubric, retr), df in full.groupby(["judge_model", "rubric_version", "retriever"]):
         same_family = judge.split("/")[0] == MODEL.split("/")[0]
         tag = "  <-- SAME FAMILY AS DRAFTER (biased)" if same_family else "  <-- independent of drafter"
-        print(f"\n{'=' * 64}\nJUDGE: {judge}   RUBRIC: {rubric}{tag}\n"
+        print(f"\n{'=' * 64}\nJUDGE: {judge}   RUBRIC: {rubric}   RETRIEVER: {retr}{tag}\n"
               f"n={df['customer_tweet_id'].nunique()} tweets\n{'=' * 64}\n")
         agg = df.groupby("system")[metrics].mean().round(2)
         agg["deflection_rate"] = df.groupby("system")["is_deflection"].mean().round(2)
@@ -341,8 +353,10 @@ if __name__ == "__main__":
     parser.add_argument("--report-only", action="store_true", help="re-print results, no API calls")
     parser.add_argument("--judge-model", default=DEFAULT_JUDGE_MODEL,
                         help=f"model used to grade replies (default: {DEFAULT_JUDGE_MODEL})")
+    parser.add_argument("--retriever", choices=["tfidf", "vector"], default="tfidf",
+                        help="grounding retrieval for the llm system (default: tfidf)")
     args = parser.parse_args()
     if args.report_only:
         report()
     else:
-        main(args.n, judge_model=args.judge_model)
+        main(args.n, judge_model=args.judge_model, retriever_kind=args.retriever)

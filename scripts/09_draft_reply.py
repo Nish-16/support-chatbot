@@ -32,6 +32,7 @@ import sys
 import pandas as pd
 
 from retrieval import ReplyRetriever
+from vector_retrieval import get_retriever
 from reply_guard import validate, sanitize, regeneration_note
 from groq_lib import make_client, MODEL
 from groq import APIError, APIConnectionError, APITimeoutError, RateLimitError
@@ -178,9 +179,13 @@ def main():
     src.add_argument("--text", type=str, help="arbitrary customer text")
     parser.add_argument("--intent", type=str, default=None, help="intent name (see intents.json); affects DM-deflection policy")
     parser.add_argument("-k", type=int, default=3, help="number of retrieved grounding examples")
+    parser.add_argument("--retriever", choices=["tfidf", "vector"], default="tfidf",
+                        help="grounding retrieval: tfidf (default, zero deps) or "
+                             "vector (Chroma + MiniLM embeddings; needs "
+                             "vector_retrieval.py --build first)")
     args = parser.parse_args()
 
-    retriever = ReplyRetriever()
+    retriever = get_retriever(args.retriever)
     exclude_id = None
     if args.tweet_id is not None:
         row = retriever.df[retriever.df["customer_tweet_id"] == args.tweet_id]

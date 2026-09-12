@@ -44,6 +44,16 @@ scripts/12_evaluate.py --label-col human_intent --keep-unscorable   # reproduces
 Anything that calls the LLM (classification, drafting, judging) needs
 `GROQ_API_KEY` in `.env` — see `.env.example`. None of the commands above do.
 
+The embedding retriever is optional and kept out of that path on purpose, so
+the headline stays reproducible with two libraries and no downloads:
+
+```bash
+./.venv/Scripts/python.exe -m pip install chromadb
+./.venv/Scripts/python.exe scripts/vector_retrieval.py --build   # ~1 min, 83MB model
+./.venv/Scripts/python.exe scripts/24_retrieval_ab.py            # TF-IDF vs embeddings
+./.venv/Scripts/python.exe scripts/09_draft_reply.py --text "..." --retriever vector
+```
+
 ---
 
 ## 1. Problem framing
@@ -104,14 +114,18 @@ means relabelling every example by hand.
 ### What I chose not to build
 
 - **Stitching multi-part replies.** Many historical replies are thread
-  fragments (`1/2`, `2/2`). Retrieval returns them as-is. Stitching would
-  improve grounding; stated as a limitation rather than silently patched.
+  fragments (`1/2`, `2/2`). Retrieval returns them as-is — which is also why it
+  can hand the drafter two fragments of the same thread as two separate
+  grounding examples. Stitching would improve grounding; stated as a limitation
+  rather than silently patched.
 - **The full 5,938-row classification run.** It costs real API budget and adds
   nothing the golden set doesn't already show. Keeping evaluation API-free
   matters more for a reviewer reproducing this.
-- **Embeddings for retrieval.** TF-IDF over 5,938 rows takes milliseconds and
-  needs no vector store. Worth revisiting once retrieval is the measured
-  bottleneck. It isn't.
+- **A hosted vector database.** Chroma runs embedded, as a file in
+  `data/chroma/`. At 5,938 rows the thing a vector DB actually sells you — an
+  approximate index, so you don't scan everything — solves a problem this
+  corpus doesn't have. Persistence and a stable query API were worth having;
+  a server was not.
 - **Fine-tuning.** No labelled data exists up front; the labels I built are an
   *evaluation* asset, and 174 rows is far too few to train on.
 - **Hand-verifying sentiment and language.** Collected from the model, not
@@ -125,11 +139,14 @@ means relabelling every example by hand.
 - **Classification** — a prompted LLM call (Groq `openai/gpt-oss-20b`) against
   the fixed category list in `intents.json`, structured JSON output, cached
   permanently by tweet id.
-- **Reply drafting** — TF-IDF retrieval over past DropboxSupport threads
-  (`retrieval.py`), then the LLM drafts a reply grounded in them, with the
-  deflection policy above stated explicitly in the prompt. A deterministic
-  guard (`reply_guard.py`) then validates the draft, regenerates once if it
-  contains a placeholder, and sanitises as a last resort.
+- **Reply drafting** — retrieval over past DropboxSupport threads, then the
+  LLM drafts a reply grounded in them, with the deflection policy above stated
+  explicitly in the prompt. A deterministic guard (`reply_guard.py`) then
+  validates the draft, regenerates once if it contains a placeholder, and
+  sanitises as a last resort. Two retrievers are implemented behind one
+  interface and selected with `--retriever`: TF-IDF (`retrieval.py`, the
+  default) and embeddings (`vector_retrieval.py`, Chroma + MiniLM). They are
+  compared in §3.
 - **Escalation** — an explicit two-stage policy table (`escalation.py`), not
   LLM discretion. Flag/`turn_type` overrides fire first and short-circuit
   (`needs_human_triage`, low confidence, `disputing_prior_answer`,
@@ -220,6 +237,49 @@ under both, and is the claim I'd actually stand behind.
 exact agreement** on the 1–5 score, **84% within one point**, 84% agreement on
 the deflection boolean. That is judge-vs-judge, not judge-vs-human — see §5.9
 and §6.3.
+
+### Retrieval: TF-IDF vs. embeddings
+
+Grounding quality depends on retrieving the right past threads, so the two
+retrievers are measured rather than argued about. `24_retrieval_ab.py` indexes
+the same 174 golden tweets in both, queries each with every tweet (excluding
+itself), and asks whether the neighbours returned share the query's
+hand-adjudicated intent.
+
+| retriever | P@1 | P@3 | MRR | index build | query |
+|---|---:|---:|---:|---:|---:|
+| TF-IDF | 0.356 | 0.276 | 0.511 | 0.02s | 0.7ms |
+| **Embeddings (Chroma + MiniLM)** | **0.540** | **0.475** | **0.677** | 5.7s | 197ms |
+
+Chance precision@3 is 0.081, so both beat random; embeddings beat TF-IDF by
+**+72% relative on P@3**.
+
+The case that motivated it, scored on the full 5,938-row indexes:
+
+> *"Did the taskbar icon change? I'm missing the green check, now see only the
+> white box…"* vs. *"why did you remove the green check that signs everything
+> is alright…"*
+>
+> TF-IDF **0.125** · Embeddings **0.530**
+
+Near-identical meaning, almost no shared vocabulary. TF-IDF scores them as
+unrelated, which is the failure mode the golden-set consistency audit hit and
+could not explain — that audit compares *wording*, so it structurally cannot
+find pairs like this.
+
+**The cost is real and mostly latency.** 197ms vs 0.7ms per query is ~270×,
+and almost all of it is the ONNX forward pass embedding the *query* — not
+searching the index, which is trivial at this size. That cost is fixed per
+query regardless of corpus size, and it is invisible next to the LLM call that
+follows it (~1-2s). It also adds an 83MB model download.
+
+**So TF-IDF remains the default** — it keeps `12_evaluate.py` and the headline
+reproducible with nothing but pandas and scikit-learn — and the vector path is
+opt-in via `--retriever vector`. What is *not* yet measured is whether better
+retrieval produces better replies: grounding already scores 4.71/5 under the
+strict rubric, the highest of any sub-score, so there may be little headroom.
+Re-running `13_reply_eval.py --retriever vector` would answer it; the CSV
+carries a `retriever` column so the two runs can't silently blend.
 
 ---
 
@@ -441,7 +501,12 @@ In priority order, most valuable first.
    cross-model-disagreement signal buys 4 fewer missed escalations for 14 more
    over-escalations. Whether that's worth it depends on a cost ratio I don't
    have.
-7. **Expand the golden set to ~400** with stratified sampling on the confusion
+7. **Close the retrieval question** (0.5 day). Embeddings retrieve better
+   neighbours (+72% relative P@3, §3), but nobody has shown that produces
+   better *replies*. Re-run `13_reply_eval.py --retriever vector` and compare;
+   grounding already sits at 4.71/5, so the honest prior is that there is
+   little headroom and the win shows up on relevance instead.
+8. **Expand the golden set to ~400** with stratified sampling on the confusion
    clusters, so per-intent rates become rankable.
 
 Not on this list, deliberately: fine-tuning, a bigger model, and a vector
@@ -513,7 +578,14 @@ retrieval is not the measured bottleneck.
 16. **Kept evaluation API-free.** Every prediction is stored next to its label,
     so `12_evaluate.py` re-runs in seconds at zero cost. This is why the
     15-minute reproduce target is achievable at all.
-17. **Every long-running script is append-as-you-go and resumable.** An early
+17. **Added embedding retrieval as an opt-in second implementation, not a
+    replacement.** It measurably retrieves better (§3), but it costs an 83MB
+    download and ~270× the query latency, and it has not been shown to improve
+    the replies themselves. Putting it behind `--retriever` keeps both claims
+    testable and keeps the headline reproducible without it. The `retriever`
+    column in `reply_evals.csv` exists so the two can never be averaged
+    together by accident — the same mistake the rubric versions nearly caused.
+18. **Every long-running script is append-as-you-go and resumable.** An early
     script wrote its output once at the end, and a quota cap killed the run
     mid-way — ~150 successful classifications would have been silently lost.
     They were recovered by parsing the terminal log rather than re-spending
@@ -536,7 +608,8 @@ data/
   adjudication_v*.csv     the row-by-row error review
   model_ab_*.csv          the gpt-oss-120b comparison run
   prompt_ab_p2_dev.csv    the rules-in-the-prompt comparison run
-  reply_evals.csv         reply drafts + judge scores (3 judge x rubric runs)
+  reply_evals.csv         reply drafts + judge scores (judge x rubric x retriever)
+  chroma/                 embedding index (gitignored; rebuild in ~1 min)
 scripts/
   01-05_*.py              data pipeline: explore, filter, pair, sample
   groq_lib.py             Groq client, prompt, schema, retry policy
@@ -547,6 +620,7 @@ scripts/
   07_build_golden_candidates.py  golden-set candidate sampling
   08_label_golden_set.py  interactive hand-labelling (anti-anchoring)
   retrieval.py            TF-IDF retrieval over dropbox_paired.csv
+  vector_retrieval.py     embedding retrieval (Chroma + MiniLM), same interface
   reply_guard.py          deterministic placeholder guard
   09_draft_reply.py       grounded reply drafting (policy-enforced)
   escalation.py           auto-handle vs escalate policy table
@@ -562,6 +636,7 @@ scripts/
   21_split.py             freeze the dev/holdout split
   22_prompt_ab.py         prompt comparison, dev only
   23_escalation_v2.py     the dead uncertainty branches
+  24_retrieval_ab.py      TF-IDF vs embeddings on P@k / MRR
 intents.json              the 13 intents, as the model sees them
 turn_types.json           the 5 turn types
 ```

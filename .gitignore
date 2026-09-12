@@ -17,3 +17,8 @@ Hiver SDE Intern Assignment.docx
 
 # local Claude Code config
 .claude/
+
+# Chroma index -- 17MB of rebuildable binary; querying needs the MiniLM
+# model anyway, so committing it would not remove the download step.
+# Rebuild: scripts/vector_retrieval.py --build
+data/chroma/
