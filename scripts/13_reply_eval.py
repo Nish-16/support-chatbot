@@ -148,6 +148,32 @@ def _read_out() -> pd.DataFrame:
     return df
 
 
+def _check_schema():
+    """Refuse to append rows whose shape does not match the file's header.
+
+    This has bitten this project twice: appending a DictWriter row with a new
+    field to a CSV whose header predates that field produces lines with more
+    values than columns, and the whole file stops parsing -- taking every
+    earlier, expensive row with it. A column addition is a migration, not an
+    edit, so fail loudly here and say exactly what to do about it."""
+    if not os.path.exists(OUT_PATH):
+        return
+    import csv
+    with open(OUT_PATH, newline="", encoding="utf-8") as f:
+        header = next(csv.reader(f), [])
+    if header == FIELDS:
+        return
+    missing, extra = [c for c in FIELDS if c not in header], [c for c in header if c not in FIELDS]
+    raise SystemExit(
+        f"{OUT_PATH} has a different schema than this script writes.\n"
+        f"  header:  {header}\n"
+        f"  FIELDS:  {FIELDS}\n"
+        f"  missing from file: {missing or 'none'}   unexpected in file: {extra or 'none'}\n"
+        f"Appending would corrupt the file. Migrate it (back it up, rewrite with "
+        f"the new header, backfill the new columns) before rerunning."
+    )
+
+
 def load_done(judge_model: str, retriever_kind: str) -> set[tuple]:
     """Rows already judged by THIS judge, under THIS rubric, grounded by THIS
     retriever. Each of the three changes what is being measured, so a prior run
@@ -197,6 +223,7 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "
     trivial = TrivialBaseline()
     simple = SimpleBaseline()
 
+    _check_schema()
     write_header = not os.path.exists(OUT_PATH)
     with open(OUT_PATH, "a", newline="", encoding="utf-8") as f:
         import csv
