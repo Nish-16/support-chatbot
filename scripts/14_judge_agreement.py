@@ -33,6 +33,10 @@ import pandas as pd
 
 EVALS_PATH = "data/reply_evals.csv"
 OUT_PATH = "data/judge_agreement.csv"
+# The judge and rubric whose numbers are reported: an independent model
+# family from the drafter, under the stricter rubric.
+JUDGE = "qwen/qwen3.8-27b"
+RUBRIC = "v2"
 FIELDS = ["customer_tweet_id", "system", "human_overall", "human_is_deflection", "judge_overall", "judge_is_deflection"]
 
 
@@ -64,6 +68,18 @@ def main(n: int):
         return
     evals = pd.read_csv(EVALS_PATH)
 
+    # reply_evals.csv holds several judge x rubric runs over the SAME replies.
+    # Agreement has to be measured against one of them -- the reported one --
+    # or a single human rating gets compared to whichever judge row the sample
+    # happened to land on, and the resulting number means nothing.
+    before = len(evals)
+    evals = evals[(evals["judge_model"] == JUDGE) & (evals["rubric_version"] == RUBRIC)]
+    if evals.empty:
+        combos = pd.read_csv(EVALS_PATH).groupby(["judge_model", "rubric_version"]).size()
+        print(f"No rows for judge={JUDGE} rubric={RUBRIC}. Available:\n{combos.to_string()}")
+        return
+    print(f"Scoped to judge {JUDGE}, rubric {RUBRIC}: {len(evals)} of {before} rows.")
+
     done = set()
     if os.path.exists(OUT_PATH):
         prev = pd.read_csv(OUT_PATH)
@@ -73,7 +89,7 @@ def main(n: int):
     sample = pool.sample(min(n, len(pool)), random_state=7)
 
     print(f"Rating {len(sample)} replies. You will NOT see which system wrote them,")
-    print("or the judge's score, until after you answer. {len(done)} already rated.\n")
+    print(f"or the judge's score, until after you answer. {len(done)} already rated.\n")
     print("Scale: 1 = would never send this, 3 = acceptable, 5 = exactly right.")
 
     write_header = not os.path.exists(OUT_PATH)
