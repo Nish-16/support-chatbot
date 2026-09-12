@@ -273,13 +273,53 @@ searching the index, which is trivial at this size. That cost is fixed per
 query regardless of corpus size, and it is invisible next to the LLM call that
 follows it (~1-2s). It also adds an 83MB model download.
 
-**So TF-IDF remains the default** — it keeps `12_evaluate.py` and the headline
-reproducible with nothing but pandas and scikit-learn — and the vector path is
-opt-in via `--retriever vector`. What is *not* yet measured is whether better
-retrieval produces better replies: grounding already scores 4.71/5 under the
-strict rubric, the highest of any sub-score, so there may be little headroom.
-Re-running `13_reply_eval.py --retriever vector` would answer it; the CSV
-carries a `retriever` column so the two runs can't silently blend.
+#### Better neighbours did not produce better replies
+
+The obvious follow-through — and it failed. `13_reply_eval.py --retriever
+vector` re-drafted and re-judged the same tweets through the embedding path.
+Paired on the 13 tweets scored under both, same judge, same rubric v2:
+
+| llm arm | TF-IDF | vector | delta |
+|---|---:|---:|---:|
+| relevance | 4.17 | 3.92 | −0.25 |
+| grounding | 4.92 | 4.58 | −0.33 |
+| overall | 4.17 | 4.00 | −0.17 |
+| deflection rate | 0.25 | 0.17 | **−0.08** |
+
+Every quality metric moved *down*; only the deflection rate improved. So a
+retriever that is measurably better at finding topically-correct neighbours
+made the replies no better, and slightly worse.
+
+**The control is what makes this readable.** The `simple` and `trivial` arms
+don't use this retriever, so their replies were byte-identical across the two
+runs — and the judge, at `temperature=0`, returned *exactly* the same score on
+all five metrics for all of them (delta 0.00 everywhere, 100% identical
+replies). The judge contributed zero variance here, so the llm arm's movement
+is real, not grading noise. That control was free: it fell out of running all
+three systems in both arms.
+
+**Why, with evidence.** The corpus has 5,938 rows but only 4,504 unique
+customer tweets — multi-tweet replies appear as separate rows sharing one
+customer tweet. Embedding similarity puts those near-identical rows adjacent,
+so the vector retriever retrieves the *same customer situation* twice far more
+often, spending grounding slots on it:
+
+| retriever | distinct neighbours (of 3) | queries returning a duplicate |
+|---|---:|---:|
+| TF-IDF | 2.58 | 2/12 |
+| vector | 2.17 | 7/12 |
+
+Better neighbour *ranking*, fewer distinct grounding *situations*. That is a
+concrete, fixable defect — deduplicate by `customer_tweet_id` inside `top_k`
+(or stitch the fragments, §1) and re-run — not a verdict on embeddings. It is
+listed in §6 rather than patched, because the fix changes what both retrievers
+return and every stored reply-eval row would need re-earning at API cost.
+
+**So TF-IDF remains the default**, now for a measured reason rather than a
+conservative one: it keeps `12_evaluate.py` and the headline reproducible with
+nothing but pandas and scikit-learn, and the retriever that retrieves better
+does not currently write better replies. n=13 is small — this rules out a large
+win, not a small one.
 
 ---
 
@@ -501,11 +541,13 @@ In priority order, most valuable first.
    cross-model-disagreement signal buys 4 fewer missed escalations for 14 more
    over-escalations. Whether that's worth it depends on a cost ratio I don't
    have.
-7. **Close the retrieval question** (0.5 day). Embeddings retrieve better
-   neighbours (+72% relative P@3, §3), but nobody has shown that produces
-   better *replies*. Re-run `13_reply_eval.py --retriever vector` and compare;
-   grounding already sits at 4.71/5, so the honest prior is that there is
-   little headroom and the win shows up on relevance instead.
+7. **Deduplicate retrieved neighbours by `customer_tweet_id`** (0.5 day
+   including a re-run). §3 shows the embedding retriever ranks neighbours
+   better but hands the drafter fewer *distinct* situations (2.17 of 3 vs
+   2.58), because multi-tweet replies share a customer tweet and embed
+   almost identically. Fix it in `top_k` for both retrievers, then re-run the
+   reply eval — this is the most likely explanation for why better retrieval
+   produced slightly worse replies, and it is cheap to test.
 8. **Expand the golden set to ~400** with stratified sampling on the confusion
    clusters, so per-intent rates become rankable.
 
