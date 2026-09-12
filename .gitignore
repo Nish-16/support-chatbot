@@ -9,3 +9,6 @@ Hiver SDE Intern Assignment.docx
 
 # ad-hoc backups
 *.bak
+
+# markdown docs -- kept local, not tracked
+*.md
