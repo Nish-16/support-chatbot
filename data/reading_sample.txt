@@ -1,0 +1,160 @@
+--- example 1 (customer_tweet_id=2914964) ---
+CUSTOMER: @DropboxSupport I need to merge 2 folders together. Marketing, and Marketing (1). Easiest way to do this?
+DROPBOX:  @806883 ...files you need are updated or not. This can take time, so it might be best to do this from your desktop device as it’s easier to see the last modification dates for files, as well as moving them across. 2/2
+
+--- example 2 (customer_tweet_id=1820072) ---
+CUSTOMER: @546422 @118189 @DropboxSupport Same as here. Also in Safari and @14621
+DROPBOX:  @159407 Hi AbdulRahman, the Dropbox website was experiencing a temporary issue on Saturday, which has been fixed. Apologies for the inconvenience!
+
+--- example 3 (customer_tweet_id=1682379) ---
+CUSTOMER: @DropboxSupport Thank u for ur response. This option is not user friendly, would it possible to pls give me an email address so I can confirm cancellation?
+DROPBOX:  @467315 ...help with other issue". Once done, DM us your ticket ID. Thanks! 3/3
+
+--- example 4 (customer_tweet_id=1274528) ---
+CUSTOMER: @DropboxSupport Today’s update promised a return of the home screen - I don’t see it?
+DROPBOX:  @418336 ...option is still missing, a screenshot would be very helpful, and we'll take it from there. Thanks in advance! 2/2
+
+--- example 5 (customer_tweet_id=1421735) ---
+CUSTOMER: If sharing a folder to view by a link, can they just view and download files? or can they edit the content of the folder? @DropboxSupport
+DROPBOX:  @127858 ...small workaround is to create a file request and make the same folder the destination: https://t.co/GNdBVHsOTA 2/2
+
+--- example 6 (customer_tweet_id=2823321) ---
+CUSTOMER: @118189 I was lucky I could log into my computer and use a backup code there. Would've preferred to have it in the phone itself though, lol.
+DROPBOX:  @786693 Hi there, thanks for sharing this with us - and glad to hear you were able to re-gain access! If you are having trouble at any point with your backup codes, please write us at https://t.co/JzCu5Ol0GV so we can follow up in more detail. Thanks and happy Monday!
+
+--- example 7 (customer_tweet_id=234493) ---
+CUSTOMER: @DropboxSupport I’m deleting them first because they’re duplicates that I don’t want uploaded to camera roll but when I sync after they still show up.
+DROPBOX:  @171829 ...Uploads is the folder in your Dropbox account where photos are uploaded if it’s enabled. Could you let us know more about ‘when... 2/3
+
+--- example 8 (customer_tweet_id=1067513) ---
+CUSTOMER: @118189 why did you remove the check-mark, every time i look at the icon in the tray i now think that dropbox is offline...
+DROPBOX:  @371917 Hi sharon, we made this change to provide a more consistent experience of the Dropbox icon between different operating systems. It... 1/3
+
+--- example 9 (customer_tweet_id=2542769) ---
+CUSTOMER: @DropboxSupport bonjour je ne parviens plus à accéder à mon compte dropbox. J'en ai deux et ayant scratché mon mac hier, je n'ai plus accès à mes fichiers et ne me rappelle plus l'adresse source de mon compte pro. HELP
+DROPBOX:  @722917 Bonjour, pour que notre équipe de techniciens puissent vous aidez, est-il possible pour vous de nous envoyer un nouveau ticket ici : https://t.co/JzCu5Ol0GV / __email__. Merci beaucoup! 😊
+
+--- example 10 (customer_tweet_id=2974776) ---
+CUSTOMER: @DropboxSupport Hola. Me dieron de alta en una cuenta de Dropbox Busines, ya ingresé a la cuenta, pero no puedo ver ninguno de los archivos que hay en ella. Que puedo hacer al respecto?
+DROPBOX:  @820423 Hola, puedes contactarnos siguiendo el siguiente enlace https://t.co/y7rSTLsgY2. Si puedes indicarnos via DM, el número de referencia de tu ticket, podremos facilitar a nuestro equipo de asistencia la investigación y de este modo ayudar a solucionar tu caso. ¡Muchas gracias!
+
+--- example 11 (customer_tweet_id=1421734) ---
+CUSTOMER: @DropboxSupport Thank you - I wanted the files to be read-only anyway :D x
+DROPBOX:  @127858 In that case, perfect! 😊 &amp;&amp; no problem, happy to help!
+
+--- example 12 (customer_tweet_id=2331194) ---
+CUSTOMER: @DropboxSupport hi I upgraded my account and paid the 129.00 and I still don't have the access to the 2 TB
+DROPBOX:  @674856 Hey Chris, to check whether your account has got an active plan, please visit: https://t.co/jZf1chwlfo. Also, (as you may have two accounts) you can look up a credit card charge with our self-serve lookup tool here: https://t.co/M20DBzc0t5. Let us know the outcome in your reply!
+
+--- example 13 (customer_tweet_id=1202354) ---
+CUSTOMER: @DropboxSupport No ! still no Blue or Green indications Mac system &amp; have tried re-install many times Thankyou !!
+DROPBOX:  @377390 ...and DM us your ticket ID. Thanks! 2/2
+
+--- example 14 (customer_tweet_id=867197) ---
+CUSTOMER: @DropboxSupport I'm trying to move a ton of files from Personal DB to Work DB. Do I have to wait for them to finish sync before i move? https://t.co/q7Bxz06bti
+DROPBOX:  @325912 ...be the best thing to do. Hope this helps! Thanks. 2/2
+
+--- example 15 (customer_tweet_id=1040857) ---
+CUSTOMER: Would be great if @118189 Paper sent email updates with plain text, and not HTML only.
+DROPBOX:  @366210 Hey Matt, thanks for posting your request here, we’ll make sure to pass your comments up the ladder for future consideration. Cheers! 😊
+
+--- example 16 (customer_tweet_id=1972492) ---
+CUSTOMER: @DropboxSupport folders on desktop app do not synch to online or shared users. How can I solve this?
+DROPBOX:  @584228 Hi Carl, is the Dropbox desktop application running? If you click it, does it come up with any errors? Are there sync icons on your files?
+
+--- example 17 (customer_tweet_id=2854125) ---
+CUSTOMER: @DropboxSupport Hi, I was charged for an old work account on my personal card. Need to arrange a refund. I've send a DM. Thanks.
+DROPBOX:  @446111 Hi there, we've replied to your DM!
+
+--- example 18 (customer_tweet_id=1960105) ---
+CUSTOMER: Tenía fotos de mi gato en Dropbox, mi gato desapareció hoy. Elegí la opción restaurar pero mi gato no vuelve, es urgente @DropboxSupport.
+DROPBOX:  @581409 Hi there, we're sorry to hear about your 🐈. Can you tell us what exactly happened? Feel free to Direct Message us for more info. Thx!
+
+--- example 19 (customer_tweet_id=1433308) ---
+CUSTOMER: @DropboxSupport any reply to this?
+DROPBOX:  @452795 Hey there, if you use our app to make a change, it will be reflected on your account, and all devices using our app. Thanks!
+
+--- example 20 (customer_tweet_id=1959288) ---
+CUSTOMER: @118189 Hi! How can I save folders (with all its content) with just one touch? instead selecting one by one?! thanks in advanced
+DROPBOX:  @581218 Hey Javier, to sync your entire folder structure online, just drag &amp; drop it inside the Dropbox folder. Please see: https://t.co/DCynBsDPq7!
+
+--- example 21 (customer_tweet_id=1928260) ---
+CUSTOMER: @DropboxSupport we called to make a changes 2 a team account &amp; now everyone only has a 2gb limit!  Please DM so I can give u a # to call
+DROPBOX:  @573855 Hi Fred, thanks for sharing - Feel free to DM us in more detail, here, so we can carry and discuss the matter. Thx! https://t.co/Csi33jPaFY
+
+--- example 22 (customer_tweet_id=1458883) ---
+CUSTOMER: @DropboxSupport  Need help with account set up and possible conversion to Business, but cant reach anyone...
+DROPBOX:  @458620 Hi there, you can contact sales at https://t.co/3Cbryg3xxM. You'll see an option to call or chat with someone on the sales team.
+
+--- example 23 (customer_tweet_id=1186286) ---
+CUSTOMER: @DropboxSupport How do I upload Photo app pics on MacBook Air for more space on HD w/o erasing backup when I erase pics from HD on the Mac?
+DROPBOX:  @190720 ...available on your device/ cloud only ☁: https://t.co/7MK9KLNBSy Hope this helps! 2/2
+
+--- example 24 (customer_tweet_id=1219561) ---
+CUSTOMER: So @118189 PROFESSIONAL gives the cool and needed “Smart Sync” to individuals. But it costs twice as much.
+DROPBOX:  @301411 ...Showcase: https://t.co/vcuah3zoKb Hope this clarifies! 2/2
+
+--- example 25 (customer_tweet_id=2773993) ---
+CUSTOMER: @DropboxSupport Everything okay over there? I keep getting a 'malicious' warning
+DROPBOX:  @658906 Hey there, seems the Client folder is on their quarantine list, have you reached out to their support team on this inquiry? Also, we’d suggest adding the Dropbox Client folder to an ignore list so that Dropbox can correctly sync. Hope this is helpful to you!
+
+--- example 26 (customer_tweet_id=2384217) ---
+CUSTOMER: @118189 Though the service does not come cheap ... $199 a year for #smartsync
+DROPBOX:  @687230 Hey Jenna, the pricing for Dropbox Professional reflects the value we’re adding through new features, like Showcase:... 1/2
+
+--- example 27 (customer_tweet_id=1422641) ---
+CUSTOMER: @DropboxSupport I am trying to cancel my business account and go back to basic.  The admin console is not available to me.  How do I cancel?
+DROPBOX:  @450619 Hi Rupa, we've replied to your DM!
+
+--- example 28 (customer_tweet_id=459509) ---
+CUSTOMER: @118189 Very costly can we have INR pricing please? Like Evernote
+DROPBOX:  @149959 Hi there, you can store any amount of text on Dropbox Paper. Regarding the price for our paid plans, our pricing factors in more than just exchange rates, including VAT and costs of operating in the region.
+
+--- example 29 (customer_tweet_id=2235996) ---
+CUSTOMER: @118189 Is EVH available for Professional accounts? I have it on my Plus account and don’t want to lose.
+DROPBOX:  @652109 Hi Gordon, existing Plus users with Packrat or EVH will keep it for as long as they are customers.
+
+--- example 30 (customer_tweet_id=118484) ---
+CUSTOMER: @DropboxSupport @115890 It is a home network. Your domain is not blocked and I  can access it via other devices (android &amp; MacBook)... I still think the problem is with Microsoft update.
+DROPBOX:  @142298 Hi again, thanks for your patience on this. We've investigated the issue a bit further and we think you may find this thread useful: https://t.co/GBOUyKxVvY. Let us know if it helped! Have a great weekend ahead!
+
+--- example 31 (customer_tweet_id=93195) ---
+CUSTOMER: Some idiot just deleted everything in his @118189 folder :-(
+DROPBOX:  @14753 Hi Dave, not to worry, if you would like to restore your deleted files, you can do so in the “Deleted Files” page: https://t.co/9H9EfStxhU or in the “Events” page: https://t.co/kdvQYXf7yH. You can find more about restoring files here: https://t.co/NHqLRDu6F5. Hope this helps!😊
+
+--- example 32 (customer_tweet_id=278604) ---
+CUSTOMER: pls...why cannt my colleagues login their accounts after I deleted them from my business trail account? @DropboxSupport
+DROPBOX:  @182443 Hi there, we’re replying to your DM, bear with us! 🐼
+
+--- example 33 (customer_tweet_id=615088) ---
+CUSTOMER: So if you need more than 1TB for your solo dropbox you need to buy 3 pro licenses? Why @DropboxSupport ?
+DROPBOX:  @266088 ...additional personal plans over to our team, thanks! 2/2
+
+--- example 34 (customer_tweet_id=785409) ---
+CUSTOMER: @DropboxSupport @DropboxSupport Just want to make sure I am not billed moving forward, I cannot login to your change password link. Can you send that to me?
+DROPBOX:  @307408 Hey Jeff, sorry to hear about this. You can submit a support ticket even while not logged in to your account. Just make sure to enter... 1/2
+
+--- example 35 (customer_tweet_id=786084) ---
+CUSTOMER: Dear @118189 @DropboxSupport please fix your iOS app ‘background upload and location service option” not working cuz there isn’t any. https://t.co/5O3kDZRbUK
+DROPBOX:  @307530 Hey Roy, could you let us know if you've downloaded 11.0.2 on your iOS device &amp; whether you're running the Dropbox version 66.2.8? Thanks!
+
+--- example 36 (customer_tweet_id=2043077) ---
+CUSTOMER: @604170 @118189 I have a local folder but it doesn’t always seem to sync. So I wind up manually uploading.
+DROPBOX:  @605658 @604170 Well, our Selective Sync feature allows you to choose which folders you’d like to sync locally/ make available on the cloud only ☁:... 1/2
+
+--- example 37 (customer_tweet_id=2471221) ---
+CUSTOMER: @DropboxSupport I make programs and I added a auto updater that when I update it takes the user to the download link but I always get this. https://t.co/K9YHiYJ55Y
+DROPBOX:  @325980 Hi there, thanks for sharing the screencast with us - To follow up with our team please write us at https://t.co/JzCu5Ol0GV and feel free to DM us your ticket ID so we can take it from there, as this is account-specific. Thank you! 🙃
+
+--- example 38 (customer_tweet_id=121896) ---
+CUSTOMER: @DropboxSupport Ticket #7281181: DB: Recuperación de archivo
+DROPBOX:  @120939 Hi there, thank you for providing the ticket ID! We were able to locate it and it has been assigned to our Spanish team. Once they review your request they will get back to you. Thanks!
+
+--- example 39 (customer_tweet_id=1473214) ---
+CUSTOMER: @461967 @DropboxSupport I'm also having that problem.
+DROPBOX:  @156798 @461967 Hey there, this should be resolved now. Are you still experiencing the issue? Let us know. Thanks!
+
+--- example 40 (customer_tweet_id=1979488) ---
+CUSTOMER: The fact that @118189 Paper is missing offline support makes me sad while traveling with Deutsche Bahn. https://t.co/jga4vB3vEH
+DROPBOX:  @586015 ...mobile/ tablet apps, and we’ll be happy to forward your comment as feedback to our team 😊 2/2
+

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "account_login",
+    "description": "Access issues, 2FA/backup codes, business account setup, credential problems."
+  },
+  {
+    "name": "billing_subscription",
+    "description": "Charges, refunds, plan pricing, cancellations or downgrades."
+  },
+  {
+    "name": "sync_technical_bug",
+    "description": "Files not syncing, app or website errors, crashes, broken features."
+  },
+  {
+    "name": "how_to_usage",
+    "description": "\"How do I do X\" -- nothing is broken, the customer just needs guidance."
+  },
+  {
+    "name": "data_loss_recovery",
+    "description": "Deleted or missing files, restore requests. Higher urgency than a general bug."
+  },
+  {
+    "name": "feature_request",
+    "description": "Suggestions or product feedback -- not a problem to fix."
+  },
+  {
+    "name": "followup_ticket_status",
+    "description": "Referencing an existing ticket or case, nudging for a response. Not a new issue."
+  },
+  {
+    "name": "general_feedback_or_other",
+    "description": "Thanks, praise, venting/rants, spam, or fragments too ambiguous to route to a technical bucket."
+  }
+]

@@ -1,0 +1,9 @@
+customer_tweet_id,customer_text,human_intent,human_escalate,human_note,suggested_intent,suggested_confidence,agrees_with_suggestion,labeled_at
+989345,@118189 I usually have other documents which belong to a text but I can't keep them together if I want to use Paper.,sync_technical_bug,False,,how_to_usage,0.85,False,2026-09-10T09:04:12.564583+00:00
+2623839,"Soy sólo yo o @118189 se curo, choco curao y lo remplazaron con el primo feo de provincia?",general_feedback_or_other,False,this was not in english and am not sure,general_feedback_or_other,1.0,True,2026-09-10T09:07:50.139354+00:00
+810000,@DropboxSupport Has Dropbox Support always been this bad? Still no intelligent answer.,general_feedback_or_other,True,,general_feedback_or_other,0.95,True,2026-09-10T09:09:44.617731+00:00
+1507042,@DropboxSupport Thank you for your responses. I have messaged you the ticket number received last evening.,followup_ticket_status,False,,followup_ticket_status,0.95,True,2026-09-10T09:12:36.590164+00:00
+232548,".@118189, with the new #iOS11, I can’t export files to my phone, i.e. edited videos for Instagram. App crashes so used Google Drive.",sync_technical_bug,False,,sync_technical_bug,0.95,True,2026-09-10T09:13:16.119732+00:00
+1857151,@118189 It would be really useful to see Size within the list view on browser. Especially since you force a lot of actions to the desktop app.,feature_request,False,,feature_request,0.95,True,2026-09-10T09:13:40.512072+00:00
+2766875,Hey @DropboxSupport any truth to this? Seems a bit... fraught. https://t.co/rPH26iCtEr,general_feedback_or_other,False,,general_feedback_or_other,0.85,True,2026-09-10T09:14:02.387128+00:00
+2074316,@DropboxSupport That support page doesn’t work properly and forced me to tweet at you in the first place.,followup_ticket_status,True,,general_feedback_or_other,0.9,False,2026-09-10T09:14:34.282435+00:00

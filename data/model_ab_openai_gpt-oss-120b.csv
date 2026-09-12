@@ -1,0 +1,214 @@
+customer_tweet_id,customer_text,human_intent,human_intent_v3,v3_status,suggested_intent,challenger_intent
+989345,@118189 I usually have other documents which belong to a text but I can't keep them together if I want to use Paper.,feature_request,feature_request,resolved,how_to_usage,feature_request
+2623839,"Soy sólo yo o @118189 se curo, choco curao y lo remplazaron con el primo feo de provincia?",complaint_dissatisfaction,complaint_dissatisfaction,resolved,complaint_dissatisfaction,no_action_needed
+810000,@DropboxSupport Has Dropbox Support always been this bad? Still no intelligent answer.,complaint_dissatisfaction,complaint_dissatisfaction,resolved,complaint_dissatisfaction,complaint_dissatisfaction
+232548,".@118189, with the new #iOS11, I can’t export files to my phone, i.e. edited videos for Instagram. App crashes so used Google Drive.",sync_app_bug,sync_app_bug,resolved,sync_app_bug,sync_app_bug
+1507042,@DropboxSupport Thank you for your responses. I have messaged you the ticket number received last evening.,no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+1972451,@DropboxSupport Also if I can a showcase can a read only version be shared with clients ?,sharing_permissions,sharing_permissions,resolved,sharing_permissions,how_to_usage
+2430108,"@DropboxSupport hi there! Is dropbox down today? I'm getting ""This site can't be reached"" messages. HALP!",service_outage,service_outage,resolved,service_outage,service_outage
+2124237,"Hey @118189, stop using IP addresses with no host records. Littlesnitch has to ask me permission to allow Dropbox to connect every time 😒",complaint_dissatisfaction,feature_request,resolved,feature_request,complaint_dissatisfaction
+1299266,"@DropboxSupport ""Because you’ve already reached your quota, your Dropbox will stop syncing files"". It will continue syncing until sub runs out, yes? 2/2",storage_quota_plan_limits,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+1497111,"So @118189 bills me $990 Cdn for ‘free trial’ of crap product, and now tells me their policy does not allow a refund. Nice fraud! Shame! https://t.co/lKkAEvqvCK",complaint_dissatisfaction,billing_subscription,resolved,billing_subscription,billing_subscription
+399225,"@DropboxSupport The other problem! In my shared folder with others, i selected remove my access and keep a copy. But....just no any response, Advise pls",sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1495052,@118189 I need more space and refuse to pay for 5 users on Business. What are my options?,storage_quota_plan_limits,billing_subscription,resolved,billing_subscription,billing_subscription
+1979514,#phishing #TakeItDown @118189 Business credential phish hxxps://momyco[.]men/file-directory/open-document-512KB/Microsoft-pages.docx https://t.co/MVL8RNFeU0,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+799566,@DropboxSupport is dropbox down? we cant access it,service_outage,service_outage,resolved,service_outage,service_outage
+857482,"Hey @118189 - what's this about, sending Phishing scam notifications to your users? shared ""FROM THE DESK OF PETER AMANGBO.txt""",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+2430111,"how do i restore files as ive been hacked
+@DropboxSupport",data_loss_recovery,data_loss_recovery,resolved,security_account_compromise,security_account_compromise
+2619184,@101227 - you have a outage with @118189?,service_outage,service_outage,resolved,service_outage,service_outage
+1600556,@DropboxSupport i can't open a shared link. Just keeps loading the files but never shows them,sync_app_bug,sync_app_bug,resolved,sharing_permissions,sharing_permissions
+2124283,@DropboxSupport -- Someone has launched a Dropbox phishing expedition. Just received this email. https://t.co/EosdQo2NXU,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+1187536,@DropboxSupport Is Paper down right now? Getting 500 errors.,service_outage,service_outage,resolved,service_outage,service_outage
+1824519,Hey @118189 @DropboxSupport your servers are down. Please fix it so I can stop having a panic attack. Thank you!!! &lt;3,service_outage,service_outage,resolved,service_outage,service_outage
+1577600,@DropboxSupport my shared link always show error 429 ... this happens from nearly 2 years ago till now !,sharing_permissions,storage_quota_plan_limits,resolved,sharing_permissions,sharing_permissions
+409269,Hey @DropboxSupport- I spent several hours adding comments to pics in a shared file and I'm the only one who can see them. Not helpful.,sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+2956783,@DropboxSupport I use a shared Dropbox between 6 people. Everyone can add to the Dropbox except for me. It says my Dropbox is full. The only thing on the Dropbox is the shared folder. Why can’t I add anything,sharing_permissions,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+2636354,"@DropboxSupport I have deleted files from 'My Files' and permanently deleted from 'Deleted Files' but still shows full quota, what else do I need to do to clear up space?",storage_quota_plan_limits,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+1948614,@118189 I have been hacked and a document sent to my entire email contact list. Please can someone contact me?,security_account_compromise,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+2032832,"@DropboxSupport - my sister uploaded files through a share link I sent her, but I can't see her photos. Any ideas?",sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1347292,"@DropboxSupport It’s from a shared folder, so not sure...",sharing_permissions,sharing_permissions,insufficient_context,sharing_permissions,sharing_permissions
+2607972,@118189 - wee bug on accepting a shared folder - https://t.co/KSDfUjpEZQ,sync_app_bug,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1834904,"@DropboxSupport Dropbox down, Firefox can't find the server at https://t.co/J4FrCoz6Fd - same in Edge, Chrome - help?",service_outage,service_outage,resolved,service_outage,service_outage
+149031,What are the best practices to signal a phishing page targeting @118189 users ?,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+622045,Alright @118189 it’s 2017 the fact that one shared folder uses up my entire quota is not cool.,complaint_dissatisfaction,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+2425723,This is very disapointing @118189. You can't simply change the permission settings to 'everybody with the link can edit'... i understand you need to make money but this is such a basic functionality that just should work... https://t.co/fZL7urdEZW,complaint_dissatisfaction,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+2629478,"@DropboxSupport WTF is going on.I keep getting messages saying my Dropbox is full and to pay for more space. So I delete loads of ancient jpgs, only to find them all being reloaded, but I cannot find where the instruction is hidden to STOP THIS HAPPENING. Please advise.",how_to_usage,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+438562,"Warning ..looks like a phishing under guise of @DropboxSupport
+
+No name who sent document and one would think @118189 could spell ""view"" https://t.co/RGVGP7o5Cc",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+2119014,@DropboxSupport Why is the web browser displaying 'too many login attempts' even on my first login? I can't access dropbox website at all.,account_access,account_access,resolved,account_access,account_access
+259327,@DropboxSupport how can I eliminate a Team folder? It's imposible and the person is no longer available for me to reach to!,how_to_usage,sharing_permissions,resolved,sharing_permissions,how_to_usage
+2150101,"@DropboxSupport i have many troubles in my account, i don't have permission to create file sharing link and my old file links  show me always this messg from all browsers !! how i hit the limits !!! i don't use my account too much https://t.co/vd7Q7hSsK5",sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1040842,"@232660 @366207 @71151 @118189 They replied.
+
+""You have successfully redeemed your license key.
+
+Key1 - Redeemed 26th November 2016, Active on next renewal date 18th November 2017.
+Key2 - Redeemed 15th November 2017, Active on next renewal date 18th November 2018.""
+
+Asked them to update the billing page though",no_action_needed,no_action_needed,resolved,billing_subscription,billing_subscription
+1874043,@118189 Sad cos I can't remember which email my first cudi concert is under and which email the Especial Tour was under either 😞,how_to_usage,no_action_needed,resolved,account_access,no_action_needed
+2768650,"@DropboxSupport Iv just lost my PHD docx file, I cant find this file in my computer and in dropbox!!! I lost 2 months of my work, is there any way to restor my file?",data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1788320,@118189 my desktop app (Mac) is syncing at a snail's pace today. Is the service having issues?,service_outage,sync_app_bug,resolved,sync_app_bug,sync_app_bug
+1577541,"this should read “hi Elara your @118189 is full but we can help if you give us money. also we don’t have a student discount, so fuck you.” https://t.co/e8DIsWJNKg",storage_quota_plan_limits,complaint_dissatisfaction,resolved,complaint_dissatisfaction,phishing_abuse_report
+1851629,Is @DropboxSupport down? Mac Client does not sync….,service_outage,sync_app_bug,resolved,service_outage,service_outage
+2222820,"@DropboxSupport Hi guys, I am getting notifications from my work account on my home computer. How can I unlink their account from home? __email__",how_to_usage,how_to_usage,resolved,account_access,account_access
+1041951,"@DropboxSupport Smart Sync = still beta? It's listed as a feature in your biz plans, but it's also in ""Early Access"" in the admin backend. 🤔",how_to_usage,how_to_usage,resolved,how_to_usage,how_to_usage
+1781362,"@535205 Word a décidé ajdh de décaler tous les chiffres/reférnce de ma biblio sans raison apparente. Sauvée par @118189, #TimeTravel",no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+2187450,@DropboxSupport IT will be awesome when those last 13 files upload in 7 days time 😆🔫,sync_app_bug,sync_app_bug,resolved,sync_app_bug,no_action_needed
+1972693,"@DropboxSupport 350/350, no firewalls or anything in between.",sync_app_bug,sync_app_bug,insufficient_context,storage_quota_plan_limits,storage_quota_plan_limits
+241285,@DropboxSupport I CANT SEEM TO SIGN IN SO I CAN CANCEL MY 9.99 FEE EVERY MONTH.  JUST GET THE RUNAROUND ON YOUR SITE...GOING TO CONTACT bbb,account_access,account_access,resolved,account_access,account_access
+1561611,@118189 I am having difficulty uploading a file to a link that was shared. Can you help me please? Emergency,sharing_permissions,sharing_permissions,resolved,sharing_permissions,sync_app_bug
+1644499,@502546 @DropboxSupport Same here!,no_action_needed,no_action_needed,insufficient_context,no_action_needed,no_action_needed
+838554,@DropboxSupport The auto checkbox &amp; star features are making my business user experience worthless. How do I disable?!,complaint_dissatisfaction,how_to_usage,resolved,how_to_usage,how_to_usage
+1862733,"Super excited for the @118189 Smart Sync feature, but £19.99 a month seems a little steep to me 🙃",complaint_dissatisfaction,complaint_dissatisfaction,resolved,complaint_dissatisfaction,complaint_dissatisfaction
+1041902,@DropboxSupport I sent it from a link You guys sent me over private message last Month. So I guess u can’t do anything once again even tho I’m BUSINESS PLAN,complaint_dissatisfaction,complaint_dissatisfaction,insufficient_context,account_access,phishing_abuse_report
+2828924,@DropboxSupport I Have done this. Too bad it didn't solve the problem,sync_app_bug,sync_app_bug,insufficient_context,complaint_dissatisfaction,complaint_dissatisfaction
+1419325,@DropboxSupport Please fasr!!,service_outage,service_outage,insufficient_context,no_action_needed,no_action_needed
+2867703,@DropboxSupport I don't understand - I'm willing to pay the difference - to get the additional features your selling - why won't you sell them to me? What are my options - just waste that 1 year of plus or be without the new features?,billing_subscription,billing_subscription,resolved,billing_subscription,complaint_dissatisfaction
+1729545,@DropboxSupport will you update your iOS app to take advantage of iOS 11’s smart invert?,feature_request,feature_request,resolved,feature_request,feature_request
+1050476,"@368258 @118189 @DropboxSupport whoever is controlling your Jira board needs to be fired, this was not a priority. More like a hinderance. :((",complaint_dissatisfaction,complaint_dissatisfaction,resolved,no_action_needed,complaint_dissatisfaction
+929722,@DropboxSupport I cancelled my subscription yesterday to drop box plus and was still charged. Why did that happen? I followed Yor FAQ.,billing_subscription,billing_subscription,resolved,billing_subscription,billing_subscription
+1331576,@DropboxSupport @430646 @118189 Please advise https://t.co/3T7SOhdncK,no_action_needed,no_action_needed,insufficient_context,no_action_needed,no_action_needed
+1339451,@DropboxSupport How can I control reminders for Showcase emails? I can see this annoying some clients who download docs without signing in,feature_request,how_to_usage,resolved,how_to_usage,how_to_usage
+3485,"@DropboxSupport hi, when I follow the link, dropbox asks me to log in with my biz account. I want to apply it to my personal account",account_access,how_to_usage,resolved,how_to_usage,account_access
+2700303,@DropboxSupport No phone support for Dropbox Plus members? Tbh I keep having problems with @118189 #disappointedcustomer,how_to_usage,how_to_usage,resolved,how_to_usage,complaint_dissatisfaction
+241283,@DropboxSupport I can't download dropbox mobile after the last update on Microsoft store,complaint_dissatisfaction,sync_app_bug,resolved,sync_app_bug,sync_app_bug
+1843215,@DropboxSupport All good thanks!,no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+1856823,Just crazy the new prices for @118189 plans. Geez! 😐,complaint_dissatisfaction,complaint_dissatisfaction,resolved,billing_subscription,billing_subscription
+847924,"@118189 People: give us smart sync, please.
+Dropbox: hold my beer while I create a more expensive plan and ignore plus users",feature_request,feature_request,resolved,feature_request,complaint_dissatisfaction
+2507946,@118189 is the 2FA down right now?,service_outage,service_outage,resolved,account_access,account_access
+1863374,"@DropboxSupport Did the taskbar icon change?  I'm missing the green check, now see only the white box, which usually indicates network down",how_to_usage,how_to_usage,resolved,sync_app_bug,sync_app_bug
+2243327,@DropboxSupport Seem to have lost lots of files i have uploaded to Dropbox. I can see them in events. How can i get help?,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1960101,@118189 can you dm me a customer service phone number please - technical support,complaint_dissatisfaction,how_to_usage,resolved,how_to_usage,no_action_needed
+1960138,"I don't like the new @118189 tray icon, every time I see it I think there's something wrong with it",feature_request,feature_request,resolved,complaint_dissatisfaction,complaint_dissatisfaction
+615215,@118189 why did you remove the green check that signs everything is alright and I'm connected to the dropbox cloud?,complaint_dissatisfaction,how_to_usage,resolved,how_to_usage,complaint_dissatisfaction
+1958723,@118189 *space,no_action_needed,no_action_needed,insufficient_context,no_action_needed,no_action_needed
+768404,@118189 What's the difference between this and plus and free vision,billing_subscription,billing_subscription,resolved,how_to_usage,how_to_usage
+847909,@118189 In Brazil is so expensive this service. You ougth to review this price.,complaint_dissatisfaction,complaint_dissatisfaction,resolved,billing_subscription,complaint_dissatisfaction
+933440,"@DropboxSupport I know about that, but the green icon worked great for me and many others just fine on Windows, Linux, etc. It was a bad decision.",complaint_dissatisfaction,feature_request,resolved,complaint_dissatisfaction,complaint_dissatisfaction
+1419269,🙃 Loving it @DropboxSupport https://t.co/UqYZeLf1vT,no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+1030225,"@118189 Hi, I only have Dropbox on iPhone have no desktop. Can I still upload photos please? Hi, this is my second time of asking.",how_to_usage,how_to_usage,resolved,how_to_usage,how_to_usage
+74467,@DropboxSupport \name of the file\DSC_0015.JPG. This is extremely frustrating and a big waste of time.,complaint_dissatisfaction,complaint_dissatisfaction,insufficient_context,sync_app_bug,sync_app_bug
+1901120,@DropboxSupport Hi ... Earned 25gb of space via HP Promotion. Is there any expiry for this earned space ?,storage_quota_plan_limits,storage_quota_plan_limits,resolved,how_to_usage,how_to_usage
+1452735,Hi @dropboxsupport why can't I get notifications of added files to my android phone?,complaint_dissatisfaction,how_to_usage,resolved,how_to_usage,how_to_usage
+715979,"@DropboxSupport Over a Month Later, no, I don't have a ticket ID.",complaint_dissatisfaction,complaint_dissatisfaction,insufficient_context,complaint_dissatisfaction,complaint_dissatisfaction
+2836769,Great service by #Dropbox @DropboxSupport https://t.co/lSt5GzcFZu,no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+859250,"@DropboxSupport Fixed. Thanks. Don't understand how u send email with one date, 2nd email with diff date, then ignore both and close it earlier on your own.",complaint_dissatisfaction,complaint_dissatisfaction,resolved,complaint_dissatisfaction,no_action_needed
+1324437,"@DropboxSupport If I have a Plus plan and sharing folder with a standard (free plan) user, are they limited to 2GB of uploads to the folder?",storage_quota_plan_limits,storage_quota_plan_limits,resolved,how_to_usage,sharing_permissions
+1331572,@DropboxSupport It's not going to show up in a screenshot. It was a little pop up that displayed on my screen and then disappeared.,no_action_needed,no_action_needed,insufficient_context,sync_app_bug,no_action_needed
+1687145,@DropboxSupport I just redeemed a 1-year pro code purchased from Dell via your website. I got a 'success' message but expiry date unchanged!,billing_subscription,billing_subscription,resolved,billing_subscription,billing_subscription
+1497185,@118189 https://t.co/GHh5Znm5Hm,no_action_needed,no_action_needed,insufficient_context,no_action_needed,no_action_needed
+1076125,@DropboxSupport any chance of smart sync being extended to plus accounts? hard drive sizes are shrinking out here.,feature_request,feature_request,resolved,feature_request,feature_request
+1957873,"@118189 
+Something wrong guys? https://t.co/7uT7NFcHju",service_outage,service_outage,resolved,service_outage,service_outage
+2179670,@DropboxSupport Will do.,no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+2055860,@DropboxSupport All good now. Looks like it was just a capacity issue on your end. Thanks for getting back to me.,no_action_needed,no_action_needed,resolved,no_action_needed,no_action_needed
+2573123,"@DropboxSupport @118189 ...still unresolved issues. After 3 months of emailing tech support, will you allow me to speak with a real person?",complaint_dissatisfaction,complaint_dissatisfaction,resolved,complaint_dissatisfaction,complaint_dissatisfaction
+266807,@DropboxSupport Yes. this is day 2 and I notice that my desktop files are not syncing. Please advise. thanks,sync_app_bug,sync_app_bug,resolved,sync_app_bug,sync_app_bug
+2540849,@DropboxSupport P1 You need to send the login IP address when you send warnings of possibly unauthorized logins. It's confusing not to.,complaint_dissatisfaction,feature_request,resolved,security_account_compromise,security_account_compromise
+240315,"@DropboxSupport I want to InviteAFriend. But she only has an iPad, no desktop computer. Can she sign up &amp; install Dropbox entirely via iPad?",how_to_usage,how_to_usage,resolved,how_to_usage,how_to_usage
+2168060,"@DropboxSupport hi, you have just charged me £750 without my authorisation. I would like to speak to a rep to get this cancelled asap.",billing_subscription,billing_subscription,resolved,billing_subscription,billing_subscription
+1804904,@DropboxSupport having some other tech glitches so I (and now my whole team) went to https://t.co/CUHvRk8nTq and:  What is going on? https://t.co/xMceAlgvZl,complaint_dissatisfaction,service_outage,resolved,service_outage,service_outage
+2826329,@DropboxSupport I did and I never got a response 😔,complaint_dissatisfaction,complaint_dissatisfaction,insufficient_context,complaint_dissatisfaction,complaint_dissatisfaction
+1523722,@DropboxSupport I was wondering if there was an option to trial Dropbox Professional (I am on Plus)?,storage_quota_plan_limits,billing_subscription,resolved,how_to_usage,how_to_usage
+2826323,@DropboxSupport  Your Site does not provide facility to upload 0 KB files like Google Drive &amp; Box provide. Update your software,feature_request,feature_request,resolved,feature_request,feature_request
+1082713,@DropboxSupport That's absurd. Please add it back.,complaint_dissatisfaction,feature_request,resolved,feature_request,complaint_dissatisfaction
+2551167,@39613 @118189 @DropboxSupport Dropbox is a RIPOFF! They charge customers for TRIALS before they are OVER!!,complaint_dissatisfaction,billing_subscription,resolved,billing_subscription,billing_subscription
+1383896,This is not the moment to stop working @DropboxSupport https://t.co/XQYrpWb1as,complaint_dissatisfaction,service_outage,resolved,service_outage,service_outage
+1619102,@DropboxSupport Please brink back the GREEN TICK . It's difficult to distinguish between the subtle shades especially in bright light.,feature_request,feature_request,resolved,feature_request,feature_request
+659270,".@118189 using #DropboxPaper for a month now. Love it so far, even though its still an #MVP. Please, please give us a view of all the open Action items. It is unbelievably painful to click through all meeting notes to find which actions are open especially other's action items",feature_request,feature_request,resolved,feature_request,feature_request
+1923420,@118189 @DropboxSupport @116029 it’s been a month of trying to resolve an issue but I can’t talk to a real person on the phone! 😩😭,complaint_dissatisfaction,complaint_dissatisfaction,resolved,complaint_dissatisfaction,complaint_dissatisfaction
+750253,"Lol somebody tried to log into my @118189 again, i just changed password yesterday, do you guys getting breaches?",security_account_compromise,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+1000504,"@DropboxSupport 
+For some reason, some mysterious files were uploaded to our receipts folder at 10:59AM and 11:00 AM, under my account, today. They all start with the name ""#photos-3"" and are URL files that don't load anything. Was my account hacked? Is this a Drop Box error?",account_access,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+36132,"@DropboxSupport What ticket ID???? You guys, all I want is to get into my old account, change the password so I can update the email - I’ve been given a ticket by no one.",account_access,account_access,resolved,account_access,account_access
+846705,@DropboxSupport Whenever I wanted to look st my pictures now all my photos are gone.,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1057223,So glad I have two factor authentication. Someone just tried to get into my Dropbox. @118189 is there a way to see all attempted logins?,account_access,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+2828917,"@DropboxSupport 
+PLEASE HELP Need ti ROLLBACK my files to 11-21-17 No English Support on Chat can not get link to event  Can NOT wait 3 days to email",data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+2187441,@DropboxSupport your website says support for OS X 10.8.5 will stop on Jan 16th 2018. Mine has logged me out and won't log back in now. What's happening?,account_access,account_access,resolved,account_access,account_access
+1895744,@118189 @116029 I like how you guys charged me $750 for a trial and refuse to refund me. /sarcasm time to build my own File Sync.,billing_subscription,billing_subscription,resolved,billing_subscription,billing_subscription
+1438935,@DropboxSupport I just received a poorly made spam email trying to spoof you guys. Do you want a copy of it?,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+79858,"@DropboxSupport good day. I've been experiencing difficulty while trying to free up space in my dropbox. I've deleted and then permanently deleted thousands of files, and yet the reading on my storage usage has not changed at all.",sync_app_bug,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+1138154,@118189 Why has is it taking you 17 days to make contact in relation to an account breach and data protection issue on my account???,security_account_compromise,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+2978332,@DropboxSupport I got an email that my account was closed and that my information deleted.  I tried to click on the link to re-activate it and I ended up just opening a new account.  All I want is my pictures back and I can close the account.,account_access,account_access,resolved,data_loss_recovery,data_loss_recovery
+1138133,@DropboxSupport unable to renew dropbox business account,billing_subscription,billing_subscription,resolved,billing_subscription,billing_subscription
+2063532,"I just got a @118189 invite to join 'internal' from 'admin' with 744 members. The email is a little wonky and includes the phrase """"\""&gt;&lt;script src=https://t.co/Y8rPEdSyN4&gt;&lt;/script&gt;"" in what looks like the custom info field. This is a phishing attempt, right? @DropboxSupport",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+1480046,@118189 Do you have some problems this morning I can’t connect to my account.,service_outage,account_access,resolved,account_access,service_outage
+2053253,@DropboxSupport Out of Space Warning will not go away even though 50%+ unwanted files removed - how to make DB recognize it is not at 100%,how_to_usage,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+267212,@DropboxSupport Yeah I tried to submit a ticket and found a bug with that system. So I made a ticket about that. Then another bug and another ticket,sync_app_bug,sync_app_bug,resolved,sync_app_bug,complaint_dissatisfaction
+2179683,@118189 #LIARS GAVE AWAY MY PERSONAL PAID ACCOUNT WITHOUT PERMISSION #WORSTCLOUDSTORAGECOMPANY,account_access,account_access,resolved,security_account_compromise,security_account_compromise
+2599365,@DropboxSupport help! Accidentally deleted all files in my account. Can't wait 1-3 days! Support page(s) suggest 3 different actions...,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+407837,@DropboxSupport How do I cancel my Dropbox subscription? Instructions are Cancel Plan option on the Settings / Plan page but it is not there,billing_subscription,billing_subscription,resolved,billing_subscription,billing_subscription
+2172965,"#phishing campaign going around using ‘__email__’
+
+cc: @118189 @DropboxSupport",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+32652,@DropboxSupport no shared folders and the quota is not going down. this is annoying and it doesn't seem to be isolated based on chat boards :(,storage_quota_plan_limits,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+237165,@DropboxSupport Yes. I lost one and can't figure out how to remove its access.,account_access,how_to_usage,resolved,account_access,security_account_compromise
+53189,@DropboxSupport It would be great if they offered a little bit more space. I would pay more if it did. Thanks for the reply,storage_quota_plan_limits,feature_request,resolved,feature_request,feature_request
+1603388,"@DropboxSupport Hey, I can't edit my word docs - view only because of my email address? Can you please explain and correct?",sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+512851,"@DropboxSupport
+Anyone else having sync issues with #Dropbox .. client is making changes to shared sheet, I can't see them, same in reverse. Not the first time. #Dropbox is about to be binned. Suggestions of safe shared space please?",service_outage,sync_app_bug,resolved,sync_app_bug,sync_app_bug
+1148455,@DropboxSupport I have been hacked this morning and a document sent to my entire email list. Please contact me asap,security_account_compromise,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+1094009,@DropboxSupport Missing file from folder.  Not deleted.  How do I restore a file I cannot find?,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+2742476,"@DropboxSupport what is the way to add more space to the current plan and how much does it cost ? without upgrading to team or business account
+
+thanks",storage_quota_plan_limits,billing_subscription,resolved,billing_subscription,billing_subscription
+1516794,"@DropboxSupport I did, but didn’t get a much better response. I don’t think it was impersonating your service; more like abusing it. https://t.co/V6VsgVfuP9",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+610823,@DropboxSupport I upgraded my account to dropbox plus yet I am still getting messages on my computers saying I am out of space.  How can I get all of my files online and then do selective sync for each computer?,storage_quota_plan_limits,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+1817845,"@DropboxSupport my account under email “__email__” was disactivated due to inactivity, how may I recover it?",account_access,account_access,resolved,account_access,account_access
+1513058,@118189 has committed fraud and identity theft against me.,security_account_compromise,security_account_compromise,resolved,security_account_compromise,phishing_abuse_report
+2609736,@DropboxSupport Hundreds of files deleted. Need help restoring. Our entire business is threatened by this. Is there some way to reach you by TELEPHONE??? I hate twitter and would like to SPEAK to someone. PLEASE.,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+193025,".@116029 @DropboxSupport as a small non-profit, we can't afford to pay $500 for something we're not going to use https://t.co/4l8Jf450ai",storage_quota_plan_limits,complaint_dissatisfaction,resolved,billing_subscription,billing_subscription
+1754987,@DropboxSupport What’s the best way to report phishing invites?,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+2910246,"@DropboxSupport I’ve permanently deleted tons of files to free up space and after 24 hours, my account is still not reflecting the change in space.. How do I free up my space?",sync_app_bug,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+869536,@118189 some in Russia logged into my account! any breach updates? https://t.co/u1lDU2koeO,security_account_compromise,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+2801355,@DropboxSupport A .docx that my supervisor added to a shared folder on November 7th is not showing in at least two accounts. This is true for the Dropbox folder on our PCs and online. There is nothing different about this document than any other .docx in that shared folder.,data_loss_recovery,sync_app_bug,resolved,data_loss_recovery,sharing_permissions
+1873832,when @118189 adds stuff to your account without getting your permission first. #NOTCOOL,security_account_compromise,complaint_dissatisfaction,resolved,security_account_compromise,security_account_compromise
+2250117,@DropboxSupport I have lost almost ALL my files - nothing in the folders. I made a movie and had movie files in there. Also training files!,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1529752,@DropboxSupport When you report a questionable login to an account's owner please provide the IP address of suspicious login.,feature_request,feature_request,resolved,security_account_compromise,security_account_compromise
+2179735,"@DropboxSupport How can you allow that? Dropbox is all about data security, how can you allow Team Admin to have the power of erasing my personal data without my permission. This is a breach of personal data not to mention I lost my paid subscription too",sharing_permissions,sharing_permissions,resolved,security_account_compromise,security_account_compromise
+1999475,@118189 I want to find out more info on an unauthorized login to my acct. Is there a customer service phone number I can call?,security_account_compromise,security_account_compromise,resolved,security_account_compromise,security_account_compromise
+921871,@DropboxSupport Missing folder and files. Not deleted. Not in event log! Help!,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1497118,@118189 I want my pictures back. Go in your memory and retrieve them,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+2469274,@DropboxSupport Somehow a lot of files I need went to the delete folder. That might have been my error. Trying to recover them but I'm being forced to recover file-by-file which is taking forever. Sat at my PC an hour already.,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+2471203,@DropboxSupport Why would you delete my account without prior notice or notification. All important documents and flies saved over the years lost. Very disheartening. @118189,data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1069139,"@DropboxSupport I tried to open my files and notice with today's update, they are all gone. What's up???",data_loss_recovery,data_loss_recovery,resolved,data_loss_recovery,data_loss_recovery
+1992403,@DropboxSupport An you share with me the cost of the Plan that would give me unlimited storage per user minimum 3 users? Thanks,storage_quota_plan_limits,billing_subscription,resolved,billing_subscription,billing_subscription
+2967050,"#Dropbox #phishing 
+hxxp://doverylittle.com/pdf/Dropbox/
+
+@DropboxSupport https://t.co/mG4s1z0xpg",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+1859795,Dropbox phishing site - hxxp://uticawebdesign[.]com/koya/proposal/LoginVerification[.]php @DropboxSupport #Phishing https://t.co/muw5F71laH,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+824057,@118189 @DropboxSupport  check this out I've been receiving fake emails using your name https://t.co/umTqNnrssE,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+1858921,Scan 10.18.2017.pdf #Dropbox #phishing #credharvester http://missbagshoes[.]com/expands/download/  @116029 @DropboxSupport https://t.co/wqtocBxpFP,phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+459529,"Got email from @118189 telling you that there are documents to check, view or that have been shared with you? Be careful! It could be a phishing attack: https://t.co/LFIGiWyLzV",phishing_abuse_report,phishing_abuse_report,resolved,phishing_abuse_report,phishing_abuse_report
+1243081,"@DropboxSupport told I only have a few GB https://t.co/aR4DLHZtFN and then told I can’t upgrade my storage https://t.co/M2XlYq6Sg9 
+
+2/2",storage_quota_plan_limits,billing_subscription,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+2028354,"@DropboxSupport I just installed DB on my acer windows 10 and almost ran out of space. Could't selective sync, deinstalled but files intact",storage_quota_plan_limits,how_to_usage,resolved,storage_quota_plan_limits,sync_app_bug
+1999298,"Hey @118189 - I have permanently deleted my deleted items, but still have ""ran out of Space"" notice. How do we fix it? #NoUpgrade #help",how_to_usage,storage_quota_plan_limits,resolved,storage_quota_plan_limits,storage_quota_plan_limits
+2179658,"@638765 @118189 If you want even more fun, download the app for your computer and it syncs everything!  Filling your hard drive, which completes negates the reason for having dropbox.",complaint_dissatisfaction,complaint_dissatisfaction,resolved,storage_quota_plan_limits,complaint_dissatisfaction
+843989,@DropboxSupport I accidentally unlinked my accounts and now I can't get into that account again. Help please :),account_access,account_access,resolved,account_access,account_access
+1209275,"@DropboxSupport been trying to update my dropbox account the whole morning but the system but website keeps reporting ""issues"". advice?",service_outage,sync_app_bug,resolved,account_access,service_outage
+729506,"@DropboxSupport I'm having very frustrating issues signing in on one browser, and commenting on another. I would appreciate some help please",account_access,account_access,resolved,account_access,account_access
+685430,@DropboxSupport hi. My account was recently closed n I emailed to reactivate it n it told me it should be available in a couple of days but I still don’t have access to my files. I received the email about closing my account just a week ago so I hope there is a way to recover it,account_access,account_access,resolved,account_access,account_access
+1687134,disappointed that @DropboxSupport isn't responding to my request to see how many dropbox plus keys I have saved. Seems like a simple request,complaint_dissatisfaction,complaint_dissatisfaction,insufficient_context,account_access,complaint_dissatisfaction
+2421520,"@DropboxSupport Thanks for the reply @DropboxSupport! Again, while the new features seem useful, I'd happily pay $200 a year if the plan included more space (2TB)? I'd even pay $300 a year for 3TB. Keep us posted.",storage_quota_plan_limits,feature_request,resolved,feature_request,feature_request
+1067503,@118189 @DropboxSupport Wouldn't an icon WITH a check mark ✅ make more sense when all is updated?,feature_request,feature_request,resolved,feature_request,feature_request
+1099456,@DropboxSupport Please can we have the 'green tick' checkmark on the task bar back to show that everything is 'ok'? Not the same without it.,feature_request,feature_request,resolved,feature_request,feature_request
+653988,"Hey @118189 can you make it so the ""share link"" function creates an automatically shortened URL version?  E.g. https://t.co/JCaY2Tafy4 in lieu of some unwieldy 300+ character string. Thanks!",feature_request,feature_request,resolved,feature_request,feature_request
+2421521,Has anyone tried @118189 Professional? I'm currently on the Plus plan and there's not enough incentive for me to pay an extra $100 a year for 2 extra features. Would do it in a heartbeat if they offered more space.,storage_quota_plan_limits,feature_request,resolved,feature_request,feature_request
+1874363,"@116029 #collaboration feature request: allow expanded view of discussions on shared documents, give #remote teams some more space",sharing_permissions,feature_request,resolved,feature_request,feature_request
+2509185,"@DropboxSupport Folks, I love the Paper web UI, but can you watch this video of me trying to add some bullet points on the iPhone app? It was pretty excruciating. Also, how about auto-capitalising new lines? Just make formatting work the same as Apple Notes 😃. https://t.co/RxB1p0Te7k",feature_request,feature_request,resolved,feature_request,feature_request
+1462091,"@DropboxSupport A colleague sent me a link to share files however the folder has been linked to one share folder for which I am not the administrator, how can I change this link to my personal folder?",sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1337846,@DropboxSupport i get this message https://t.co/o7PBkgn33F when i'm trying to copy a folder shared link,sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1909153,@DropboxSupport I want to share my pics with a friend so they can download them is there a way to do this without them using their quota?,sharing_permissions,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+37940,WTF @dropboxsupport? What am I supposed to do with this hidden menu? I can't access my shared folder! https://t.co/hQJPkd7Pjv,how_to_usage,sharing_permissions,resolved,sharing_permissions,sharing_permissions
+1979876,@DropboxSupport things are acting up on Firefox on the Mac when asked to join shared folder. Changing window does not help https://t.co/g95QpQdBgm,sharing_permissions,sharing_permissions,ambiguous,sharing_permissions,sharing_permissions
+2976667,"@118189 I don't seem to have enough space on my laptop to connect my work Dropbox. If I keep my external hard drive plugged in (with much more space), will this solve the problem?",storage_quota_plan_limits,how_to_usage,resolved,sync_app_bug,how_to_usage
+988433,"@DropboxSupport I moved a shared folder to my desktop, edited files, then synced to a different acnt. changes reverted, how do I fix this?",how_to_usage,sync_app_bug,resolved,sync_app_bug,sync_app_bug
+659012,@DropboxSupport On iOS to a shared folder with a file name that is 4 letters long. Can save all day long to a non shared folder.,sharing_permissions,sync_app_bug,resolved,sync_app_bug,sync_app_bug

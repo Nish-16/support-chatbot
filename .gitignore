@@ -1,0 +1,11 @@
+.venv/
+data/twcs/
+.env
+__pycache__/
+*.pyc
+
+# the assignment brief itself -- not part of the deliverable
+Hiver SDE Intern Assignment.docx
+
+# ad-hoc backups
+*.bak

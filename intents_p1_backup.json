@@ -1,0 +1,54 @@
+[
+  {
+    "name": "account_access",
+    "description": "Login failures, password reset, 2FA/backup codes, business account setup. Not unauthorized access."
+  },
+  {
+    "name": "security_account_compromise",
+    "description": "Unauthorized login, account breach, suspicious activity, fraud on the account."
+  },
+  {
+    "name": "phishing_abuse_report",
+    "description": "Reporting phishing, spoofed emails, or abuse -- not their own account issue."
+  },
+  {
+    "name": "billing_subscription",
+    "description": "Charges, refunds, invoices, plan pricing, upgrades/downgrades, account closure, data deletion."
+  },
+  {
+    "name": "storage_quota_plan_limits",
+    "description": "Account storage/quota full or plan storage limits (not device disk usage)."
+  },
+  {
+    "name": "sync_app_bug",
+    "description": "Files not syncing, upload/download failures, app or website crashes/errors."
+  },
+  {
+    "name": "service_outage",
+    "description": "\"Is Dropbox down?\" -- service-wide outage, not one user's bug."
+  },
+  {
+    "name": "sharing_permissions",
+    "description": "Shared folders/links, permissions, team folders, invite/join problems."
+  },
+  {
+    "name": "data_loss_recovery",
+    "description": "Deleted or missing files, restore/version-history requests."
+  },
+  {
+    "name": "how_to_usage",
+    "description": "\"How do I X\" or a product question -- nothing is broken."
+  },
+  {
+    "name": "feature_request",
+    "description": "Suggestion or product feedback -- not a problem to fix."
+  },
+  {
+    "name": "complaint_dissatisfaction",
+    "description": "Frustration, rant, churn threat, competitor comparison."
+  },
+  {
+    "name": "no_action_needed",
+    "description": "Praise, thanks, spam, sales/jobs, off-topic, or too fragmentary to route."
+  }
+]

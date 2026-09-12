@@ -1,0 +1,3 @@
+customer_tweet_id,customer_text,intent,confidence,reason
+2914964,"@DropboxSupport I need to merge 2 folders together. Marketing, and Marketing (1). Easiest way to do this?",how_to_usage,0.95,The customer is asking for guidance on the easiest way to merge two folders without reporting any technical bug or data loss.
+1820072,@546422 @118189 @DropboxSupport Same as here. Also in Safari and @14621,general_feedback_or_other,0.9,The tweet is a fragmented reply referencing a browser and another account without enough details to classify it into a specific technical bucket.

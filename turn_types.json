@@ -1,0 +1,7 @@
+[
+  {"name": "first_contact", "description": "New issue, no prior turn."},
+  {"name": "providing_requested_info", "description": "Answering the agent's previous question."},
+  {"name": "nudging_no_response", "description": "Chasing a stale ticket, nudging for a reply."},
+  {"name": "confirming_resolved", "description": "Confirms the issue is fixed or resolved itself."},
+  {"name": "disputing_prior_answer", "description": "Says the prior answer was wrong or didn't help."}
+]
