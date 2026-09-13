@@ -54,6 +54,16 @@ the headline stays reproducible with two libraries and no downloads:
 ./.venv/Scripts/python.exe scripts/09_draft_reply.py --text "..." --retriever vector
 ```
 
+The final retriever comparison in §3 is also API-free — it reads stored judge
+scores:
+
+```bash
+./.venv/Scripts/python.exe scripts/25_reply_ab_stats.py --list
+./.venv/Scripts/python.exe scripts/25_reply_ab_stats.py --a tfidf:dedup1:t0 --b vector:dedup1:t0
+./.venv/Scripts/python.exe scripts/25_reply_ab_stats.py --a tfidf:dedup1:t0 --b tfidf:dedup1:filt1:t0 --keep first
+./.venv/Scripts/python.exe scripts/25_reply_ab_stats.py --a vector:dedup1:filt1:t0 --b vector:dedup1:filt1:t0:rep2   # noise check
+```
+
 ---
 
 ## 1. Problem framing
@@ -260,7 +270,9 @@ The case that motivated it, scored on the full 5,938-row indexes:
 > white box…"* vs. *"why did you remove the green check that signs everything
 > is alright…"*
 >
-> TF-IDF **0.125** · Embeddings **0.530**
+> TF-IDF **0.228** · Embeddings **0.530**
+> (TF-IDF read 0.125 before the corpus was collapsed to one row per customer
+> tweet; TF-IDF scores move with the corpus they are fit on, the gap is the point.)
 
 Near-identical meaning, almost no shared vocabulary. TF-IDF scores them as
 unrelated, which is the failure mode the golden-set consistency audit hit and
@@ -273,33 +285,87 @@ searching the index, which is trivial at this size. That cost is fixed per
 query regardless of corpus size, and it is invisible next to the LLM call that
 follows it (~1-2s). It also adds an 83MB model download.
 
-#### Better neighbours did not produce better replies — and the eval cannot tell why
+#### Final result: better neighbours, no demonstrated reply-quality improvement
 
-The obvious follow-through. `13_reply_eval.py --retriever vector` re-drafted
-and re-judged the same tweets through the embedding path. Paired on 19 tweets,
-same judge, rubric v2, the llm arm came out **−0.32 overall** for the vector
-retriever.
+**Retrieval experiments are finished.** Vector retrieval substantially improves
+retrieval relevance (**P@3 0.276 → 0.475**), but **no downstream reply-quality
+improvement was demonstrated.**
 
-Before reporting that, I ran the control that the comparison actually needs:
-**TF-IDF against itself**, same corpus, same retriever, second run.
+The final run (2026-09-13) re-drafted and re-judged the same 40 stratified
+golden tweets under each configuration: `13_reply_eval.py --systems llm`, judge
+`qwen/qwen3.8-27b`, rubric v2, drafter requested at `temperature=0`. Compared
+with `25_reply_ab_stats.py` — paired by tweet, 95% bootstrap interval on the
+mean `overall` difference (B − A):
+
+| comparison | n | Δ overall | 95% CI |
+|---|---:|---:|---:|
+| Vector vs TF-IDF | 39 | −0.28 | [−0.85, +0.26] |
+| Vector + generic-reply filter vs TF-IDF | 39 | −0.26 | [−0.77, +0.26] |
+| Vector + filter vs plain vector | 40 | +0.03 | [−0.40, +0.45] |
+| TF-IDF + filter vs TF-IDF | 39 | −0.28 † | [−0.62, −0.03] |
+| **Same configuration run twice** (vector + filter) | 10 | **+0.30** | [0.00, +0.90] |
+
+† Seven tweets under TF-IDF + filter were judged twice when a rate-limited run
+was resumed. Six got the same score both times; one (2032832) got 2, then 5.
+Keeping the first verdict gives the −0.28 [−0.62, −0.03] above (`--keep
+first`); keeping the last, the script's default, gives −0.21 [−0.49, +0.03].
+Every other row has no re-scored tweets and is identical under both rules.
+
+**The same-configuration rerun moved the score by +0.30 — approximately the
+same magnitude as every retriever and filter difference in the table.** This
+experiment therefore cannot establish a meaningful downstream reply-quality
+difference in either direction. That rules out "vector writes worse replies"
+as firmly as "vector writes better ones". The one interval that excludes zero
+(TF-IDF + filter) excludes it by 0.03, only under one of two defensible
+duplicate-resolution rules (†), and is smaller than the noise check — it is not
+reported as harm.
+
+**`temperature=0` did not make Groq generation deterministic.** A three-call
+probe on one tweet before the run returned identical drafts, but in the actual
+rerun **0 of 10 replies were identical**. The +0.30 above is therefore the real
+noise floor of this harness, not a temperature-0.3 artefact. Detecting a
+0.3-point effect at 80% power would take roughly 180–250 paired tweets (from
+the observed spread of paired differences).
+
+The generic-reply filter (`retrieval.is_generic_reply`) skips past replies with
+nothing reusable in them — "we've replied to your DM!", "we'll pass your
+feedback along", dated outage notices. It flags 14.6% of the corpus, and 13–14%
+of the neighbours either retriever hands the drafter. It visibly fixed the
+green-check example (the vector draft regained "white = synced, grey = not
+connected"), and in aggregate did nothing measurable. An interim read at 20
+tweets showed +0.45 for the filter on the vector path; at 40 tweets it was
++0.03. Interim reads are not reported for that reason.
+
+> **Decision: keep TF-IDF as the default. Keep the generic-reply filter OFF.
+> Keep the vector implementation and experiment code for provenance, but do not
+> enable it by default. Stop retrieval experiments.**
+>
+> TF-IDF stays on cost, not on a quality claim: equal demonstrated reply
+> quality at ~300× lower query latency, no 83MB model download, and no
+> `chromadb` dependency in the reproduce path.
+
+Provenance: rows are stamped `retriever:version[:filt1][:t0][:tag]` in
+`data/reply_evals.csv` and never pool across labels; historical rows were not
+modified. The run lost 75 rows to Groq rate limits (per-minute bursts, then the
+drafter's 200k tokens/day cap) and was resumed; one TF-IDF tweet failed twice,
+hence n=39. Resumed runs wrote a few duplicate rows; the stats script keeps the
+last verdict per tweet.
+
+#### Earlier runs, kept for provenance
+
+The first comparison (19 tweets, drafter at `temperature=0.3`) gave
+**−0.32 overall** for vector. The control that comparison needed — **TF-IDF
+against itself**, second run — gave −0.26:
 
 | llm arm, paired, delta | relevance | grounding | overall |
 |---|---:|---:|---:|
 | TF-IDF vs **vector** | −0.32 | −0.37 | **−0.32** |
 | TF-IDF vs **itself, re-run** | −0.26 | −0.21 | **−0.26** |
 
-**Re-running the identical configuration moves the score almost as much as
-switching retrievers.** The drafter runs at `temperature=0.3`, so every run
-writes different replies — 0% of them were identical across runs. At n≈19 this
-harness cannot distinguish the two retrievers, and any claim that one writes
-better replies than the other is unsupported. That includes the claim I would
-have shipped had I not run the control.
-
-The `simple` and `trivial` arms are the other half of the control: they don't
-use this retriever, their replies were byte-identical, and the judge at
-`temperature=0` returned **exactly** the same scores (delta 0.00 on all five
-metrics). So the judge contributes no variance at all here — **all** of the
-movement is the drafter's sampling.
+The `simple` and `trivial` arms don't use the retriever; their replies were
+byte-identical across runs and the judge at `temperature=0` returned exactly
+the same scores (delta 0.00 on all five metrics), so the movement was the
+drafter's, not the judge's. That result motivated the final run above.
 
 #### What the dedupe fix did and didn't do
 

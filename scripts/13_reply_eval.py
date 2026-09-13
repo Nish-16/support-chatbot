@@ -44,7 +44,7 @@ import pandas as pd
 
 from groq_lib import make_client, MODEL, SKIPPABLE_ERRORS
 from rate_limiter import RateLimiter
-from retrieval import ReplyRetriever, RETRIEVAL_VERSION
+from retrieval import ReplyRetriever, RETRIEVAL_VERSION, GENERIC_FILTER_VERSION
 from vector_retrieval import get_retriever
 
 # 09_draft_reply.py and 10_baselines.py start with digits, so they can't
@@ -61,7 +61,21 @@ def _load(filename: str, alias: str):
     return module
 
 
-draft_reply = _load("09_draft_reply.py", "draft_mod").draft_reply
+_drafter = _load("09_draft_reply.py", "draft_mod")
+draft_reply, PRODUCTION_DRAFT_TEMPERATURE = _drafter.draft_reply, _drafter.DRAFT_TEMPERATURE
+
+# The eval requests temperature 0, not production's 0.3. At 0.3 a repeat run of
+# one configuration moved the llm arm's judged score by -0.26, the same size as
+# the retriever swap it was meant to measure (-0.32), so every A/B was noise.
+#
+# Temperature 0 did NOT fix that (measured 2026-09-13). A 3-call probe on one
+# tweet returned identical drafts, but in the real repeat run 0 of 10 replies
+# were identical, and the rerun moved `overall` by +0.30 -- as much as any
+# retriever difference. Groq does not guarantee deterministic sampling at 0.
+# Kept as the eval default because it is no worse, and rows at any
+# non-production temperature are labelled ":t<temp>" so they never pool with
+# 0.3 runs. Any A/B read through this harness needs its own repeat-run control.
+EVAL_DRAFT_TEMPERATURE = 0.0
 _baselines = _load("10_baselines.py", "baselines_mod")
 TrivialBaseline, SimpleBaseline = _baselines.TrivialBaseline, _baselines.SimpleBaseline
 
@@ -130,6 +144,27 @@ def judge_reply(client, limiter, customer_text: str, intent: str, reply: str,
     return json.loads(response.choices[0].message.content)
 
 
+def _wait_out_rate_limits(call, attempts: int = 6):
+    """Retry `call` on RateLimitError with a growing wait, instead of skipping.
+
+    Skipping was right for a malformed response and wrong here: the per-minute
+    token cap is hit in bursts (gpt-oss spends ~320 completion tokens reasoning
+    on each draft), and the 2026-09-13 temperature-0 run lost 75 of 170 rows to
+    it -- all skipped, while the daily request quota was still ~90% unspent.
+    A daily cap still fails after the last attempt and is skipped as before."""
+    import time
+    from groq import RateLimitError
+    for attempt in range(attempts):
+        try:
+            return call()
+        except RateLimitError:
+            if attempt == attempts - 1:
+                raise
+            wait = min(90, 10 * 2 ** attempt)
+            print(f"    rate limited -- waiting {wait}s (attempt {attempt + 1}/{attempts})")
+            time.sleep(wait)
+
+
 def _read_out() -> pd.DataFrame:
     df = pd.read_csv(OUT_PATH)
     # Rows written before the judge became configurable carry no
@@ -188,12 +223,19 @@ def load_done(judge_model: str, retriever_kind: str) -> set[tuple]:
 
 
 def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "tfidf",
-         tag: str = ""):
+         tag: str = "", filter_generic: bool = False,
+         draft_temperature: float = EVAL_DRAFT_TEMPERATURE, systems: list[str] = SYSTEMS):
     # Stamped with the retrieval version, not just the retriever name: changing
     # what top_k returns changes what is being measured just as much as swapping
     # the retriever does. Rows written before dedupe+stitch carry a bare
-    # "tfidf"/"vector" and stay separate from these.
-    retriever_label = f"{retriever_kind}:{RETRIEVAL_VERSION}" + (f":{tag}" if tag else "")
+    # "tfidf"/"vector" and stay separate from these. The generic filter and the
+    # drafter temperature change the llm arm's replies the same way, so they
+    # are part of the label too.
+    retriever_label = (f"{retriever_kind}:{RETRIEVAL_VERSION}"
+                       + (f":{GENERIC_FILTER_VERSION}" if filter_generic else "")
+                       + (f":t{draft_temperature:g}"
+                          if draft_temperature != PRODUCTION_DRAFT_TEMPERATURE else "")
+                       + (f":{tag}" if tag else ""))
     labels = pd.read_csv(LABELS_PATH)
     # Stratify by intent so the reply eval isn't dominated by whichever
     # intents happen to be most common -- reply quality varies a lot by
@@ -225,7 +267,7 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "
     # Only the `llm` system uses this; `simple` has its own 1-NN retriever and
     # `trivial` retrieves nothing, so switching this changes one arm of the
     # comparison, which is exactly what a retriever A/B wants.
-    retriever = get_retriever(retriever_kind)
+    retriever = get_retriever(retriever_kind, filter_generic=filter_generic)
     trivial = TrivialBaseline()
     simple = SimpleBaseline()
 
@@ -238,7 +280,7 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "
             writer.writeheader()
 
         for i, row in enumerate(sample.itertuples(), 1):
-            for system in SYSTEMS:
+            for system in systems:
                 if (row.customer_tweet_id, system) in done:
                     continue
                 try:
@@ -248,10 +290,13 @@ def main(n: int, judge_model: str = DEFAULT_JUDGE_MODEL, retriever_kind: str = "
                         reply = simple.draft(row.customer_text, exclude_tweet_id=row.customer_tweet_id)
                     else:
                         limiter.acquire()
-                        reply = draft_reply(client, row.customer_text, row.human_intent,
-                                            retriever, exclude_tweet_id=row.customer_tweet_id)["reply"]
-                    scores = judge_reply(client, limiter, row.customer_text, row.human_intent,
-                                        reply, judge_model=judge_model)
+                        reply = _wait_out_rate_limits(lambda: draft_reply(
+                            client, row.customer_text, row.human_intent, retriever,
+                            exclude_tweet_id=row.customer_tweet_id,
+                            temperature=draft_temperature)["reply"])
+                    scores = _wait_out_rate_limits(lambda: judge_reply(
+                        client, limiter, row.customer_text, row.human_intent,
+                        reply, judge_model=judge_model))
                 except SKIPPABLE_ERRORS as e:
                     print(f"  [{i}] {system}: FAILED ({type(e).__name__}) -- skipping")
                     continue
@@ -390,12 +435,29 @@ if __name__ == "__main__":
                         help="grounding retrieval for the llm system (default: tfidf)")
     parser.add_argument("--tag", default="",
                         help="suffix for the retriever label, so the SAME configuration "
-                             "can be run twice. The drafter runs at temperature=0.3, so "
-                             "a repeat run measures how much of any A/B delta is just "
-                             "drafter sampling -- run it before trusting one.")
+                             "can be run twice. A repeat run measures how much of any "
+                             "A/B delta is drafter/judge non-determinism -- run it "
+                             "before trusting one.")
+    parser.add_argument("--filter-generic", action="store_true",
+                        help="skip generic past replies when grounding the llm arm "
+                             "(retrieval.is_generic_reply)")
+    parser.add_argument("--draft-temperature", type=float, default=EVAL_DRAFT_TEMPERATURE,
+                        help=f"drafter temperature for the llm arm (default "
+                             f"{EVAL_DRAFT_TEMPERATURE:g}; production uses "
+                             f"{PRODUCTION_DRAFT_TEMPERATURE:g})")
+    parser.add_argument("--systems", default=",".join(SYSTEMS),
+                        help="comma-separated arms to run. The simple and trivial arms "
+                             "do not use the retriever and the judge scores them "
+                             "identically on a re-run, so a retriever A/B only needs "
+                             "--systems llm -- a third of the API cost.")
     args = parser.parse_args()
+    systems = [s for s in args.systems.split(",") if s]
+    unknown = [s for s in systems if s not in SYSTEMS]
+    if unknown:
+        parser.error(f"unknown system(s) {unknown}; choose from {SYSTEMS}")
     if args.report_only:
         report()
     else:
         main(args.n, judge_model=args.judge_model, retriever_kind=args.retriever,
-             tag=args.tag)
+             tag=args.tag, filter_generic=args.filter_generic,
+             draft_temperature=args.draft_temperature, systems=systems)

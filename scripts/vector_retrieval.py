@@ -49,13 +49,16 @@ class VectorReplyRetriever:
     """Same contract as ReplyRetriever, backed by Chroma + MiniLM embeddings."""
 
     def __init__(self, paired_path: str = PAIRED_PATH, persist_path: str = CHROMA_PATH,
-                 build: bool = False):
+                 build: bool = False, filter_generic: bool = False):
         import chromadb  # imported lazily: the TF-IDF path must not require chromadb
 
         # Same collapsed corpus as the TF-IDF path -- one row per customer
         # tweet, replies stitched -- so the two retrievers index identical
         # documents and the A/B compares retrieval, not corpus shape.
         self.df = load_pairs(paired_path)
+        # Applied at query time, not index time: doc ids are row positions, so
+        # indexing a subset would need its own id mapping and its own index.
+        self.filter_generic = filter_generic
 
         self.client = chromadb.PersistentClient(path=persist_path)
         self.collection = self.client.get_or_create_collection(
@@ -104,9 +107,13 @@ class VectorReplyRetriever:
         Over-fetches so that dropping the query's own record (when drafting for
         a tweet that is itself in the corpus) still returns k neighbours,
         rather than silently returning k-1."""
+        # Generic replies cluster -- the green-check query had two in its top
+        # three -- so the filter needs a much deeper fetch than k + 5 to still
+        # return k. Fetching more from an index this size costs nothing.
+        extra = 10 * k if self.filter_generic else 0
         result = self.collection.query(
             query_texts=[_clean(query_text)],
-            n_results=min(k + 5, self.collection.count()),
+            n_results=min(k + 5 + extra, self.collection.count()),
         )
         rows = []
         for doc_id, meta, distance in zip(result["ids"][0],
@@ -122,23 +129,26 @@ class VectorReplyRetriever:
             similarity = 1.0 - float(distance)
             if similarity <= 0:
                 break  # same rule as TF-IDF: fewer examples beats irrelevant ones
+            if self.filter_generic and row["is_generic"]:
+                continue
             rows.append({
                 "customer_tweet_id": row["customer_tweet_id"],
                 "customer_text": row["customer_text"],
                 "brand_text": row["brand_text"],
                 "similarity": similarity,
+                "is_generic": bool(row["is_generic"]),
             })
         return pd.DataFrame(rows)
 
 
-def get_retriever(kind: str = "tfidf"):
+def get_retriever(kind: str = "tfidf", filter_generic: bool = False):
     """One place that maps a --retriever flag to an implementation, so callers
     don't each grow their own if/else."""
     if kind == "tfidf":
         from retrieval import ReplyRetriever
-        return ReplyRetriever()
+        return ReplyRetriever(filter_generic=filter_generic)
     if kind == "vector":
-        return VectorReplyRetriever()
+        return VectorReplyRetriever(filter_generic=filter_generic)
     raise ValueError(f"unknown retriever {kind!r} -- use 'tfidf' or 'vector'")
 
 

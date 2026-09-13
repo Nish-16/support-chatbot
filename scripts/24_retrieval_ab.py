@@ -172,6 +172,33 @@ def green_check(golden: pd.DataFrame):
         print(f"    Embeddings: unavailable ({exc}) -- run vector_retrieval.py --build")
 
 
+def generic_grounding(golden: pd.DataFrame, k: int = K):
+    """What the ranking metric above cannot see: whether the neighbours come
+    with a reply worth grounding on. Every golden tweet queries the production
+    index with the generic-reply filter off, and this counts how many of the k
+    replies handed to the drafter are filler (retrieval.is_generic_reply)."""
+    from retrieval import ReplyRetriever
+    retrievers = [("TF-IDF (incumbent)", ReplyRetriever())]
+    try:
+        from vector_retrieval import VectorReplyRetriever
+        retrievers.append(("Embeddings (Chroma + MiniLM)", VectorReplyRetriever()))
+    except Exception as exc:
+        print(f"  Embeddings: unavailable ({exc})")
+
+    corpus_share = retrievers[0][1].df["is_generic"].mean()
+    print(f"\n  Generic replies in the grounding handed to the drafter (k={k}, filter off):")
+    print(f"    corpus base rate: {corpus_share:.1%} of past replies are generic")
+    for name, retriever in retrievers:
+        shares, any_generic = [], 0
+        for row in golden.itertuples():
+            hits = retriever.top_k(row.customer_text, k=k, exclude_tweet_id=row.customer_tweet_id)
+            if len(hits):
+                shares.append(hits["is_generic"].mean())
+                any_generic += bool(hits["is_generic"].any())
+        print(f"    {name:32s} {np.mean(shares):.1%} of neighbours generic, "
+              f"{any_generic}/{len(golden)} queries get at least one")
+
+
 def main():
     golden = load_golden()
     texts = golden["customer_text"].tolist()
@@ -206,6 +233,7 @@ def main():
           f"and an 83MB model download.")
 
     green_check(golden)
+    generic_grounding(golden)
 
     print("\n  CAVEAT: this measures topical retrieval on a 174-document corpus.")
     print("  Same-intent is a proxy for same-problem, and the production corpus")

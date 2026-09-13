@@ -114,8 +114,16 @@ def build_user_prompt(customer_text: str, neighbors: pd.DataFrame) -> str:
     return f'Past similar exchanges:\n{examples}\n\nCustomer message to reply to now:\n"""{_strip_leading_handles(customer_text)}"""'
 
 
+# A little more than the classifier's temperature=0 -- drafting benefits from
+# some variation, unlike picking 1-of-13 categories, but 0.3 keeps it from
+# rambling off the grounding examples. 13_reply_eval.py overrides this: at 0.3
+# a repeat run of one configuration moved the judged score as much as swapping
+# retrievers did, which makes an A/B unreadable.
+DRAFT_TEMPERATURE = 0.3
+
+
 def draft_reply(client, customer_text: str, intent: str | None, retriever: ReplyRetriever,
-                 exclude_tweet_id=None, k: int = 3) -> dict:
+                 exclude_tweet_id=None, k: int = 3, temperature: float = DRAFT_TEMPERATURE) -> dict:
     import json
     neighbors = retriever.top_k(customer_text, k=k, exclude_tweet_id=exclude_tweet_id)
     system = DRAFT_SYSTEM_PROMPT.format(policy_line=_policy_line(intent))
@@ -124,9 +132,7 @@ def draft_reply(client, customer_text: str, intent: str | None, retriever: Reply
         model=MODEL,
         messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
         response_format={"type": "json_object"},
-        temperature=0.3,  # a little more than the classifier's temperature=0 -- drafting benefits
-        # from some variation, unlike picking 1-of-13 categories, but 0.3 keeps it from
-        # rambling off the grounding examples.
+        temperature=temperature,
     )
     result = json.loads(response.choices[0].message.content)
 
@@ -150,7 +156,7 @@ def draft_reply(client, customer_text: str, intent: str | None, retriever: Reply
                 {"role": "user", "content": regeneration_note(hits)},
             ],
             response_format={"type": "json_object"},
-            temperature=0.3,
+            temperature=temperature,
         )
         result = json.loads(retry.choices[0].message.content)
         result["_guard_regenerated"] = True
@@ -183,9 +189,12 @@ def main():
                         help="grounding retrieval: tfidf (default, zero deps) or "
                              "vector (Chroma + MiniLM embeddings; needs "
                              "vector_retrieval.py --build first)")
+    parser.add_argument("--filter-generic", action="store_true",
+                        help="skip past replies with nothing reusable in them "
+                             "(\"we've replied to your DM!\") -- see retrieval.is_generic_reply")
     args = parser.parse_args()
 
-    retriever = get_retriever(args.retriever)
+    retriever = get_retriever(args.retriever, filter_generic=args.filter_generic)
     exclude_id = None
     if args.tweet_id is not None:
         row = retriever.df[retriever.df["customer_tweet_id"] == args.tweet_id]
