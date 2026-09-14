@@ -30,7 +30,9 @@ python -m venv .venv
 ./.venv/Scripts/python.exe scripts/12_evaluate.py        # headline + baselines + caveats
 ./.venv/Scripts/python.exe scripts/10_baselines.py       # baselines on their own
 ./.venv/Scripts/python.exe scripts/13_reply_eval.py --report-only   # reply quality
+./.venv/Scripts/python.exe scripts/14_judge_agreement.py --report   # judge vs human ratings
 ./.venv/Scripts/python.exe scripts/11_label_consistency.py          # golden-set audit
+./.venv/Scripts/python.exe -m unittest discover -s tests -v         # taxonomy rules + prompts, no API
 ```
 
 Useful variants:
@@ -63,6 +65,33 @@ scores:
 ./.venv/Scripts/python.exe scripts/25_reply_ab_stats.py --a tfidf:dedup1:t0 --b tfidf:dedup1:filt1:t0 --keep first
 ./.venv/Scripts/python.exe scripts/25_reply_ab_stats.py --a vector:dedup1:filt1:t0 --b vector:dedup1:filt1:t0:rep2   # noise check
 ```
+
+The escalation experiments in §4.6 re-read their cached classifier runs, so
+`--report-only` makes no API calls:
+
+```bash
+./.venv/Scripts/python.exe scripts/26_escalation_uncertainty.py --report-only          # top-2 / disagreement, holdout
+./.venv/Scripts/python.exe scripts/27_escalation_signals.py --report-only              # signal triggers, dev
+./.venv/Scripts/python.exe scripts/27_escalation_signals.py --split holdout --rule A+repeated_failure --report-only
+```
+
+The p1-vs-p3 prompt experiment (§6, item 4) runs on its own frozen set of new
+tweets, scored on the first 250 (the assignment's cap on hand-labelled
+examples). Each step refuses to run if the set, either prompt, or any existing
+evaluation file has changed:
+
+```bash
+./.venv/Scripts/python.exe scripts/28_p3_eval.py --verify    # integrity checks, no API
+./.venv/Scripts/python.exe scripts/28_p3_eval.py --status    # progress; never shows predictions
+./.venv/Scripts/python.exe scripts/28_p3_eval.py --label     # blind hand labelling, resumable
+./.venv/Scripts/python.exe scripts/28_p3_eval.py --run       # p1 + p3 predictions, resumable
+./.venv/Scripts/python.exe scripts/28_p3_eval.py --report    # paired comparison + verdict, once complete
+./.venv/Scripts/python.exe scripts/29_p4_eval.py --run       # p4 on the same set (in-sample; incomplete, §6)
+```
+
+Rebuilding `data/golden_context.csv` needs the raw `data/twcs/twcs.csv`
+(`27_escalation_signals.py --build-context`). A fresh classifier run needs
+`GROQ_API_KEY`.
 
 ---
 
@@ -245,8 +274,26 @@ under both, and is the claim I'd actually stand behind.
 
 **Judge validation.** Two independent judges on the same 37 replies: **68%
 exact agreement** on the 1–5 score, **84% within one point**, 84% agreement on
-the deflection boolean. That is judge-vs-judge, not judge-vs-human — see §5.9
-and §6.3.
+the deflection boolean.
+
+**Judge vs. human** (`14_judge_agreement.py --report`): I rated 30 replies
+blind — system hidden, judge score hidden, rows shuffled — scoped to the
+reported judge (`qwen/qwen3.8-27b`) and rubric (v2):
+
+| measure | value |
+|---|---:|
+| Spearman correlation, 1–5 score | **+0.73** |
+| Accept (≥4) vs. reject agreement | **87%**, Cohen's κ +0.69 |
+| Exact score / within one point | 33% / 77% |
+| Judge minus human, mean | **−0.60** (judge harsher) |
+| Deflection-flag agreement | 67% |
+
+Per system, judge vs. me: agent 3.21 vs 3.71 (n=14), 1-NN 1.31 vs 2.15
+(n=13), canned 1.67 vs 1.67 (n=3). The judge **ranks** replies the way a human
+does and makes the same accept/reject call, so the ordering in the table above
+stands. Its **absolute** scores run about half a point low, and its deflection
+flag agrees with mine only two times in three — so the deflection percentages
+are the least trustworthy numbers in this section. See §5.10.
 
 ### Retrieval: TF-IDF vs. embeddings
 
@@ -418,7 +465,7 @@ headline rather than given a label nobody can defend.
   conflict immediately: two near-identical tweets about the missing green
   check icon carried different labels at a TF-IDF cosine similarity of 0.153.
 
-### Failure analysis — top 5
+### Failure analysis — top 5, and the escalation follow-up (§4.6)
 
 #### 1. `complaint_dissatisfaction` is a stance, not a topic (recall 0.54 — the worst)
 
@@ -519,6 +566,100 @@ shipped, because as a policy it's a genuine trade: missed escalations 11 → 7,
 but over-escalations 24 → 38 and the escalate rate rises to 56%. An agent
 escalating over half its traffic is a product decision, not an engineering one.
 
+#### 6. The escalations the policy misses are not uncertainty — they are urgency and repeat failure
+
+**Two uncertainty signals, tested on the held-out 70** (`26_escalation_uncertainty.py`,
+2026-09-13). Each adds one trigger to the current policy:
+
+| Policy | Escalated | Risky-intent cases caught | Missed human escalations | False alarms |
+|---|---:|---:|---:|---:|
+| A — current | 57.1% (40) | 16/16 | 4 of 29 | 15 of 41 |
+| B — escalate if intent or runner-up intent is risky | 52.9% (37) | 16/16 | 5 | 13 |
+| C — escalate unless 3 samples at temperature 0.7 agree | 65.7% (46) | 16/16 | 2 | 19 |
+| D — C, or any sample is risky | 65.7% (46) | 16/16 | 2 | 19 |
+
+"Risky" means billing, data loss or account compromise. The current policy
+already escalated all 16 held-out cases (95% CI on recall 81–100%). B's
+extra field changed the primary answer: accuracy fell from 77.1% to 72.9%.
+Self-disagreement ranked wrong intents no better than self-reported confidence
+(AUROC 0.58 vs 0.64, overlapping intervals).
+
+The real finding was in the 4 misses. **The intent was correct on every
+one.** The human escalated because of what the customer said around the topic:
+"**Emergency**", "**my whole team**", "another bug and **another ticket**",
+"WTF… I delete loads… still full". No intent-uncertainty signal can see that.
+
+**So the classifier was asked for it directly** (`27_escalation_signals.py`):
+three booleans, `urgent`, `wide_impact` and `repeated_failure`, plus, when a
+tweet replies to an earlier one, that earlier message as context. That context
+is the `in_response_to_tweet_id` parent from the raw dataset
+(`data/golden_context.csv`, 50 of 189 golden tweets). It is **not**
+`brand_text`, which is DropboxSupport's reply *to* the tweet, written
+afterwards; using it would leak how support handled the case. Each signal is
+an optional trigger in `escalation.decide(signal_triggers=...)`, and none is
+on by default.
+
+**Dev split, 104 rows, all rules scored on the same classifier run:**
+
+| Rule | Topic acc | Escalated | Missed human esc. | False alarms | Δ missed | Δ false alarms |
+|---|---:|---:|---:|---:|---:|---:|
+| A | 77.9% | 42 (40.4%) | 7 (18.4%) | 11 (16.7%) | — | — |
+| A + urgent | 77.9% | 45 (43.3%) | 7 | 14 | 0 | +3 |
+| A + wide_impact | 77.9% | 44 (42.3%) | 7 | 13 | 0 | +2 |
+| **A + repeated_failure** | 77.9% | 52 (50.0%) | **3 (7.9%)** | 17 (25.8%) | **−4** | +6 |
+| A + all three | 77.9% | 55 (52.9%) | 3 | 20 | −4 | +9 |
+
+`urgent` and `wide_impact` caught **nothing** A missed and only added false
+alarms. `repeated_failure` did all the work. The selection rule, fixed before
+the run, was: fewest misses, adding at most 2 false alarms per miss removed.
+It chose **A + repeated_failure**, at 1.5 false alarms per catch. Risky-intent
+misses were 3 of 22 under every rule, all of them intent errors
+(billing → `how_to_usage`).
+
+**The new prompt costs topic accuracy — 83.7% → 77.9% on dev.** It changed 17
+intents: 5 fixed, 11 broken. The loss is worst on tweets that carry context
+(82.8% → 72.4%, 29 rows), but also present without it (84.0% → 80.0%). The two
+additions are confounded; separating them would take another run. Applying
+the same triggers to the **production** intent instead gives the same
+escalation gain (misses 7 → 3, false alarms 9 → 15) with no accuracy loss.
+That comparison was added after the first dev run and was not used for
+selection. The implication for shipping: **ask for the signals in a separate
+call rather than inside the intent prompt**, or fix the prompt first. This
+repeats the lesson from B, where adding one output field also moved the
+primary answer.
+
+**Held-out split, one read of the selected rule, 70 rows:**
+
+| Rule | Topic acc | Escalated | Missed human esc. | False alarms |
+|---|---:|---:|---:|---:|
+| A (same run) | 75.7% | 37 (52.9%) | 5 of 29 (17.2%) | 13 of 41 (31.7%) |
+| **A + repeated_failure** | 75.7% | 40 (57.1%) | **5 (17.2%)** | 16 (39.0%) |
+| A on the production predictions (reference) | 77.1% | 40 (57.1%) | 4 (13.8%) | 15 (36.6%) |
+
+**It did not generalise: zero extra catches, three extra false alarms.** On
+the production intent the result is the same (misses 4 → 4, false alarms
+15 → 18). `repeated_failure` fired on 6 held-out tweets, and none was a case A
+missed. It did not fire on "another bug and another ticket" (267212), the
+clearest repeat-failure miss the previous experiment surfaced. Dev's −4 was 4
+rows out of 38 human escalations. At that size a noisy signal can produce a
+win like that by chance, and the holdout is the check that exposed it.
+
+Two things the holdout shows, **not acted on**, because acting on them would
+tune on the held-out set:
+- `wide_impact` flagged 1804904 ("my whole team"), the one held-out miss any
+  signal reached. It caught nothing on dev and was not selected.
+- `urgent` fired 6 times, 5 on human-escalated tweets. Those tweets were
+  already escalated for other reasons, so it added no catches.
+
+The prompt's accuracy cost was smaller here (77.1% → 75.7%; 7 intents changed,
+1 fixed, 2 broken).
+
+> **Decision: keep rule A. No signal trigger is enabled.** The signals, the
+> context file and `decide(signal_triggers=...)` stay in the code, off by
+> default, for provenance. This holdout has now been read for a signal rule, so
+> it cannot give an unbiased read for the next one. A further attempt needs
+> more labelled escalations, not another pass over these 70 rows.
+
 ---
 
 ## 5. What is misleading about my headline number
@@ -571,9 +712,11 @@ improve the classifier, and both attempts failed and were reverted (§5.7).
    agent-vs-baseline gap (~2 points) survives that easily; nothing finer does.
    I found this only because I ran a configuration against itself as a control,
    and it invalidated a retriever comparison I had already written up.
-10. **The reply judge has never been validated against a human.** Two judges
-   agreeing 68%/84% is not evidence either is right — they can share a blind
-   spot. Worse, the judge is visibly noisy: the trivial baseline sends **one
+10. **The reply judge is validated against one human, on 30 replies — me.**
+   It ranks well (Spearman +0.73; accept/reject κ +0.69), but scores 0.6
+   points harsher than I do and agrees on the deflection flag only 67% of the
+   time (§3). Thirty ratings from a single rater who also built the rubric is
+   thin evidence, not a validation study. And the judge is visibly noisy: the trivial baseline sends **one
    identical string** 98 times, and the judge scored it across the **full 1–5
    range** (std 1.51) and called it a deflection 66 times out of 98. Some spread
    is legitimate (the rubric is intent-dependent), but it bounds how finely any
@@ -605,10 +748,11 @@ In priority order, most valuable first.
 2. **Get a second reader on the 58 adjudicated rows** (0.5 day of someone
    else's time). The one thing I cannot do for myself, and the largest open
    risk in §5.
-3. **Run the judge-vs-human agreement harness** (0.5 day). `14_judge_agreement.py`
-   is built and waiting for input: rate ~30 replies blind, then compute
-   agreement against the LLM judge. Until that exists, every reply-quality
-   number in §3 rests on models agreeing with models.
+3. **A second human rater for the judge** (0.5 day). **Done for one rater:**
+   30 blind ratings, Spearman +0.73, judge 0.6 points harsher (§3). What's
+   left is a second rater — to separate "the judge is harsh" from "I am
+   lenient" — and a look at the 10 deflection-flag disagreements, which is the
+   weakest part of the judge.
 4. **Prompt v3: mechanical rules as rules, judgment boundaries as few-shot
    examples** (1 day). The failed prompt experiment is more useful broken down
    than in aggregate: the *mechanical* rules worked exactly as designed (4
@@ -616,20 +760,66 @@ In priority order, most valuable first.
    instruction to "prefer a specific intent over `how_to_usage`" drove two rows
    **toward** `how_to_usage`. A 20b model applies an abstract preference
    bluntly. The examples are written and staged, drawn from dev only.
+   **Built 2026-09-13 as prompt version `p3`** (`scripts/taxonomy_rules.py`,
+   `taxonomy.md` Part 12). The same text is now what the labeling tool shows,
+   so the human and the model are given one procedure. It is **not** the
+   default and **not** evaluated; that waits for newly labelled data.
+   **Evaluation prepared 2026-09-14** (`scripts/28_p3_eval.py`). 300 tweets
+   were frozen as `data/p3_eval_set.csv`, with a sha256 manifest, from 3,553
+   eligible ones. **Amended the same day, before labelling:** only the first
+   250 of that random order are labelled and scored, to stay within the
+   assignment's 150–250 cap on hand-labelled examples. The cut and the state
+   at that moment (1 label, no prediction viewed) are recorded in
+   `data/p3_eval_amendment.json`. The set excludes every tweet any data file or the cache had
+   touched (874), the reading and coverage samples, and anything quoted in the
+   docs or rule examples (77). The comparison is paired, with a bootstrap CI
+   and exact McNemar test, and the verdict rule was fixed before any label
+   existed: p3 is better only if the interval excludes zero and it misses no
+   more human escalations; not better if the interval rules out a 3-point gain.
+
+   **Two further amendments, and how the labels were made.** About 200 hand
+   labels were then lost; 52 survived (rows 1–52). The scored set was cut to
+   150 — the assignment's minimum — with rows 53–150 drafted by Claude from the
+   tweet, its parent message and the labeller rules, and reviewed by me (98
+   accepted, 0 edited). No prediction had been viewed. **After** reading the
+   n=150 result, I extended back to 250 (rows 151–250 also Claude-drafted).
+   Growing a sample after seeing its result is optional stopping, so **n=150 is
+   the pre-registered result** and n=250 is reported beside it. Known bias: the
+   drafter read the same rules p3 carries and p1 does not.
+
+   **Result (2026-09-14): INCONCLUSIVE at both sizes. PROMPT_VERSION stays p1.**
+
+   | run | scorable n | p1 | p3 | paired Δ | 95% CI | fixed / broken | McNemar p | missed escalations p1 / p3 |
+   |---|---:|---:|---:|---:|---:|---:|---:|---:|
+   | **n=150, pre-registered** | 137 | 74.5% | 77.4% | +2.9 | [−2.9, +8.8] | 11 / 7 | 0.48 | 11 / 12 |
+   | n=250, post-hoc | 228 | 71.5% | 75.0% | +3.5 | [−1.3, +8.3] | 20 / 12 | 0.22 | 17 / 18 |
+
+   p3 leans ahead in both, but neither interval excludes zero, and p3 misses one
+   more human escalation each time. Note also that p1 scores 71–75% on this
+   random draw of real traffic against 81% on the rare-intent-weighted golden
+   set (§5.8) — though the label procedures differ, so that gap is suggestive,
+   not measured.
+
+   **p4** (`prompt_p4.py`, `29_p4_eval.py`) adds eight boundary rules written
+   from p1's and p3's errors on this same set, so any score there is in-sample
+   by construction and could only justify a fresh evaluation. Its run stopped
+   at 110 of 250 tweets on Groq limits; there is no p4 result.
 5. **Split `complaint_dissatisfaction` into a flag** (1 day, including
    relabelling). §4.1 says this is a taxonomy problem; this is the fix.
    Sentiment is already a field.
-6. **Decide the escalation trade-off with a real cost input** (0.5 day). The
-   cross-model-disagreement signal buys 4 fewer missed escalations for 14 more
-   over-escalations. Whether that's worth it depends on a cost ratio I don't
-   have.
-7. **Deduplicate retrieved neighbours by `customer_tweet_id`** (0.5 day
-   including a re-run). §3 shows the embedding retriever ranks neighbours
-   better but hands the drafter fewer *distinct* situations (2.17 of 3 vs
-   2.58), because multi-tweet replies share a customer tweet and embed
-   almost identically. Fix it in `top_k` for both retrievers, then re-run the
-   reply eval — this is the most likely explanation for why better retrieval
-   produced slightly worse replies, and it is cheap to test.
+6. **Escalation: grow the evaluation before adding triggers** (1–2 days). Four
+   extra triggers have now been tried (§4.5, §4.6): cross-model disagreement,
+   top-2, self-disagreement, and three urgency/impact signals. Each moved misses
+   by 2–4 rows on one split, and none held up on both. With 29–38 human
+   escalations per split, one row is ~3 points. Label ~150 more tweets weighted
+   toward escalations; ask for signals in a separate call (inside the intent
+   prompt they cost 1.4–5.8 points of accuracy); and get a real cost ratio
+   between a miss and a false alarm, which is still the missing product input.
+7. ~~**Deduplicate retrieved neighbours by `customer_tweet_id`**~~ **Done
+   2026-09-13.** Distinct neighbours rose from 2.17 to 3.00 of 3, and reply
+   scores did not move beyond the noise floor (§3). It was a real defect but
+   not the explanation for the retriever result. Retrieval experiments are
+   closed.
 8. **Expand the golden set to ~400** with stratified sampling on the confusion
    clusters, so per-intent rates become rankable.
 
@@ -733,6 +923,18 @@ data/
   model_ab_*.csv          the gpt-oss-120b comparison run
   prompt_ab_p2_dev.csv    the rules-in-the-prompt comparison run
   reply_evals.csv         reply drafts + judge scores (judge x rubric x retriever)
+  golden_context.csv      the tweet each golden tweet replies to (from twcs.csv)
+  escalation_uncertainty_holdout_s3.csv  per-row top-2 / 3-sample results
+  escalation_signals_*.csv               per-row signal-trigger results
+  judge_agreement.csv     blind human ratings vs the judge (30)
+  p3_eval_set.csv         frozen 300-tweet set for p1 vs p3 (first 250 scored)
+  p3_eval_manifest.json   hashes pinning the set, prompts and prior eval files
+  p3_eval_amendment.json  the 300 -> 250 -> 150 -> 250 amendment chain
+  p3_eval_labels.csv      labels (1-52 hand, 53-250 Claude-drafted, reviewed)
+  p3_eval_drafts.csv      the Claude label drafts
+  p3_eval_results*.csv    per-row results, n=250 and the preserved n=150
+  p3_eval_confusion_*.csv confusion matrices, same two sizes
+  p*_eval_runs.jsonl      run logs: namespaces, prompt hashes, failures
   chroma/                 embedding index (gitignored; rebuild in ~1 min)
 scripts/
   01-05_*.py              data pipeline: explore, filter, pair, sample
@@ -761,20 +963,37 @@ scripts/
   22_prompt_ab.py         prompt comparison, dev only
   23_escalation_v2.py     the dead uncertainty branches
   24_retrieval_ab.py      TF-IDF vs embeddings on P@k / MRR
+  25_reply_ab_stats.py    paired bootstrap stats for reply-eval A/Bs (no API)
+  26_escalation_uncertainty.py  top-2 and self-disagreement escalation, holdout
+  27_escalation_signals.py      urgent / wide_impact / repeated_failure triggers
+  taxonomy_rules.py       taxonomy.md Part 11 as rules + boundary examples, shared
+                          by prompt p3 and the labeling tool
+  eval_integrity.py       pinned hashes of the evaluation state + used-tweet ids
+  28_p3_eval.py           p1 vs p3 on a frozen new set: build, label, run, report
+  prompt_p4.py            p4's eight boundary rules (in-sample)
+  29_p4_eval.py           p4 vs p1/p3 on the same set
+tests/
+  test_taxonomy_rules.py  non-API checks: rules, examples, prompts, labels
+  test_p3_eval.py         non-API checks: frozen set, leakage, blindness, statistics
+  test_p4_prompt.py       non-API checks: p4 assembly, no overlap with eval tweets
 intents.json              the 13 intents, as the model sees them
 turn_types.json           the 5 turn types
 ```
 
 ## 9. Known limitations, stated plainly
 
-- **Judge-vs-human agreement is not yet measured.** `14_judge_agreement.py` is
-  built and blind by design, but has not been run. Until it is, every
-  reply-quality number rests on models agreeing with models. This is the one
-  required piece still outstanding.
+- **Judge-vs-human agreement rests on 30 ratings from one rater.** The judge
+  ranks like a human (Spearman +0.73) but scores 0.6 points harsher and agrees
+  on deflection only 67% of the time. §3, §5.10.
+- **The p3 prompt comparison is inconclusive, and 198 of its 250 labels are
+  Claude drafts** reviewed by me, after ~200 hand labels were lost. §6.4.
 - **The 53 relabelled rows have one reader: me.** §5.2.
 - **`brand_text` is unused**, which caps `turn_type`, leaves 15 rows
   unroutable, and keeps one escalation override dead. §4.2.
 - **The full 5,938-row classification run was never done** — deliberately, §1.
+- **No escalation trigger beyond the v1 policy has survived a held-out test.**
+  The policy still misses ~14–17% of human escalations. The misses are mostly
+  correct-intent tweets escalated for urgency or frustration. §4.6.
 
 ## 10. Citations
 
