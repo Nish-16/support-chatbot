@@ -1,0 +1,199 @@
+eval_index,intent,secondary,turn_type,escalate,flags,insufficient_context,why
+53,account_access,sync_app_bug,first_contact,False,,False,error 500 on website login; same call as your label on tweet 18
+54,account_access,,first_contact,True,,False,account closed while still in use; same call as your label on tweet 16
+55,sync_app_bug,,first_contact,False,,False,new folders cannot be named -- client malfunction
+56,no_action_needed,,confirming_resolved,False,,False,found the answer themselves; all set
+57,complaint_dissatisfaction,,first_contact,True,churn_threat,False,already left over broken updates and price; retention signal
+58,billing_subscription,,first_contact,True,wants_human,False,cancellation + billing issue; asks for a person
+59,no_action_needed,,first_contact,False,,False,banter with other users about the rebrand (R1e)
+60,sync_app_bug,storage_quota_plan_limits,first_contact,False,,False,refer-a-friend post fails; storage is the motive
+61,how_to_usage,,first_contact,False,,False,answerable product question about Showcase
+62,no_action_needed,,confirming_resolved,False,,False,thanks; back on track
+63,billing_subscription,storage_quota_plan_limits,first_contact,True,,False,paid add-on reported as ended; email unanswered
+64,feature_request,billing_subscription,first_contact,False,,False,judges Professional's packaging vs price; no request (R1b)
+65,sync_app_bug,account_access,providing_requested_info,False,,False,desktop client (chromium) error during install/login
+66,feature_request,,first_contact,False,,False,proposes more storage in the plan (R1b)
+67,storage_quota_plan_limits,,first_contact,False,,False,promotional space not applied; same call as your label on tweet 28
+68,billing_subscription,sync_app_bug,first_contact,True,,False,upgrade blocked by a site failure; the work item is the purchase
+69,complaint_dissatisfaction,,first_contact,True,churn_threat,False,objects to price without proposing a change; threatens to switch
+70,no_action_needed,,confirming_resolved,False,,False,got it working
+71,complaint_dissatisfaction,,first_contact,False,,False,criticises communication about the icon change
+72,sync_app_bug,,disputing_prior_answer,True,,False,installer problem persists after the suggested fix -- recurrence
+73,phishing_abuse_report,feature_request,first_contact,True,,False,platform abused to stalk a third party; safety
+74,sync_app_bug,,disputing_prior_answer,True,,False,camera upload still failing after update -- recurrence
+75,sync_app_bug,,providing_requested_info,False,,True,"answers ""which device""; no topic without the earlier message"
+76,no_action_needed,,confirming_resolved,False,,False,CPU problem cleared
+77,feature_request,,disputing_prior_answer,False,,False,judges the icon design (R1b)
+78,sync_app_bug,,first_contact,False,,False,website settings layout broken
+79,billing_subscription,storage_quota_plan_limits,nudging_no_response,True,,False,cannot cancel trial/upgrade in portal; ticket unanswered
+80,sync_app_bug,,first_contact,False,,False,Dropbox not working in iOS Files app
+81,account_access,,first_contact,False,,False,password reset email not arriving; first ask
+82,no_action_needed,,confirming_resolved,False,,False,resolved; thanks
+83,billing_subscription,complaint_dissatisfaction,first_contact,True,,False,disputes an unauthorised charge
+84,sync_app_bug,,first_contact,False,,False,mac app misbehaves on new OS
+85,sharing_permissions,,first_contact,False,,False,"Portuguese: ""my links were banned, how to fix?"" -- shared links (R3a)"
+86,how_to_usage,complaint_dissatisfaction,first_contact,False,,False,wants night notifications stopped -- an actionable request under the anger (R1a)
+87,data_loss_recovery,,first_contact,True,,False,file reverted; cannot restore version
+88,data_loss_recovery,billing_subscription,first_contact,True,,False,recover folders from before a downgrade
+89,feature_request,billing_subscription,first_contact,False,,False,asks for a Professional trial before buying
+90,how_to_usage,,first_contact,False,,False,"icons changed; same call as the ""green check"" example (R1a)"
+91,sync_app_bug,service_outage,first_contact,False,,False,"page never loads; ""known problem?"" is not scope evidence (R8a)"
+92,sync_app_bug,,providing_requested_info,False,,True,"""only to camera roll"" -- the export problem is only in the earlier message"
+93,data_loss_recovery,,first_contact,True,,False,files lost after resetting mac; asks for backups
+94,no_action_needed,,confirming_resolved,False,,False,"""that's better"""
+95,sync_app_bug,,providing_requested_info,True,,False,still failing after full reinstall -- recurrence
+96,feature_request,,providing_requested_info,False,,True,"confirms a link-preview request; ""yes that's what I meant"" alone is unroutable"
+97,sync_app_bug,sharing_permissions,first_contact,False,,False,shared files will not download -- a load failure on a shared object (R3b)
+98,how_to_usage,sync_app_bug,first_contact,False,,False,asks which setting allows mobile-data access
+99,sync_app_bug,,first_contact,False,,False,cannot reach pictures from desktop since plan change
+100,sync_app_bug,,providing_requested_info,True,,True,sorting problem only named in the earlier message; 6-8 months long
+101,feature_request,storage_quota_plan_limits,first_contact,False,churn_threat,False,wants more storage for the price; hints at leaving
+102,billing_subscription,,first_contact,True,legal_sensitive,False,cancel and delete account
+103,sync_app_bug,,first_contact,True,,False,uploads still very slow after earlier unresolved report
+104,sync_app_bug,,providing_requested_info,False,,False,recently modified files not syncing
+105,sync_app_bug,,providing_requested_info,False,,False,website search broken in Firefox
+106,how_to_usage,sync_app_bug,disputing_prior_answer,False,,False,wants to stop offline re-download on every login
+107,sync_app_bug,complaint_dissatisfaction,first_contact,False,,False,"onboarding modal cannot be dismissed -- UI bug, not authentication"
+108,billing_subscription,,first_contact,False,,False,trial before upgrading -- a plan question
+109,sync_app_bug,,providing_requested_info,False,,True,"""same thing happens"" -- the bug is only in the earlier message"
+110,how_to_usage,feature_request,first_contact,False,,False,asks whether a business plan lifts the 10-page scan limit
+111,how_to_usage,,first_contact,False,,False,"green check gone -- same call as the ""green check"" example"
+112,no_action_needed,,first_contact,False,,False,thanks
+113,complaint_dissatisfaction,billing_subscription,first_contact,False,,False,criticises the cancellation flow; no request
+114,sharing_permissions,feature_request,first_contact,False,,False,overwritten files now break their shared links
+115,sync_app_bug,,first_contact,False,,False,connected apps cannot browse Dropbox on iOS
+116,how_to_usage,,first_contact,False,,False,keep online-only; remove from Mac
+117,sync_app_bug,,first_contact,False,,False,iOS offline downloads slow and restart
+118,how_to_usage,,first_contact,True,wants_human,False,asks how to reach live support
+119,sync_app_bug,,first_contact,False,,False,symlinked files sync slowly
+120,how_to_usage,,first_contact,False,,True,"""it"" is the icon from the earlier message"
+121,sync_app_bug,,first_contact,False,,False,Paper tasks broken
+122,feature_request,,first_contact,False,,False,asks for tagging
+123,sync_app_bug,complaint_dissatisfaction,first_contact,False,,False,transfer stuck for a day
+124,storage_quota_plan_limits,,first_contact,False,,False,full after deleting files (R4)
+125,feature_request,,first_contact,False,,False,wants folder mentions in Paper
+126,feature_request,complaint_dissatisfaction,first_contact,False,,False,judges a missing capability (R1b)
+127,service_outage,,first_contact,False,,False,asks other users about a global issue; no personal symptom
+128,account_access,,first_contact,False,,False,cannot log into the website for two days
+129,sync_app_bug,,first_contact,False,,False,offline mp3s fail on iPhone
+130,feature_request,,first_contact,False,,False,"asks for ""download all"" on mobile"
+131,feature_request,,first_contact,False,,False,asks when an importer ships; same call as your label on tweet 19
+132,how_to_usage,,first_contact,False,,False,can local copies be deleted
+133,sync_app_bug,,disputing_prior_answer,True,,True,"""nothing worked"" -- the problem is only in the earlier message"
+134,how_to_usage,,first_contact,False,,False,add dates to photos
+135,account_access,,providing_requested_info,True,,False,cannot pass 2FA to sign in; ongoing thread
+136,storage_quota_plan_limits,complaint_dissatisfaction,first_contact,True,abusive_content,False,wants nearly-full warnings turned off; profanity
+137,no_action_needed,,first_contact,False,,False,praise
+138,no_action_needed,,first_contact,False,,False,joke to another user
+139,how_to_usage,,first_contact,False,,False,link account to Twitter
+140,sync_app_bug,service_outage,first_contact,False,,False,"personal login and sync symptoms; ""issue on your side?"" is not evidence (R8a)"
+141,sync_app_bug,feature_request,first_contact,False,,False,Paper export stalls; plus a PDF request
+142,sync_app_bug,,providing_requested_info,False,,True,"""Safari and a PDF"" -- the problem is only in the earlier message"
+143,complaint_dissatisfaction,,first_contact,True,churn_threat,False,objects to Smart Sync packaging; loyalty threat
+144,how_to_usage,feature_request,first_contact,False,,False,how Show in Finder works; wants links for teammates
+145,feature_request,,first_contact,False,,False,judges the new icon design (R1b)
+146,service_outage,,first_contact,False,,False,confirms website down to another user
+147,no_action_needed,,providing_requested_info,False,,False,will check; thanks
+148,no_action_needed,,first_contact,False,,False,thanks
+149,sync_app_bug,feature_request,first_contact,False,needs_human_triage,False,.taskpaper plain-text file mishandled; unclear without the image
+150,storage_quota_plan_limits,,first_contact,False,,False,still full after permanent delete (R4)
+151,no_action_needed,,confirming_resolved,False,,False,app update fixed it; thanks
+152,security_account_compromise,,first_contact,True,needs_human_triage,False,"""possible virus"", urgent, details only in DM"
+153,sharing_permissions,data_loss_recovery,first_contact,False,,False,converting a team member to a personal account; asks whether files survive
+154,data_loss_recovery,complaint_dissatisfaction,first_contact,True,,False,a transfer is about to delete 3 years of files
+155,complaint_dissatisfaction,account_access,first_contact,True,wants_human;abusive_content,False,"accounts broken, no live person; profanity"
+156,feature_request,,first_contact,False,,False,wants a file-size column
+157,sync_app_bug,,providing_requested_info,True,churn_threat,True,problem only in the DM; threatens to switch
+158,account_access,service_outage,first_contact,True,,False,"French: cannot sign in even via password reset, 2FA blocks it"
+159,no_action_needed,,first_contact,False,,False,"Spanish: ""it's great!"""
+160,sync_app_bug,,providing_requested_info,False,,True,camera-upload settings screenshot; the bug is only in the earlier message
+161,account_access,service_outage,first_contact,False,,False,"cannot log on; ""problem with the site?"" is not scope evidence"
+162,billing_subscription,,first_contact,False,,False,invoice delivery -- a pure invoicing question (auto)
+163,sync_app_bug,service_outage,first_contact,False,,False,"cannot upload; ""something going on?"" is not evidence (R8a)"
+164,how_to_usage,,first_contact,False,,False,email files into a folder
+165,how_to_usage,,first_contact,False,,True,"""please DM"" -- the security question is only in the earlier message"
+166,no_action_needed,,first_contact,False,,False,job application site -- not product support
+167,sync_app_bug,,first_contact,False,,False,client creates duplicate files for the team
+168,sync_app_bug,,first_contact,False,,False,iOS 11 will not sync
+169,no_action_needed,,first_contact,False,,False,internship request
+170,sync_app_bug,,first_contact,False,,False,sync client trouble on High Sierra
+171,no_action_needed,,confirming_resolved,False,,False,thanks
+172,sync_app_bug,,first_contact,True,wants_human,True,Seagate thread; the problem is only in the earlier message
+173,storage_quota_plan_limits,sharing_permissions,first_contact,True,,False,links disabled with error 429 (traffic limit) for a year
+174,feature_request,complaint_dissatisfaction,first_contact,False,,False,wants a feature moved into Plus -- a packaging change (R1b)
+175,sync_app_bug,,first_contact,False,,False,app running 220 threads while idle
+176,sync_app_bug,,first_contact,False,,False,"""connection is not private"" error on the site"
+177,how_to_usage,,first_contact,False,,False,wants tweet notifications stopped (R1a)
+178,how_to_usage,,first_contact,False,,False,green tick gone after update -- icon change question
+179,how_to_usage,,first_contact,False,,False,alerts when a file is edited
+180,how_to_usage,,first_contact,False,,False,will the rebrand reach the mobile apps
+181,billing_subscription,,first_contact,True,,False,billing country change rejected
+182,sync_app_bug,,first_contact,False,,False,battery drain; asks for a fix
+183,complaint_dissatisfaction,,first_contact,False,,False,"Spanish: removed the icon checkmark; same call as your label on tweet 27"
+184,no_action_needed,,providing_requested_info,False,,False,describes their project for the brand team; no support work
+185,feature_request,,providing_requested_info,False,,False,cannot see upload time across computers -- a missing capability
+186,feature_request,,first_contact,False,,False,asks when a Paper desktop app ships
+187,sync_app_bug,,first_contact,False,,False,blog subscription form broken
+188,account_access,,first_contact,True,,False,"locked out as admin, tried all advice; same call as your label on tweet 7"
+189,sync_app_bug,,first_contact,False,,False,scanner cannot choose a folder since iOS update
+190,storage_quota_plan_limits,billing_subscription,first_contact,True,,False,bought 1TB yesterday but still out of space -- quota looks wrong
+191,sync_app_bug,,first_contact,False,,False,desktop app shows offline; transfer fails
+192,no_action_needed,,first_contact,False,,False,praises the billing grace period
+193,feature_request,,first_contact,False,,False,wants a separate Paper account for updates
+194,account_access,,first_contact,True,,False,reset password without access to the signup email -- identity check
+195,feature_request,complaint_dissatisfaction,first_contact,False,,False,judges printing capability
+196,no_action_needed,,confirming_resolved,False,,False,that worked; thanks
+197,how_to_usage,complaint_dissatisfaction,first_contact,False,,False,wants desktop promotions stopped (R1a)
+198,how_to_usage,,first_contact,False,,False,commenting on video; spacebar
+199,sync_app_bug,,first_contact,False,,False,Mac and iPhone not syncing
+200,sync_app_bug,,first_contact,False,,False,desktop app reset itself and lost settings
+201,how_to_usage,,first_contact,False,,False,can the web uploader skip existing files
+202,sync_app_bug,,first_contact,False,,False,sync and camera uploads stopped
+203,how_to_usage,,first_contact,False,,False,download multiple photos to iPhone
+204,sync_app_bug,,first_contact,False,,False,video upload fails with an unexpected error
+205,how_to_usage,,first_contact,False,,False,sync My Documents with Dropbox
+206,feature_request,,first_contact,False,,False,wants file-change notifications on Samsung
+207,sync_app_bug,,first_contact,False,,True,duplicate camera uploads are only in the earlier message
+208,no_action_needed,,first_contact,False,,False,likes an email
+209,sync_app_bug,,first_contact,False,,False,"deleted files reappear -- a malfunction, not quota"
+210,sharing_permissions,,first_contact,False,,False,shared-folder invite page broken
+211,account_access,sharing_permissions,first_contact,True,,False,cannot log into personal account after joining a team
+212,data_loss_recovery,security_account_compromise,disputing_prior_answer,True,,False,team accounts deleting files; 1000+ lost
+213,feature_request,billing_subscription,disputing_prior_answer,False,,False,suggests a temporary upgrade as a trial
+214,sharing_permissions,,providing_requested_info,False,,True,"""submitted a ticket"" -- adding team members is only in the earlier message"
+215,sync_app_bug,,providing_requested_info,False,,False,will update; selective sync option may be missing
+216,no_action_needed,,confirming_resolved,False,,False,Firefox worked; thanks
+217,no_action_needed,sync_app_bug,confirming_resolved,False,,False,"back in after a 500 error"
+218,feature_request,,first_contact,False,needs_human_triage,False,design complaint in an image only
+219,data_loss_recovery,,first_contact,False,,False,"folder version history -- the recovery topic, nothing lost yet"
+220,sync_app_bug,service_outage,first_contact,False,,False,"cannot open folders; ""issues going on?"" is not evidence"
+221,service_outage,,first_contact,False,,False,"""is Dropbox down?"" across devices, no personal detail (R8b)"
+222,sync_app_bug,,first_contact,False,,False,tray icon settings broken; sync saturates bandwidth
+223,how_to_usage,sync_app_bug,first_contact,False,,False,search does not cover file contents -- likely a plan feature
+224,data_loss_recovery,,first_contact,True,,False,lost all files; restore
+225,billing_subscription,,first_contact,False,,False,move billing responsibility to another admin
+226,feature_request,,disputing_prior_answer,False,,False,judges the icon change as confusing (R1b)
+227,sync_app_bug,,first_contact,False,,False,video player broken after update
+228,sync_app_bug,,disputing_prior_answer,True,,True,"""restarting didn't work"" -- the missing option is only in the earlier message"
+229,billing_subscription,,first_contact,False,,False,price changes at checkout -- a pricing question
+230,sync_app_bug,complaint_dissatisfaction,first_contact,True,,False,"help form submit broken; same call as your labels on tweets 20, 37"
+231,sync_app_bug,service_outage,first_contact,False,,False,Mac clients offline and cannot log in
+232,account_access,service_outage,disputing_prior_answer,True,,False,SMS 2FA unavailable; rejects the code generator
+233,no_action_needed,,first_contact,False,,False,comment to another user about BlackBerry (R1e)
+234,feature_request,,first_contact,False,,False,wants more than 1TB on Pro
+235,how_to_usage,,first_contact,False,,False,help using Dropbox with another app
+236,no_action_needed,,providing_requested_info,False,,False,"""on my way"" -- updating as asked"
+237,sync_app_bug,,providing_requested_info,False,,False,file view fails on 3G
+238,service_outage,,first_contact,False,,True,"""how much longer?"" -- the outage is only in the earlier message"
+239,sync_app_bug,,first_contact,True,,False,stuck indexing for weeks; same call as your label on tweet 22
+240,sync_app_bug,how_to_usage,first_contact,False,,False,folders missing on new home; Finder integration gone
+241,feature_request,how_to_usage,first_contact,False,,False,judges batch-delete UX
+242,complaint_dissatisfaction,,first_contact,False,,False,criticises bandwidth use; no request
+243,account_access,,nudging_no_response,True,,False,no 2FA codes; email unanswered for a week
+244,no_action_needed,,first_contact,False,,False,"""me too"" to another user"
+245,complaint_dissatisfaction,,disputing_prior_answer,True,churn_threat,False,rejects the answer; leaving permanently
+246,sync_app_bug,,providing_requested_info,False,,True,file size and characters; the bug is only in the earlier message
+247,sync_app_bug,sharing_permissions,providing_requested_info,False,,False,shared zip links will not open on one Mac (R3b)
+248,sync_app_bug,sharing_permissions,first_contact,False,,False,share-to-Facebook window blank (R3b)
+249,sync_app_bug,,providing_requested_info,False,,False,Finder right-click options gone
+250,account_access,,first_contact,False,,False,cannot log in

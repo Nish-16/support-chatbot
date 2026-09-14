@@ -71,11 +71,28 @@ INTENT_DEFAULTS: dict[str, tuple[str, str]] = {
 }
 
 
-def decide(result: dict) -> Decision:
+# Experimental overrides from groq_lib.ESCALATION_SIGNALS, tested in
+# scripts/27_escalation_signals.py. OFF unless a caller passes them in
+# `signal_triggers` -- the default policy, and every number 12_evaluate.py
+# reports, is unchanged. Checked in this order, after the v1 overrides.
+SIGNAL_REASONS: dict[str, str] = {
+    "urgent": "Customer signals urgency or a deadline -- a scripted reply risks a costly delay.",
+    "wide_impact": "Problem reaches a team, clients or many users -- impact beyond one account.",
+    "repeated_failure": "Issue is long-running or already failed once -- the standard playbook has not worked.",
+}
+
+
+def decide(result: dict, signal_triggers: frozenset[str] = frozenset()) -> Decision:
     """result is a groq_lib.classify_message()-shaped dict: intent,
     secondary_intent, turn_type, confidence, reason, plus the FLAG_SPEC
     fields (wants_human, legal_sensitive, churn_threat, abusive_content,
-    needs_human_triage, sentiment, language)."""
+    needs_human_triage, sentiment, language).
+
+    signal_triggers names which SIGNAL_REASONS signals may escalate; empty
+    means the current policy, exactly."""
+    unknown = set(signal_triggers) - set(SIGNAL_REASONS)
+    if unknown:
+        raise ValueError(f"unknown signal trigger(s) {sorted(unknown)}; known: {list(SIGNAL_REASONS)}")
     intent = result["intent"]
     confidence = result.get("confidence", 0.0)
     turn_type = result.get("turn_type")
@@ -95,6 +112,9 @@ def decide(result: dict) -> Decision:
         return Decision(ESCALATE, "Customer threatened to cancel/switch -- retention risk needs human judgment.")
     if result.get("abusive_content"):
         return Decision(ESCALATE, "Abusive content directed at the brand/staff -- needs human de-escalation, not a scripted reply.")
+    for signal, reason in SIGNAL_REASONS.items():
+        if signal in signal_triggers and result.get(signal):
+            return Decision(ESCALATE, reason)
 
     # -- 2. Intent default --
     if intent not in INTENT_DEFAULTS:

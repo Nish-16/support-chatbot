@@ -28,6 +28,9 @@ from groq import Groq
 from groq import APIError, APIConnectionError, APITimeoutError, RateLimitError
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception
 
+import prompt_p4
+import taxonomy_rules
+
 load_dotenv()
 
 # Model catalog on Groq changes over time -- llama-3.1-8b-instant/
@@ -88,9 +91,9 @@ PROMPT_VERSION = "p1"
 # rules with the FEW_SHOT examples below -- a small model imitates an
 # example more reliably than it applies an abstract preference.
 #
-# The rules stay exported: 08_label_golden_set.py shows them to the human
-# labeler, where judgment rules are an asset rather than a liability.
-# That half of the change is live and unaffected by this revert.
+# The rules stay exported as the record of what p2 sent. Since 2026-09-13 the
+# labeler no longer reads them: 08_label_golden_set.py and prompt p3 both read
+# taxonomy_rules.py, so the human and the model are shown one text.
 
 
 def cache_namespace(model: str | None = None, prompt_version: str | None = None) -> str:
@@ -213,6 +216,82 @@ Respond with ONLY this JSON shape, no other text:
 
 USER_PROMPT_TEMPLATE = 'Customer tweet:\n"""{text}"""'
 
+# TOP-2 EXPERIMENT (2026-09-13, scripts/26_escalation_uncertainty.py) -- NOT
+# the production prompt. secondary_intent cannot serve as a top-2: it means "a
+# second intent clearly PRESENT", and the model leaves it null on 64 of 70
+# held-out rows. runner_up_intent asks for the next most likely label instead,
+# which is what a "would it be risky if the first guess is wrong?" rule needs.
+# Adding a field changes the prompt, so these results live under their own
+# prompt version and are never read back as p1 answers.
+TOP2_PROMPT_VERSION = "p1top2"
+TOP2_SCHEMA_ADDENDUM = """
+
+runner_up_intent: the intent you would pick if "intent" turned out to be wrong. Always set; must differ from intent.
+Add it to the JSON as "runner_up_intent": "<name>"."""
+
+# ESCALATION SIGNALS EXPERIMENT (2026-09-13, scripts/27_escalation_signals.py)
+# -- NOT the production prompt. 26_escalation_uncertainty.py found that every
+# held-out escalation the policy missed had the RIGHT intent; the human
+# escalated on urgency, reach, or a problem that had already failed once. None
+# of that is topic, so it cannot come from intent -- these are the fields for it.
+# Kept out of FLAG_SPEC on purpose: FLAG_SPEC is part of the p1 prompt, and
+# editing it would silently change every production call.
+SIGNALS_PROMPT_VERSION = "p1sig"
+ESCALATION_SIGNALS = {
+    "urgent": "says it is urgent or an emergency, or a deadline/time pressure is at stake now.",
+    "wide_impact": "affects more than this one person: a team, clients, many users, or their business.",
+    "repeated_failure": "already tried or already contacted support and it is still unresolved, or the problem has gone on a long time.",
+}
+SIGNALS_SCHEMA_ADDENDUM = (
+    "\n\nEscalation signals:\n"
+    + "\n".join(f"- {name}: {doc}" for name, doc in ESCALATION_SIGNALS.items())
+    + '\nAdd them to the JSON as "urgent": <bool>, "wide_impact": <bool>, "repeated_failure": <bool>.'
+)
+# The tweet this one replies to, when there is one. Context only -- the
+# classification is still of the customer tweet. Never the brand's reply TO
+# the tweet (dropbox_paired.csv's brand_text): that is written afterwards and
+# would leak how support handled the case.
+CONTEXT_PROMPT_TEMPLATE = 'Earlier message this tweet replies to (context only):\n"""{context}"""\n\n'
+
+# p3 (2026-09-13) = p1 + taxonomy_rules.PROMPT_BLOCK: the Part 11 boundary
+# rules, reworded per the p2 lesson above (concrete cases instead of abstract
+# preferences) and followed by dev-only examples on both sides of each hard
+# boundary. It is the same text 08_label_golden_set.py shows the labeler.
+#
+# NOT the default, and NOT evaluated. p2, the closest prior attempt, lost 2.3
+# points on dev, and p3's system prompt is 3.2x p1's (8,651 vs 2,702 chars)
+# against the 200k tokens/day cap. It becomes a candidate only after a run on newly labelled data, so
+# PROMPT_VERSION stays "p1".
+#
+# p4 (2026-09-14) = p3 + prompt_p4.P4_BLOCK: eight explicit boundary rules from
+# the 250-tweet p1-vs-p3 error analysis (scripts/29_p4_eval.py). Written from
+# errors on the same set it is scored on, so its number there is in-sample --
+# NOT a production candidate without a fresh set.
+PROMPT_VERSIONS = ("p1", "p3", "p4")
+_JSON_INSTRUCTION = "Respond with ONLY this JSON shape"
+
+
+def build_system_prompt(prompt_version: str | None = None) -> str:
+    """The system prompt for a prompt version. One function, so the prompt text
+    and the cache namespace are picked by the same value. p1 is byte-identical
+    to what classify_message sent before p3 existed --
+    tests/test_taxonomy_rules.py pins its hash."""
+    version = prompt_version or PROMPT_VERSION
+    base = SYSTEM_PROMPT.format(
+        intent_list=INTENT_LIST_TEXT,
+        turn_type_list=TURN_TYPE_LIST_TEXT,
+        flag_list=_FLAG_DOC_LIST,
+        sentiment_values=", ".join(SENTIMENT_VALUES),
+    )
+    if version == "p1":
+        return base
+    if version == "p3":
+        return base.replace(_JSON_INSTRUCTION, f"{taxonomy_rules.PROMPT_BLOCK}\n\n{_JSON_INSTRUCTION}", 1)
+    if version == "p4":
+        return base.replace(_JSON_INSTRUCTION,
+                            f"{taxonomy_rules.PROMPT_BLOCK}\n\n{prompt_p4.P4_BLOCK}\n\n{_JSON_INSTRUCTION}", 1)
+    raise ValueError(f"no prompt text for version {version!r}; known: {PROMPT_VERSIONS}")
+
 RETRYABLE_NETWORK_ERRORS = (APIConnectionError, APITimeoutError)
 
 
@@ -274,26 +353,38 @@ def make_client() -> Groq:
                    # `except SKIPPABLE_ERRORS` at call sites never
                    # matches and the whole batch crashes anyway
 )
-def classify_message(client: Groq, text: str, model: str | None = None) -> dict:
+def classify_message(client: Groq, text: str, model: str | None = None,
+                     temperature: float = 0, top2: bool = False,
+                     signals: bool = False, context: str | None = None,
+                     prompt_version: str | None = None) -> dict:
     """`model` overrides the default for A/B runs. Everything else --
     prompt, temperature, reasoning_effort, schema -- stays fixed, so a
-    model comparison changes exactly one variable."""
+    model comparison changes exactly one variable.
+
+    `temperature` and `top2` exist for the escalation-uncertainty experiment
+    only (26_escalation_uncertainty.py); `signals` and `context` for the
+    escalation-signals experiment (27_escalation_signals.py). The defaults are
+    the production call. Callers that change any of them must cache under a
+    namespace that says so.
+
+    `prompt_version` picks the prompt text (build_system_prompt); pass the same
+    value to cache_namespace()."""
+    system = build_system_prompt(prompt_version)
+    if top2:
+        system += TOP2_SCHEMA_ADDENDUM
+    if signals:
+        system += SIGNALS_SCHEMA_ADDENDUM
+    user = USER_PROMPT_TEMPLATE.format(text=text)
+    if context:
+        user = CONTEXT_PROMPT_TEMPLATE.format(context=context) + user
     response = client.chat.completions.create(
         model=model or MODEL,
         messages=[
-            {
-                "role": "system",
-                "content": SYSTEM_PROMPT.format(
-                    intent_list=INTENT_LIST_TEXT,
-                    turn_type_list=TURN_TYPE_LIST_TEXT,
-                    flag_list=_FLAG_DOC_LIST,
-                    sentiment_values=", ".join(SENTIMENT_VALUES),
-                ),
-            },
-            {"role": "user", "content": USER_PROMPT_TEMPLATE.format(text=text)},
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
         ],
         response_format={"type": "json_object"},
-        temperature=0,
+        temperature=temperature,
         reasoning_effort="low",  # gpt-oss-20b spends hidden "reasoning" tokens
         # by default (111 tokens on a test call) for a task that's really just
         # a constrained pick-one -- "low" cut that to 6 tokens with no change
@@ -308,6 +399,24 @@ def classify_message(client: Groq, text: str, model: str | None = None) -> dict:
     # literal discipline.
     if isinstance(result.get("secondary_intent"), str) and result["secondary_intent"].strip().lower() in ("null", "none", ""):
         result["secondary_intent"] = None
+    if top2:
+        # A missing or duplicate runner-up is recorded as None rather than
+        # failing the row: InvalidClassification is not retried, and dropping
+        # the row would silently shrink the held-out set the policy is read on.
+        # The experiment script counts these.
+        runner_up = result.get("runner_up_intent")
+        if runner_up not in INTENT_NAMES or runner_up == result.get("intent"):
+            result["runner_up_intent"] = None
+    if signals:
+        # A missing signal is recorded as False rather than failing the row,
+        # for the runner_up_intent reason above: tweet 1507042 returned null
+        # for `urgent` on repeated calls, and a dropped row silently shrinks
+        # the split. The names are kept so the experiment can count them.
+        defaulted = [n for n in ESCALATION_SIGNALS if not isinstance(result.get(n), bool)]
+        for name in defaulted:
+            result[name] = False
+        if defaulted:
+            result["signals_defaulted"] = defaulted
     return _validate(result)
 
 

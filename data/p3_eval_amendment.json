@@ -1,0 +1,61 @@
+{
+  "amended_at": "2026-09-14T06:45:00+00:00",
+  "change": "label, predict and score eval_index 1-250 again; rows 151-250 are Claude drafts",
+  "scored_n": 250,
+  "frozen_n": 300,
+  "set_path": "data/p3_eval_set.csv",
+  "set_sha256": "6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa",
+  "reason": "The labeller asked for the full 250-tweet set after completing 150.",
+  "validity_caveat": "This extension was decided AFTER the n=150 report was run and read (report outputs written 2026-09-14T06:28:04Z). Growing a sample after seeing its result is optional stopping, so the 250 result is not a pre-registered test. The n=150 result stands as the pre-registered result and must be reported alongside the 250 result.",
+  "result_before_amendment": {
+    "scored_n": 150,
+    "report_run_at": "2026-09-14T06:28:04+00:00",
+    "outputs_preserved_as": ["data/p3_eval_results_n150.csv", "data/p3_eval_confusion_p1_n150.csv", "data/p3_eval_confusion_p3_n150.csv"]
+  },
+  "label_provenance": {
+    "hand_labelled": "eval_index 1-52",
+    "claude_drafted": "eval_index 53-250 (data/p3_eval_drafts.csv); human_note records accepted vs edited. Of 53-150, 98 were accepted and 0 edited.",
+    "drafter_inputs": "customer_text, earlier message, taxonomy_rules.LABELER_BLOCK, taxonomy.md intent definitions, and the 52 hand labels for calibration; never the classification cache or any report output",
+    "known_bias": "the drafter read taxonomy_rules, which p3 carries and p1 does not, so drafted labels may lean toward p3's decisions"
+  },
+  "state_at_amendment": {
+    "labels": 150,
+    "max_labelled_eval_index": 150,
+    "labels_beyond_scored_n": 0,
+    "p1_predictions_in_scored_set": 250,
+    "p3_predictions_in_scored_set": 250,
+    "predictions_viewed": true
+  },
+  "effect": "paired 95% CI half-width narrows from about +/-7 to about +/-5.4 points; verdict rule unchanged",
+  "unchanged": "data/p3_eval_set.csv and data/p3_eval_manifest.json",
+  "previous": {
+    "amended_at": "2026-09-14T12:00:00+00:00",
+    "change": "label, predict and score only eval_index 1-150 of the frozen 300-row set; rows 53-150 are Claude drafts reviewed by the labeller",
+    "scored_n": 150,
+    "reason": "About 200 hand labels were lost; 52 survived (eval_index 1-52) and the labeller cannot redo the rest. 150 is the assignment's minimum for the evaluation set.",
+    "state_at_amendment": {
+      "labels": 52,
+      "max_labelled_eval_index": 52,
+      "labels_beyond_scored_n": 0,
+      "p1_predictions_in_scored_set": 150,
+      "p3_predictions_in_scored_set": 150,
+      "predictions_viewed": false
+    },
+    "previous": {
+      "amended_at": "2026-09-13T22:18:34.193666+00:00",
+      "change": "label, predict and score only eval_index 1-250 of the frozen 300-row set",
+      "scored_n": 250,
+      "reason": "The assignment (Hiver SDE Intern Assignment.docx) sets the golden evaluation set at 150-250 hand-labelled examples, and the project docs treat 250 as a hard cap. 300 was proposed without checking that cap.",
+      "state_at_amendment": {
+        "labels": 1,
+        "max_labelled_eval_index": 1,
+        "labels_beyond_scored_n": 0,
+        "p1_predictions_in_scored_set": 250,
+        "p3_predictions_in_scored_set": 249,
+        "p1_predictions_beyond_scored_n": 25,
+        "p3_predictions_beyond_scored_n": 0,
+        "predictions_viewed": false
+      }
+    }
+  }
+}

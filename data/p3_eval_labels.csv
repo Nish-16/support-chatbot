@@ -1,0 +1,251 @@
+eval_index,customer_tweet_id,human_intent,human_secondary_intent,human_turn_type,human_escalate,human_flags,insufficient_context,human_note,labeled_at,set_sha256
+1,237556,sync_app_bug,,nudging_no_response,False,,True,,2026-09-13T21:45:31.564086+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+2,2055434,complaint_dissatisfaction,,first_contact,False,,False,,2026-09-14T04:34:41.804690+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+3,32659,no_action_needed,,confirming_resolved,False,,False,,2026-09-14T04:35:49.149264+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+4,2632710,data_loss_recovery,,first_contact,True,,False,sensitive matter as it includes virus and large number of files (999) hence escalated,2026-09-14T04:47:28.210352+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+5,304667,how_to_usage,,first_contact,False,,False,does not require human support and can be answered by agent,2026-09-14T04:49:59.447545+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+6,1524756,sync_app_bug,,first_contact,False,,False,normal sync issue,2026-09-14T04:57:36.811179+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+7,712862,account_access,,first_contact,True,needs_human_triage,False,"they've already tried all the standard fixes themselves and are still locked out entirely, so a normal scripted response won't resolve it",2026-09-14T04:59:01.936397+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+8,2118986,sync_app_bug,,first_contact,True,,False,unroutable without seeing or checking the links,2026-09-14T05:07:12.921915+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+9,2778525,account_access,,disputing_prior_answer,True,wants_human,True,,2026-09-14T05:09:13.081268+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+10,1650577,data_loss_recovery,complaint_dissatisfaction,first_contact,True,wants_human,False,,2026-09-14T05:09:47.548253+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+11,1325414,billing_subscription,,first_contact,False,,False,,2026-09-14T05:10:48.263134+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+12,1005954,no_action_needed,,confirming_resolved,False,,False,,2026-09-14T05:11:14.827213+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+13,2778521,how_to_usage,,first_contact,False,,True,insufficient context to classify an intent,2026-09-14T05:14:53.766438+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+14,2247774,sync_app_bug,,first_contact,False,,False,,2026-09-14T05:15:32.710730+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+15,1894822,data_loss_recovery,,first_contact,True,,False,,2026-09-14T05:17:20.381656+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+16,1856229,account_access,complaint_dissatisfaction,first_contact,True,churn_threat,False,,2026-09-14T05:18:02.649232+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+17,2187430,billing_subscription,,first_contact,False,,False,,2026-09-14T05:18:20.810448+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+18,1820972,account_access,,first_contact,False,,False,,2026-09-14T05:18:41.769057+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+19,1860461,feature_request,,first_contact,False,,False,,2026-09-14T05:18:56.236802+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+20,1498300,sync_app_bug,,providing_requested_info,True,,False,,2026-09-14T05:20:34.511566+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+21,1827172,service_outage,,first_contact,False,,False,,2026-09-14T05:21:15.790947+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+22,2471215,sync_app_bug,,providing_requested_info,True,,False,,2026-09-14T05:22:13.782868+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+23,1973733,data_loss_recovery,,first_contact,True,,False,,2026-09-14T05:22:42.893455+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+24,2412213,no_action_needed,,first_contact,False,,False,,2026-09-14T05:23:11.853655+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+25,2542754,feature_request,,first_contact,False,,False,,2026-09-14T05:23:59.164942+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+26,2327518,billing_subscription,,first_contact,True,churn_threat;abusive_content,False,,2026-09-14T05:25:29.755327+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+27,1960680,complaint_dissatisfaction,,first_contact,False,,False,,2026-09-14T05:25:52.441364+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+28,158428,storage_quota_plan_limits,,first_contact,False,,False,,2026-09-14T05:26:33.278434+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+29,1495898,sharing_permissions,,first_contact,False,,False,,2026-09-14T05:27:06.968844+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+30,2773991,sync_app_bug,,first_contact,False,,False,,2026-09-14T05:27:27.520191+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+31,1740967,sync_app_bug,,providing_requested_info,False,,False,,2026-09-14T05:28:03.447724+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+32,1835575,storage_quota_plan_limits,,first_contact,False,,False,,2026-09-14T05:28:16.242204+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+33,1862350,no_action_needed,,first_contact,False,,False,,2026-09-14T05:28:41.199564+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+34,1859443,how_to_usage,,first_contact,False,,False,,2026-09-14T05:29:08.507727+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+35,877313,how_to_usage,,first_contact,True,legal_sensitive,False,,2026-09-14T05:30:14.927786+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+36,2519210,sync_app_bug,,first_contact,False,,False,,2026-09-14T05:30:31.687285+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+37,1130899,sync_app_bug,,first_contact,True,,False,,2026-09-14T05:31:07.096800+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+38,1820081,service_outage,,first_contact,False,,False,,2026-09-14T05:31:34.507676+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+39,1143079,no_action_needed,,first_contact,False,,True,,2026-09-14T05:33:11.834058+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+40,2929621,billing_subscription,,first_contact,True,,False,"self-service downgrade/cancel is blocked entirely (button not found), so a human needs to process it manually.",2026-09-14T05:34:17.179146+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+41,1678391,feature_request,,first_contact,False,,False,,2026-09-14T05:34:53.508768+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+42,1821637,service_outage,,first_contact,False,,False,,2026-09-14T05:35:23.788611+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+43,403494,how_to_usage,,first_contact,False,,False,,2026-09-14T05:36:04.684966+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+44,1847749,sync_app_bug,,providing_requested_info,False,,True,,2026-09-14T05:36:47.788296+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+45,2179643,billing_subscription,,first_contact,True,needs_human_triage,False,involves money and hence user supoort,2026-09-14T05:37:28.572030+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+46,1837338,no_action_needed,,confirming_resolved,False,,False,,2026-09-14T05:37:50.002368+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+47,113599,sync_app_bug,,providing_requested_info,False,,False,,2026-09-14T05:38:26.829749+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+48,2582373,sync_app_bug,,first_contact,False,,False,,2026-09-14T05:38:40.464248+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+49,612346,account_access,,first_contact,True,,False,,2026-09-14T05:38:56.107676+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+50,190588,how_to_usage,,first_contact,False,,False,,2026-09-14T05:39:25.561428+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+51,1507047,no_action_needed,,first_contact,False,,False,,2026-09-14T05:39:40.047782+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+52,495632,no_action_needed,,disputing_prior_answer,False,,False,,2026-09-14T05:40:37.710579+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+53,1820437,account_access,sync_app_bug,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:36.847010+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+54,103958,account_access,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:37.910325+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+55,1513053,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.501394+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+56,889001,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:27:38.539146+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+57,973876,complaint_dissatisfaction,,first_contact,True,churn_threat,False,[claude draft accepted],2026-09-14T06:27:38.568071+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+58,1969921,billing_subscription,,first_contact,True,wants_human,False,[claude draft accepted],2026-09-14T06:27:38.602528+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+59,653964,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.634433+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+60,1469718,sync_app_bug,storage_quota_plan_limits,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.668096+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+61,1856017,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.709059+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+62,1000455,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:27:38.736034+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+63,1858928,billing_subscription,storage_quota_plan_limits,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:38.769906+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+64,1297330,feature_request,billing_subscription,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.802783+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+65,2222850,sync_app_bug,account_access,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:27:38.836226+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+66,459519,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.869593+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+67,653937,storage_quota_plan_limits,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:38.902711+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+68,1168323,billing_subscription,sync_app_bug,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:38.936050+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+69,2383850,complaint_dissatisfaction,,first_contact,True,churn_threat,False,[claude draft accepted],2026-09-14T06:27:38.981901+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+70,2832795,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:27:39.015805+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+71,1873677,complaint_dissatisfaction,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.061092+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+72,451263,sync_app_bug,,disputing_prior_answer,True,,False,[claude draft accepted],2026-09-14T06:27:39.083919+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+73,2956789,phishing_abuse_report,feature_request,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:39.117284+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+74,230710,sync_app_bug,,disputing_prior_answer,True,,False,[claude draft accepted],2026-09-14T06:27:39.177406+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+75,2914979,sync_app_bug,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:27:39.215299+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+76,785424,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:27:39.247378+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+77,1067542,feature_request,,disputing_prior_answer,False,,False,[claude draft accepted],2026-09-14T06:27:39.261489+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+78,1856146,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.284158+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+79,2883177,billing_subscription,storage_quota_plan_limits,nudging_no_response,True,,False,[claude draft accepted],2026-09-14T06:27:39.319297+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+80,1030218,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.352490+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+81,1047079,account_access,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.391085+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+82,1449834,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:27:39.418879+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+83,1663997,billing_subscription,complaint_dissatisfaction,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:39.452721+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+84,1062808,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.486234+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+85,1224874,sharing_permissions,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.523454+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+86,2766873,how_to_usage,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.587554+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+87,2441294,data_loss_recovery,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:39.617571+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+88,1207100,data_loss_recovery,billing_subscription,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:39.650095+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+89,2187413,feature_request,billing_subscription,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.683924+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+90,847916,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.717274+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+91,409266,sync_app_bug,service_outage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.754497+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+92,1804646,sync_app_bug,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:27:39.786212+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+93,2773997,data_loss_recovery,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:39.817258+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+94,854035,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:27:39.850503+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+95,269412,sync_app_bug,,providing_requested_info,True,,False,[claude draft accepted],2026-09-14T06:27:39.883773+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+96,1040853,feature_request,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:27:39.930997+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+97,1531895,sync_app_bug,sharing_permissions,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.951377+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+98,2353389,how_to_usage,sync_app_bug,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:39.986054+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+99,74482,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.018668+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+100,1523857,sync_app_bug,,providing_requested_info,True,,True,[claude draft accepted],2026-09-14T06:27:40.052050+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+101,1070781,feature_request,storage_quota_plan_limits,first_contact,False,churn_threat,False,[claude draft accepted],2026-09-14T06:27:40.085791+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+102,1874200,billing_subscription,,first_contact,True,legal_sensitive,False,[claude draft accepted],2026-09-14T06:27:40.136905+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+103,2055861,sync_app_bug,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:27:40.165657+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+104,384985,sync_app_bug,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:27:40.199331+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+105,1503561,sync_app_bug,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:27:40.233053+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+106,1629843,how_to_usage,sync_app_bug,disputing_prior_answer,False,,False,[claude draft accepted],2026-09-14T06:27:40.269010+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+107,641305,sync_app_bug,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.299867+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+108,1097379,billing_subscription,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.333713+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+109,1503557,sync_app_bug,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:27:40.366627+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+110,2732321,how_to_usage,feature_request,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.400828+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+111,855789,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.434451+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+112,2959570,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.468437+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+113,1920242,complaint_dissatisfaction,billing_subscription,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.502603+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+114,11451,sharing_permissions,feature_request,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.535962+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+115,664145,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.569286+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+116,2867711,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.602764+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+117,459499,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.635901+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+118,2542750,how_to_usage,,first_contact,True,wants_human,False,[claude draft accepted],2026-09-14T06:27:40.673473+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+119,1180204,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.720138+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+120,869529,how_to_usage,,first_contact,False,,True,[claude draft accepted],2026-09-14T06:27:40.765443+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+121,856451,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.804756+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+122,2573116,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.835029+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+123,1332535,sync_app_bug,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.888735+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+124,238012,storage_quota_plan_limits,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.929200+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+125,891377,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.947171+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+126,654001,feature_request,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:40.969550+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+127,1831968,service_outage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.000359+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+128,1476329,account_access,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.034965+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+129,2407885,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.067755+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+130,1948602,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.100919+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+131,1283772,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.134643+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+132,869903,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.167833+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+133,1421743,sync_app_bug,,disputing_prior_answer,True,,True,[claude draft accepted],2026-09-14T06:27:41.201659+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+134,2370645,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.236007+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+135,2150095,account_access,,providing_requested_info,True,,False,[claude draft accepted],2026-09-14T06:27:41.268635+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+136,829926,storage_quota_plan_limits,complaint_dissatisfaction,first_contact,True,abusive_content,False,[claude draft accepted],2026-09-14T06:27:41.314041+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+137,1207104,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.348487+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+138,1817822,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.381756+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+139,1979868,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.415078+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+140,1820493,sync_app_bug,service_outage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.448767+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+141,2983168,sync_app_bug,feature_request,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.482096+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+142,61698,sync_app_bug,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:27:41.515504+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+143,1062925,complaint_dissatisfaction,,first_contact,True,churn_threat,False,[claude draft accepted],2026-09-14T06:27:41.550475+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+144,1040017,how_to_usage,feature_request,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.583164+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+145,209255,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.616360+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+146,1824168,service_outage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.651107+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+147,2735153,no_action_needed,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:27:41.684207+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+148,1433265,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.718007+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+149,1046051,sync_app_bug,feature_request,first_contact,False,needs_human_triage,False,[claude draft accepted],2026-09-14T06:27:41.752463+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+150,622051,storage_quota_plan_limits,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:27:41.784900+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+151,786081,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:37:01.921051+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+152,2671052,security_account_compromise,,first_contact,True,needs_human_triage,False,[claude draft accepted],2026-09-14T06:37:02.494280+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+153,1523834,sharing_permissions,data_loss_recovery,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.561389+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+154,1789830,data_loss_recovery,complaint_dissatisfaction,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:02.584886+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+155,2000620,complaint_dissatisfaction,account_access,first_contact,True,wants_human;abusive_content,False,[claude draft accepted],2026-09-14T06:37:02.605025+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+156,193078,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.634946+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+157,2484914,sync_app_bug,,providing_requested_info,True,churn_threat,True,[claude draft accepted],2026-09-14T06:37:02.673294+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+158,79855,account_access,service_outage,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:02.700477+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+159,766119,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.732211+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+160,459501,sync_app_bug,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:37:02.766627+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+161,1832567,account_access,service_outage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.798803+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+162,1983399,billing_subscription,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.831945+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+163,2430089,sync_app_bug,service_outage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.859389+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+164,2901835,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.892966+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+165,2187390,how_to_usage,,first_contact,False,,True,[claude draft accepted],2026-09-14T06:37:02.929465+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+166,190576,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:02.976326+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+167,902163,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.020859+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+168,1203732,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.055436+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+169,1948559,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.087301+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+170,1791424,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.121338+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+171,2274306,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:37:03.154169+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+172,2024294,sync_app_bug,,first_contact,True,wants_human,True,[claude draft accepted],2026-09-14T06:37:03.187991+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+173,2922050,storage_quota_plan_limits,sharing_permissions,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:03.221412+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+174,2564746,feature_request,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.254536+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+175,2236012,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.287576+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+176,2082181,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.323155+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+177,2559395,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.355830+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+178,1862944,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.388987+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+179,1086687,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.422938+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+180,196990,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.455996+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+181,1843233,billing_subscription,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:03.489299+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+182,2081469,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.522713+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+183,1948553,complaint_dissatisfaction,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.569629+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+184,805399,no_action_needed,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:03.604686+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+185,1102235,feature_request,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:03.638117+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+186,1318086,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.672453+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+187,2569146,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.706072+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+188,722441,account_access,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:03.781271+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+189,2542752,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.802318+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+190,2136807,storage_quota_plan_limits,billing_subscription,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:03.818169+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+191,1873814,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.839111+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+192,2559417,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.873798+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+193,149043,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.907525+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+194,2892954,account_access,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:03.941227+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+195,2469282,feature_request,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:03.974488+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+196,1209263,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:37:04.017733+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+197,2118968,how_to_usage,complaint_dissatisfaction,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.045531+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+198,1041157,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.074441+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+199,2361376,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.111923+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+200,1515081,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.167665+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+201,842184,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.204199+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+202,2646851,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.237575+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+203,932642,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.270960+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+204,1433296,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.304057+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+205,1298274,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.336729+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+206,768403,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.372505+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+207,1459594,sync_app_bug,,first_contact,False,,True,[claude draft accepted],2026-09-14T06:37:04.410523+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+208,1040840,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.439192+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+209,113612,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.474903+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+210,2092361,sharing_permissions,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.506869+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+211,1433868,account_access,sharing_permissions,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:04.540150+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+212,2136812,data_loss_recovery,security_account_compromise,disputing_prior_answer,True,,False,[claude draft accepted],2026-09-14T06:37:04.573593+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+213,1041974,feature_request,billing_subscription,disputing_prior_answer,False,,False,[claude draft accepted],2026-09-14T06:37:04.607099+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+214,2463401,sharing_permissions,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:37:04.640820+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+215,2412234,sync_app_bug,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:04.675604+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+216,722443,no_action_needed,,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:37:04.724333+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+217,37937,no_action_needed,sync_app_bug,confirming_resolved,False,,False,[claude draft accepted],2026-09-14T06:37:04.753051+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+218,1855775,feature_request,,first_contact,False,needs_human_triage,False,[claude draft accepted],2026-09-14T06:37:04.787669+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+219,11430,data_loss_recovery,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.820434+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+220,2092423,sync_app_bug,service_outage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.854071+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+221,1457649,service_outage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.887468+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+222,2832796,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.920711+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+223,843993,how_to_usage,sync_app_bug,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:04.954558+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+224,628134,data_loss_recovery,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:04.990667+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+225,1433277,billing_subscription,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.022985+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+226,1900723,feature_request,,disputing_prior_answer,False,,False,[claude draft accepted],2026-09-14T06:37:05.056426+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+227,2970361,sync_app_bug,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.091506+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+228,1274532,sync_app_bug,,disputing_prior_answer,True,,True,[claude draft accepted],2026-09-14T06:37:05.125271+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+229,163287,billing_subscription,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.157269+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+230,659272,sync_app_bug,complaint_dissatisfaction,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:05.190506+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+231,2477109,sync_app_bug,service_outage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.226017+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+232,2027818,account_access,service_outage,disputing_prior_answer,True,,False,[claude draft accepted],2026-09-14T06:37:05.260849+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+233,193059,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.306930+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+234,933425,feature_request,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.354076+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+235,2124240,how_to_usage,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.386723+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+236,867115,no_action_needed,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:05.423867+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+237,2353388,sync_app_bug,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:05.457966+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+238,1820978,service_outage,,first_contact,False,,True,[claude draft accepted],2026-09-14T06:37:05.493568+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+239,2471216,sync_app_bug,,first_contact,True,,False,[claude draft accepted],2026-09-14T06:37:05.520408+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+240,1102233,sync_app_bug,how_to_usage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.554100+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+241,1995355,feature_request,how_to_usage,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.588268+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+242,1084786,complaint_dissatisfaction,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.621173+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+243,2501320,account_access,,nudging_no_response,True,,False,[claude draft accepted],2026-09-14T06:37:05.653911+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+244,2469278,no_action_needed,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.687977+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+245,55734,complaint_dissatisfaction,,disputing_prior_answer,True,churn_threat,False,[claude draft accepted],2026-09-14T06:37:05.721126+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+246,1214140,sync_app_bug,,providing_requested_info,False,,True,[claude draft accepted],2026-09-14T06:37:05.753512+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+247,2430107,sync_app_bug,sharing_permissions,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:05.785751+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+248,1667059,sync_app_bug,sharing_permissions,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.819981+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+249,1102230,sync_app_bug,,providing_requested_info,False,,False,[claude draft accepted],2026-09-14T06:37:05.852177+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa
+250,2768656,account_access,,first_contact,False,,False,[claude draft accepted],2026-09-14T06:37:05.897932+00:00,6812978ec981bbaaeba1b4ec99c62729338dffbad623ff5547b64a53e45aa6aa

@@ -1,0 +1,14 @@
+,account_access,security_account_compromise,phishing_abuse_report,billing_subscription,storage_quota_plan_limits,sync_app_bug,service_outage,sharing_permissions,data_loss_recovery,how_to_usage,feature_request,complaint_dissatisfaction,no_action_needed,__missing__
+account_access,16,0,0,0,0,0,0,0,0,1,0,0,0,0
+security_account_compromise,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+phishing_abuse_report,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+billing_subscription,0,0,0,12,0,0,0,0,0,4,0,0,0,0
+storage_quota_plan_limits,0,0,0,1,4,0,0,1,0,1,0,1,0,0
+sync_app_bug,2,0,0,0,0,46,1,4,0,5,2,1,2,0
+service_outage,1,0,0,0,0,0,5,0,0,0,0,0,0,0
+sharing_permissions,0,0,0,0,0,0,0,3,0,1,1,0,0,0
+data_loss_recovery,0,0,0,0,1,1,0,0,8,1,0,0,0,0
+how_to_usage,0,0,0,1,0,5,0,0,0,23,0,1,0,0
+feature_request,0,0,0,3,1,1,0,0,0,5,12,4,0,0
+complaint_dissatisfaction,0,0,0,2,0,0,0,0,0,1,1,6,1,0
+no_action_needed,0,0,0,1,0,1,0,0,1,2,0,1,27,0

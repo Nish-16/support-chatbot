@@ -27,6 +27,14 @@ hand-verifying every one of ~207 examples across two more open-ended
 judgment calls would add real labeling time for comparatively little
 payoff. Revisit if the report ends up needing them.
 
+SAME RULES, SAME INPUTS AS THE CLASSIFIER (2026-09-13): the rules printed at
+the start are taxonomy_rules.LABELER_BLOCK -- the exact rules and boundary
+examples prompt p3 gives the model, plus the reason for each example. And the
+tweet is shown with the earlier message it replies to (data/golden_context.csv),
+no longer with the historical Dropbox reply: that reply is written after the
+tweet, the classifier never sees it, and it hints at how support handled the
+case -- an input only one of the two labelers had.
+
 Resumable: every label is appended to data/golden_labels.csv as soon
 as you enter it, so you can stop anytime (Ctrl+C or 'q') and pick up
 later -- already-labeled tweets are skipped automatically.
@@ -60,10 +68,15 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from groq_lib import INTENT_NAMES, INTENTS, TURN_TYPE_NAMES, FLAG_SPEC, PRECEDENCE_RULES
+from groq_lib import INTENT_NAMES, INTENTS, TURN_TYPE_NAMES, FLAG_SPEC
+from taxonomy_rules import LABELER_BLOCK
 
 CANDIDATES_PATH = "data/golden_candidates.csv"
 LABELS_PATH = "data/golden_labels.csv"
+CONTEXT_PATH = "data/golden_context.csv"  # built by 27_escalation_signals.py --build-context
+# Same wording 27_escalation_signals.py gives the classifier.
+CONTEXT_LABELS = {"brand": "Dropbox support", "same": "the same customer, earlier",
+                  "other": "another user"}
 
 BOOL_FLAG_NAMES = [name for name, spec in FLAG_SPEC.items() if spec["type"] == "bool"]
 
@@ -175,17 +188,33 @@ def print_intent_menu():
 
 
 def print_precedence_rules():
-    """The Part 11 ladder, same text the classifier is given.
+    """The Part 11 boundary rules and examples, same text prompt p3 gives the
+    classifier (taxonomy_rules.py), plus the reason behind each example.
 
-    Deliberately the SAME string (groq_lib.PRECEDENCE_RULES) rather than a
-    paraphrase: a labeler and a model applying differently-worded versions
-    of 'the same' rule is how the v1 golden set ended up with three labels
-    across one family of quota tweets.
+    Deliberately the SAME rendered rules rather than a paraphrase: a labeler
+    and a model applying differently-worded versions of 'the same' rule is how
+    the v1 golden set ended up with three labels across one family of quota
+    tweets. tests/test_taxonomy_rules.py checks this output.
     """
     print("\n" + "=" * 78)
-    print(PRECEDENCE_RULES)
+    print(LABELER_BLOCK)
     print("=" * 78)
-    print("Full reasoning, worked examples and counterexamples: taxonomy.md Part 11.")
+
+
+def load_contexts() -> dict[str, tuple[str, str]]:
+    """tweet_id -> (who wrote it, text) for the message each tweet replies to."""
+    if not os.path.exists(CONTEXT_PATH):
+        return {}
+    ctx = pd.read_csv(CONTEXT_PATH, dtype={"customer_tweet_id": str})
+    return {r.customer_tweet_id: (r.parent_author, r.parent_text) for r in ctx.itertuples()}
+
+
+def describe_context(tweet_id, contexts: dict[str, tuple[str, str]]) -> str:
+    hit = contexts.get(str(tweet_id))
+    if hit is None:
+        return f"(no earlier message on file -- first contact, or not covered by {CONTEXT_PATH})"
+    who, text = hit
+    return f"EARLIER MESSAGE it replies to ({CONTEXT_LABELS.get(who, who)}): {text}"
 
 
 def print_turn_type_menu():
@@ -283,6 +312,7 @@ def main(priority: bool = False, floor: int = DEFAULT_FLOOR, plan_only: bool = F
     print_precedence_rules()
     print_intent_menu()
     print_turn_type_menu()
+    contexts = load_contexts()
 
     write_header = not os.path.exists(LABELS_PATH)
     with open(LABELS_PATH, "a", newline="", encoding="utf-8") as f:
@@ -293,7 +323,7 @@ def main(priority: bool = False, floor: int = DEFAULT_FLOOR, plan_only: bool = F
         for i, row in enumerate(remaining.itertuples(), 1):
             print(f"\n--- [{i}/{len(remaining)}] tweet {row.customer_tweet_id} ---")
             print(f"CUSTOMER: {row.customer_text}")
-            print(f"(historical Dropbox reply, for context only: {row.brand_text})")
+            print(describe_context(row.customer_tweet_id, contexts))
 
             intent = ask_intent("Your intent (number or name, 'q' to quit): ")
             if intent == "QUIT":
