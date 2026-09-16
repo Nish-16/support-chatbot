@@ -745,7 +745,7 @@ In priority order, most valuable first.
    and nothing reads it. It fixes three separate failures at once: `turn_type`'s
    base-rate artifact, the 15 unroutable rows, and the dead
    `disputing_prior_answer` override. Highest-value change outstanding.
-2. **Get a second reader on the 58 adjudicated rows** (0.5 day of someone
+2. **Get a second reader on the 53 adjudicated rows** (0.5 day of someone
    else's time). The one thing I cannot do for myself, and the largest open
    risk in §5.
 3. **A second human rater for the judge** (0.5 day). **Done for one rater:**
