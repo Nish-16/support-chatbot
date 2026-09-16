@@ -25,7 +25,7 @@ The whole path below runs in about 5 seconds.
 
 ```bash
 python -m venv .venv
-./.venv/Scripts/python.exe -m pip install pandas scikit-learn groq python-dotenv tenacity
+./.venv/Scripts/python.exe -m pip install -r requirements.txt   # pandas, scikit-learn, groq, python-dotenv, tenacity
 
 ./.venv/Scripts/python.exe scripts/12_evaluate.py        # headline + baselines + caveats
 ./.venv/Scripts/python.exe scripts/10_baselines.py       # baselines on their own

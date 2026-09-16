@@ -1,0 +1,19 @@
+# Everything the headline path needs. Evaluation makes no API calls, so
+# pandas and scikit-learn alone reproduce §3; the rest is for running the
+# classifier, drafter and judge against Groq.
+#
+#   python -m venv .venv
+#   ./.venv/Scripts/python.exe -m pip install -r requirements.txt
+#
+# Pinned at the versions this project was built and last verified against
+# (Python 3.13.15, 2026-09-16).
+
+pandas==3.0.5
+scikit-learn==1.9.1
+groq==1.7.0
+python-dotenv==1.2.3
+tenacity==9.1.4
+
+# Optional: the embedding retriever (scripts/vector_retrieval.py). Kept out of
+# the headline path on purpose -- it pulls an 83MB MiniLM download. See §3.
+# chromadb==1.5.9

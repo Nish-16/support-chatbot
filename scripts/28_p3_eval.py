@@ -681,6 +681,10 @@ def main():
                    help="--report only: score persistently failed predictions as wrong and escalated")
     args = p.parse_args()
 
+    # Reports quote raw tweets, which contain emoji. Windows defaults stdout to
+    # cp1252 when it is redirected, which raises UnicodeEncodeError mid-report.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     if args.build:
         build()
         return

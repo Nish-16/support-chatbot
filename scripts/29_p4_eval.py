@@ -22,6 +22,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import sys
 from datetime import datetime, timezone
 
 import pandas as pd
@@ -188,6 +189,11 @@ def main():
     mode.add_argument("--report", action="store_true")
     p.add_argument("--count-missing-as-wrong", action="store_true")
     args = p.parse_args()
+
+    # Reports quote raw tweets, which contain emoji. Windows defaults stdout to
+    # cp1252 when it is redirected, which raises UnicodeEncodeError mid-report.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     if args.run:
         run()
     else:

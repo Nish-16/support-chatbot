@@ -10,10 +10,12 @@ Hiver SDE Intern Assignment.docx
 # ad-hoc backups
 *.bak
 
-# markdown docs -- kept local, not tracked. README.md is the exception:
-# it is the repo's single document and carries the full report.
+# markdown docs -- kept local, not tracked, with two exceptions:
+# README.md carries the full report, and taxonomy.md holds the Part 11
+# precedence rules that tests/ and 28_p3_eval.py --verify read at runtime.
 *.md
 !README.md
+!taxonomy.md
 
 # local Claude Code config
 .claude/
