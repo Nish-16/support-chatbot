@@ -99,10 +99,16 @@ function Result({ r }) {
       <div className="you"><span>Customer</span>{r.customer_text}</div>
 
       <div className="row">
-        <span className="kv">intent <b>{r.intent}</b></span>
-        {r.confidence != null && <span className="kv">confidence <b>{r.confidence}</b></span>}
-        {r.turn_type && <span className="kv">turn <b>{r.turn_type}</b></span>}
-        {r.sentiment && <span className="kv">sentiment <b>{r.sentiment}</b></span>}
+        {r.prefiltered ? (
+          <span className="kv">pre-filter <b>{r.prefiltered}</b> — classifier not called</span>
+        ) : (
+          <React.Fragment>
+            <span className="kv">intent <b>{r.intent}</b></span>
+            {r.confidence != null && <span className="kv">confidence <b>{r.confidence}</b></span>}
+            {r.turn_type && <span className="kv">turn <b>{r.turn_type}</b></span>}
+            {r.sentiment && <span className="kv">sentiment <b>{r.sentiment}</b></span>}
+          </React.Fragment>
+        )}
       </div>
 
       {r.flags && Object.keys(r.flags).length > 0 && (

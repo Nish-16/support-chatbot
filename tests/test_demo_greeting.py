@@ -82,6 +82,27 @@ class CourtesyReplyIsSafe(unittest.TestCase):
         self.assertNotIn("@", demo.COURTESY_REPLY)
 
 
+class PreFilterMakesNoApiCall(unittest.TestCase):
+    """A greeting must short-circuit before the classifier, or its low-confidence
+    guess trips escalation.decide()'s `confidence < 0.5` override and escalates
+    "hey" to a human."""
+
+    class ExplodingClient:
+        def __getattr__(self, name):
+            raise AssertionError(f"the classifier was called ({name}) for a bare greeting")
+
+    def test_greeting_never_reaches_the_client(self):
+        r = demo.run_once(self.ExplodingClient(), "hey", retriever=None)
+        self.assertEqual(r["prefiltered"], "bare_greeting")
+        self.assertEqual(r["action"], "no_action")
+        self.assertEqual(r["reply"], demo.COURTESY_REPLY)
+        self.assertTrue(r["courtesy_reply"])
+
+    def test_courtesy_off_sends_it_to_the_classifier(self):
+        with self.assertRaises(AssertionError):
+            demo.run_once(self.ExplodingClient(), "hey", retriever=None, courtesy=False)
+
+
 class PolicyIsUnchanged(unittest.TestCase):
     """The courtesy reply must not leak into anything the evaluation scores."""
 

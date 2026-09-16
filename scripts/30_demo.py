@@ -107,6 +107,27 @@ def run_once(client, text: str, retriever, want_reply: bool = True, k: int = 3,
 
     `courtesy` answers a bare greeting with a fixed string instead of silence;
     see COURTESY_REPLY. It changes nothing the evaluation measures."""
+    # Pre-filter, BEFORE the classifier sees it. A bare greeting carries no
+    # intent to classify, and asking anyway produces a low-confidence guess that
+    # trips escalation.decide()'s `confidence < 0.5` override -- which escalates
+    # "hey" to a human. Short-circuiting here costs no API call and cannot
+    # escalate. Nothing the evaluation scores reaches this path: no golden row
+    # is a bare greeting (tests/test_demo_greeting.py pins that).
+    if courtesy and is_bare_greeting(text):
+        return {
+            "customer_text": text,
+            "prefiltered": "bare_greeting",
+            "intent": None,
+            "confidence": None,
+            "turn_type": None,
+            "flags": {},
+            "action": NO_ACTION,
+            "action_reason": "Bare greeting -- answered by a deterministic pre-filter, no classifier call.",
+            "reply": COURTESY_REPLY,
+            "reply_safe": True,
+            "courtesy_reply": True,
+        }
+
     result = classify_message(client, text)
     decision = decide(result)
 
@@ -126,15 +147,9 @@ def run_once(client, text: str, retriever, want_reply: bool = True, k: int = 3,
         "action_reason": decision.reason,
     }
 
-    # A bare greeting is the one no_action case worth answering. Fixed string,
-    # no API call, and the routing decision above is unchanged.
-    if want_reply and decision.action == NO_ACTION and courtesy and is_bare_greeting(text):
-        out["reply"] = COURTESY_REPLY
-        out["reply_safe"] = True
-        out["courtesy_reply"] = True
     # A no_action message has nothing to reply to, and drafting one would spend
     # a call to produce a reply the policy says not to send.
-    elif want_reply and decision.action != NO_ACTION:
+    if want_reply and decision.action != NO_ACTION:
         draft = _draft.draft_reply(client, text, result["intent"], retriever, k=k)
         out["reply"] = draft.get("reply")
         out["reply_note"] = draft.get("note")
@@ -151,6 +166,14 @@ def run_once(client, text: str, retriever, want_reply: bool = True, k: int = 3,
 
 
 def print_result(r: dict, show_grounding: bool = True) -> None:
+    if r.get("prefiltered"):
+        print(f"\n  pre-filter  {r['prefiltered']} -- classifier not called")
+        print(f"\n  -> {ACTION_LABEL.get(r['action'], r['action'])}")
+        print(f"     {r['action_reason']}")
+        print(f"\n  courtesy reply:\n    {r['reply']}")
+        print("  (fixed greeting response -- outside the evaluated policy, no API call)\n")
+        return
+
     conf = r.get("confidence")
     conf_s = f"{conf:.2f}" if isinstance(conf, (int, float)) else str(conf)
     print(f"\n  intent      {r['intent']}  (confidence {conf_s})")
