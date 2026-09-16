@@ -1002,4 +1002,25 @@ Dataset: Thought Vector, *Customer Support on Twitter* (Kaggle). Models:
 Groq-hosted `openai/gpt-oss-20b` (classification, drafting) and
 `openai/gpt-oss-120b` (comparison run); `qwen/qwen3.8-27b` as the independent
 judge. Libraries: pandas, scikit-learn (TF-IDF, LogisticRegression), tenacity,
-python-dotenv, groq. Everything else is mine.
+python-dotenv, groq.
+
+### AI assistance
+
+This project was built with an AI coding assistant (Anthropic's Claude, via
+Claude Code) used throughout: writing and reviewing code, drafting and editing
+this README and `SUBMISSION.md`, and drafting the evaluation labels noted below.
+The brief allows this and asks that borrowed work be cited — this is that
+citation. Where it matters to a result, it is flagged at the result rather than
+only here.
+
+- **Code** — written and refactored with AI assistance throughout, then run and
+  reviewed by me.
+- **The 189-row golden set** — hand-labelled by me. The 53 re-adjudicated labels
+  are my calls, with one reader (§5.2), and the original label file was never
+  modified.
+- **The p3 evaluation set** — **198 of its 250 labels are AI drafts** that I
+  reviewed before accepting, after ~200 hand labels were lost. The drafter had
+  read the same boundary rules p3 carries and p1 does not, so that experiment
+  carries a known bias, reported wherever its result appears (§6.4, §9).
+- **Judgment calls** — the taxonomy, the escalation policy, the rubric
+  revisions, and the choices in the decision log (§7) are mine.

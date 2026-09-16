@@ -391,5 +391,23 @@ measured bottleneck.
 
 ---
 
+## AI assistance
+
+Built with an AI coding assistant (Anthropic's Claude, via Claude Code) used
+throughout — writing and reviewing code, and drafting and editing this report.
+The brief permits this and asks that borrowed work be cited; this is that
+citation.
+
+The one place it affects a result: **198 of the 250 labels in the p3 evaluation
+set are AI drafts** that I reviewed before accepting, after ~200 hand labels
+were lost. The drafter had read the same boundary rules p3 carries and p1 does
+not, so that comparison carries a known bias — which is part of why its verdict
+is reported as INCONCLUSIVE (§7.4). The **189-row golden set behind the 81.0%
+headline was hand-labelled by me**, and the 53 re-adjudicated labels are my own
+calls with one reader (§6.2). The taxonomy, escalation policy, rubric revisions
+and decision log are mine.
+
+---
+
 *Full detail, all experiment scripts, and the complete decision history:
 `README.md` in the repo.*
