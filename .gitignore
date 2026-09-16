@@ -16,6 +16,7 @@ Hiver SDE Intern Assignment.docx
 *.md
 !README.md
 !taxonomy.md
+!SUBMISSION.md
 
 # local Claude Code config
 .claude/
