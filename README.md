@@ -850,56 +850,57 @@ retrieval is not the measured bottleneck.
    Showing it first would anchor the labeller and quietly inflate the very
    agreement number being reported.
 6. **Escalation by an explicit policy table, not LLM discretion.** Every
-   decision carries a stated reason and is auditable. The cost: intent alone
-   doesn't determine escalation for three intents that sit near 50% — left as a
-   stated finding, because fitting per-intent exceptions on ~113 rows is
-   overfitting.
-7. **Flipped `account_access` from auto-handle to escalate**, because the golden
-   set showed a human escalated 89% of those. Tuned on the 60% dev split,
-   measured on the 40% never touched.
-8. **The DM-deflection policy is an instruction in the prompt, not something
+   decision carries a stated reason and is auditable. Maintaining the table is
+   an evidence question, not a taste one: `account_access` was flipped from
+   auto-handle to escalate because the golden set showed a human escalated 89%
+   of those — tuned on the 60% dev split, measured on the 40% never touched.
+   The cost: intent alone doesn't determine escalation for three intents that
+   sit near 50%, left as a stated finding, because fitting per-intent
+   exceptions on ~113 rows is overfitting.
+7. **The DM-deflection policy is an instruction in the prompt, not something
    the model infers from retrieved examples** — and `is_deflection` is scored as
    its own boolean rather than folded into the quality score, because averaging
    it in would hide the failure it exists to catch.
-9. **Kept the earlier-but-wrong results rather than overwriting them.** The
+8. **Kept the earlier-but-wrong results rather than overwriting them.** The
    original labels, the v1 rubric scores and the two failed improvement attempts
    are all still in the repo and still reproducible from the CLI. A take-home
    that only reports its successes isn't showing how it makes decisions.
-10. **Re-adjudicated all 189 rows, not just the disagreements.** The
-    disagreement-only version scored 2.5 points higher and was biased upward by
-    construction (§5.3). I wrote the precedence rules *before* relabelling,
-    which caught two rules my own data proved wrong before they shipped.
-11. **Excluded the 15 unscorable rows from the headline** (14
-    `insufficient_context`, 1 `ambiguous`) rather than assigning a label nobody
-    can defend. They're reported as a finding, and `--keep-unscorable` puts them
-    back.
-12. **Froze a 60/40 dev/holdout split** before any tuning, so the prompt and
+9. **Repaired the labels wholesale, and refused to label what couldn't be
+   labelled.** All 189 rows were re-adjudicated, not just the disagreements:
+   the disagreement-only version scored 2.5 points higher and was biased upward
+   by construction (§5.3). The precedence rules were written *before*
+   relabelling, which caught two rules my own data proved wrong before they
+   shipped. The 15 rows still unscorable afterwards (14 `insufficient_context`,
+   1 `ambiguous`) are excluded from the headline rather than given a label
+   nobody can defend — reported as a finding, and `--keep-unscorable` puts them
+   back.
+10. **Froze a 60/40 dev/holdout split** before any tuning, so the prompt and
     policy experiments could not quietly contaminate the reported number.
-13. **Rejected the prompt containing the rules, and the 6× larger model** — both
+11. **Rejected the prompt containing the rules, and the 6× larger model** — both
     measured, both worse, both documented (§5.7). The negative results were more
     informative than a win: 22 of 27 shared errors carry the *same* wrong label,
     which is what says the ceiling is the taxonomy.
-14. **Wrote a deterministic reply guard instead of trusting the prompt.** The
+12. **Wrote a deterministic reply guard instead of trusting the prompt.** The
     drafting prompt already said "never emit a placeholder"; `@123456` still
     reached 12% of drafts. The guard validates, regenerates once with the
     offending text quoted back, and sanitises as a last resort — never
     substituting an invented name, because filling the slot with a fabrication
     is a worse failure than leaving it empty.
-15. **Namespaced the prediction cache on `taxonomy:prompt:model`.** Under the
-    old namespace the model A/B would have read the incumbent's cached answers
-    back and reported perfect agreement — the most convincing wrong result
-    available.
-16. **Kept evaluation API-free.** Every prediction is stored next to its label,
-    so `12_evaluate.py` re-runs in seconds at zero cost. This is why the
-    15-minute reproduce target is achievable at all.
-17. **Added embedding retrieval as an opt-in second implementation, not a
+13. **Treated the prediction cache as evaluation infrastructure.** Keys are
+    namespaced on `taxonomy:prompt:model`: under the old namespace the model A/B
+    would have read the incumbent's cached answers back and reported perfect
+    agreement — the most convincing wrong result available. And because every
+    prediction is stored next to its label, `12_evaluate.py` re-runs in seconds
+    at zero cost, which is why the 15-minute reproduce target is achievable at
+    all.
+14. **Added embedding retrieval as an opt-in second implementation, not a
     replacement.** It measurably retrieves better (§3), but it costs an 83MB
     download and ~270× the query latency, and it has not been shown to improve
     the replies themselves. Putting it behind `--retriever` keeps both claims
     testable and keeps the headline reproducible without it. The `retriever`
     column in `reply_evals.csv` exists so the two can never be averaged
     together by accident — the same mistake the rubric versions nearly caused.
-18. **Every long-running script is append-as-you-go and resumable.** An early
+15. **Every long-running script is append-as-you-go and resumable.** An early
     script wrote its output once at the end, and a quota cap killed the run
     mid-way — ~150 successful classifications would have been silently lost.
     They were recovered by parsing the terminal log rather than re-spending
