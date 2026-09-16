@@ -27,6 +27,7 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import sys
 
 from groq import APIError, APIConnectionError, APITimeoutError, RateLimitError
@@ -48,9 +49,64 @@ ACTION_LABEL = {
     NO_ACTION: "NO ACTION (not a support issue)",
 }
 
+# -- Courtesy reply for bare greetings ---------------------------------------
+#
+# "hi" classifies as no_action_needed, which is CORRECT: intents.json defines
+# that intent as "praise, thanks, spam, sales/jobs, off-topic, or too
+# fragmentary to route". The policy then drafts nothing, which is right for
+# spam and job ads and looks broken for a greeting.
+#
+# This is deliberately NOT a fix in escalation.py or draft_reply():
+#   * escalation.decide() still returns NO_ACTION, so the escalation metric in
+#     12_evaluate.py (which scores `action == ESCALATE`, a boolean) is byte for
+#     byte unaffected.
+#   * draft_reply() is untouched, so 13_reply_eval.py -- which stratifies by
+#     human intent and therefore samples no_action rows -- keeps drafting for
+#     exactly the rows it did before, and the judged 3.60 cannot move.
+#
+# It is presentation, scoped to the demo, and reported as such. The real fix is
+# splitting no_action_needed so greetings stop sharing a label with spam; that
+# needs relabelling and belongs in the next-steps list, not here.
+#
+# Deterministic on purpose: a canned string costs no API call and cannot
+# hallucinate, and the whole thing is testable offline (tests/test_demo_greeting.py).
+COURTESY_REPLY = "Hi there! What can we help you with today?"
 
-def run_once(client, text: str, retriever, want_reply: bool = True, k: int = 3) -> dict:
-    """Classify -> route -> (optionally) draft. Returns everything, prints nothing."""
+_GREETING_WORDS = {
+    "hi", "hii", "hiii", "hello", "helo", "hey", "heyy", "heya", "hiya", "yo",
+    "howdy", "sup", "greetings", "morning", "afternoon", "evening", "gm",
+}
+# Words that may accompany a greeting without adding a request.
+_GREETING_FILLER = {
+    "there", "all", "team", "guys", "folks", "everyone", "good", "dropbox",
+    "dropboxsupport", "please", "pls", "a", "you",
+}
+_HANDLE_OR_URL = re.compile(r"(?:@\w+|https?://\S+)")
+_WORD = re.compile(r"[a-z']+")
+# 4 words covers "hi there dropbox team"; beyond that it is carrying content.
+_MAX_GREETING_WORDS = 4
+
+
+def is_bare_greeting(text: str) -> bool:
+    """True only for a message that is a greeting and nothing else.
+
+    Must never fire on a greeting that also carries a request -- "hi, my files
+    won't sync" is a sync_app_bug and has to reach the real drafter."""
+    stripped = _HANDLE_OR_URL.sub(" ", str(text).lower())
+    words = _WORD.findall(stripped)
+    if not words or len(words) > _MAX_GREETING_WORDS:
+        return False
+    if not any(w in _GREETING_WORDS for w in words):
+        return False
+    return all(w in _GREETING_WORDS or w in _GREETING_FILLER for w in words)
+
+
+def run_once(client, text: str, retriever, want_reply: bool = True, k: int = 3,
+             courtesy: bool = True) -> dict:
+    """Classify -> route -> (optionally) draft. Returns everything, prints nothing.
+
+    `courtesy` answers a bare greeting with a fixed string instead of silence;
+    see COURTESY_REPLY. It changes nothing the evaluation measures."""
     result = classify_message(client, text)
     decision = decide(result)
 
@@ -70,9 +126,15 @@ def run_once(client, text: str, retriever, want_reply: bool = True, k: int = 3) 
         "action_reason": decision.reason,
     }
 
+    # A bare greeting is the one no_action case worth answering. Fixed string,
+    # no API call, and the routing decision above is unchanged.
+    if want_reply and decision.action == NO_ACTION and courtesy and is_bare_greeting(text):
+        out["reply"] = COURTESY_REPLY
+        out["reply_safe"] = True
+        out["courtesy_reply"] = True
     # A no_action message has nothing to reply to, and drafting one would spend
     # a call to produce a reply the policy says not to send.
-    if want_reply and decision.action != NO_ACTION:
+    elif want_reply and decision.action != NO_ACTION:
         draft = _draft.draft_reply(client, text, result["intent"], retriever, k=k)
         out["reply"] = draft.get("reply")
         out["reply_note"] = draft.get("note")
@@ -109,7 +171,10 @@ def print_result(r: dict, show_grounding: bool = True) -> None:
             for n in r["grounded_on"]:
                 snippet = " ".join(str(n["past_reply"]).split())[:100]
                 print(f"    sim={n['similarity']:.3f}  \"{snippet}\"")
-        print(f"\n  draft reply:\n    {r['reply']}")
+        label = "courtesy reply" if r.get("courtesy_reply") else "draft reply"
+        print(f"\n  {label}:\n    {r['reply']}")
+        if r.get("courtesy_reply"):
+            print("  (fixed greeting response -- outside the evaluated policy, no API call)")
         if r.get("reply_note"):
             print(f"  note: {r['reply_note']}")
         if r.get("guard"):
@@ -130,6 +195,8 @@ def main():
     p = argparse.ArgumentParser(description="Interactive end-to-end demo of the support agent.")
     p.add_argument("--text", help="classify and answer one message, then exit")
     p.add_argument("--no-reply", action="store_true", help="classify and route only (1 API call, no drafting)")
+    p.add_argument("--no-courtesy", action="store_true",
+                   help="stay silent on a bare greeting, matching the evaluated policy exactly")
     p.add_argument("--json", action="store_true", help="emit JSON instead of the formatted view")
     p.add_argument("-k", type=int, default=3, help="grounding examples to retrieve (default 3)")
     p.add_argument("--retriever", choices=["tfidf", "vector"], default="tfidf",
@@ -151,7 +218,8 @@ def main():
 
     def handle(text: str) -> None:
         try:
-            r = run_once(client, text, retriever, want_reply=not args.no_reply, k=args.k)
+            r = run_once(client, text, retriever, want_reply=not args.no_reply, k=args.k,
+                         courtesy=not args.no_courtesy)
         except (APIError, APIConnectionError, APITimeoutError, RateLimitError) as e:
             print(f"Groq call failed: {e}", file=sys.stderr)
             return
