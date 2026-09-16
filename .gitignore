@@ -10,15 +10,16 @@ Hiver SDE Intern Assignment.docx
 # ad-hoc backups
 *.bak
 
-# markdown docs -- kept local, not tracked, with two exceptions:
-# README.md carries the full report, and taxonomy.md holds the Part 11
-# precedence rules that tests/ and 28_p3_eval.py --verify read at runtime.
+# markdown docs -- kept local, not tracked, with three exceptions:
+# README.md carries the full report, SUBMISSION.md the 6-page version, and
+# taxonomy.md holds the Part 11 precedence rules that tests/ and
+# 28_p3_eval.py --verify read at runtime.
 *.md
 !README.md
 !taxonomy.md
 !SUBMISSION.md
 
-# local Claude Code config
+# local editor/assistant config
 .claude/
 
 # Chroma index -- 17MB of rebuildable binary; querying needs the MiniLM
