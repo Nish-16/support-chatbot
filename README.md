@@ -46,6 +46,33 @@ scripts/12_evaluate.py --label-col human_intent --keep-unscorable   # reproduces
 Anything that calls the LLM (classification, drafting, judging) needs
 `GROQ_API_KEY` in `.env` — see `.env.example`. None of the commands above do.
 
+## Try the agent on your own message
+
+The evaluation above is API-free and reads stored predictions. To watch the
+agent actually run — classify, route, then draft — use the demo. Both need
+`GROQ_API_KEY`, and cost 1 classify + 1 draft call per message (plus one more
+if the placeholder guard has to regenerate):
+
+```bash
+./.venv/Scripts/python.exe scripts/30_demo.py                    # interactive prompt
+./.venv/Scripts/python.exe scripts/30_demo.py --text "..."       # one-shot
+./.venv/Scripts/python.exe scripts/30_demo.py --text "..." --json    # machine-readable
+./.venv/Scripts/python.exe scripts/30_demo.py --no-reply         # classify + route only, 1 call
+
+./.venv/Scripts/python.exe scripts/31_serve.py                   # web UI at http://127.0.0.1:8000
+```
+
+Both run the same production functions the evaluation scores — `classify_message()`
+→ `escalation.decide()` → `draft_reply()` — so what you see is what §3 measured.
+The web frontend is React from a CDN over a stdlib `http.server`, with no build
+step and no extra dependency: `web/index.html` is the whole frontend, and
+`31_serve.py` adds one JSON endpoint. It binds to localhost only.
+
+Example — *"I was charged twice for my Plus plan this month and I want a refund"*
+→ `billing_subscription` (0.98) → **escalate**, "Financial transaction / refund
+authorization needs human verification" → a draft asking for the ticket number
+and account email, exactly as the DM policy in §1 requires.
+
 The embedding retriever is optional and kept out of that path on purpose, so
 the headline stays reproducible with two libraries and no downloads:
 

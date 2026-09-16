@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DropboxSupport Agent</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.2/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #fbfbfa; --card: #fff; --line: #e4e4e1; --text: #1a1a18;
+    --muted: #6b6b66; --accent: #0061fe;
+    --esc: #b42318; --esc-bg: #fef3f2; --auto: #027a48; --auto-bg: #ecfdf3;
+    --none: #6b6b66; --none-bg: #f4f4f2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { margin-bottom: 24px; }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 650; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; }
+  form { display: flex; gap: 8px; margin-bottom: 8px; }
+  input[type=text] {
+    flex: 1; padding: 11px 13px; border: 1px solid var(--line); border-radius: 8px;
+    font: inherit; background: var(--card); color: var(--text);
+  }
+  input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+  button {
+    padding: 11px 18px; border: 0; border-radius: 8px; background: var(--accent);
+    color: #fff; font: inherit; font-weight: 550; cursor: pointer;
+  }
+  button:disabled { opacity: 0.45; cursor: default; }
+  .opts { display: flex; gap: 16px; font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .opts label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px; margin-bottom: 14px;
+  }
+  .you { font-weight: 550; margin-bottom: 14px; }
+  .you span { color: var(--muted); font-weight: 400; font-size: 12px; display: block; margin-bottom: 2px; }
+  .row { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; margin-bottom: 10px; }
+  .kv { color: var(--muted); }
+  .kv b { color: var(--text); font-weight: 550; }
+  .badge {
+    display: inline-block; padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.01em;
+  }
+  .escalate   { color: var(--esc);  background: var(--esc-bg); }
+  .auto_handle{ color: var(--auto); background: var(--auto-bg); }
+  .no_action  { color: var(--none); background: var(--none-bg); }
+  .reason { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+  .reply {
+    margin-top: 14px; padding: 13px; background: #f7f9ff;
+    border: 1px solid #dbe6ff; border-radius: 8px; white-space: pre-wrap;
+  }
+  .reply-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .warn { color: var(--esc); font-size: 12.5px; margin-top: 8px; font-weight: 550; }
+  details { margin-top: 12px; font-size: 12.5px; color: var(--muted); }
+  summary { cursor: pointer; }
+  details li { margin: 6px 0; }
+  .err { border-color: #f5c6c2; background: var(--esc-bg); color: var(--esc); }
+  .empty { color: var(--muted); font-size: 13.5px; }
+  .ex { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .ex button {
+    background: transparent; color: var(--muted); border: 1px solid var(--line);
+    padding: 5px 10px; font-size: 12.5px; font-weight: 400; border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const LABEL = {
+  escalate: "Escalate to a human",
+  auto_handle: "Auto-handle",
+  no_action: "No action",
+};
+
+const EXAMPLES = [
+  "How do I share a folder with someone who doesn't have a Dropbox account?",
+  "I was charged twice for my Plus plan this month and I want a refund",
+  "my files stopped syncing after the latest update",
+  "someone logged into my account from a country I've never been to",
+];
+
+function Result({ r }) {
+  if (r.error) return <div className="card err">{r.error}</div>;
+  return (
+    <div className="card">
+      <div className="you"><span>Customer</span>{r.customer_text}</div>
+
+      <div className="row">
+        <span className="kv">intent <b>{r.intent}</b></span>
+        {r.confidence != null && <span className="kv">confidence <b>{r.confidence}</b></span>}
+        {r.turn_type && <span className="kv">turn <b>{r.turn_type}</b></span>}
+        {r.sentiment && <span className="kv">sentiment <b>{r.sentiment}</b></span>}
+      </div>
+
+      {r.flags && Object.keys(r.flags).length > 0 && (
+        <div className="row"><span className="kv">flags <b>{Object.keys(r.flags).join(", ")}</b></span></div>
+      )}
+
+      <span className={"badge " + r.action}>{LABEL[r.action] || r.action}</span>
+      <p className="reason">{r.action_reason}</p>
+
+      {r.reply && (
+        <div className="reply">
+          <div className="reply-label">Draft reply</div>
+          {r.reply}
+        </div>
+      )}
+      {r.reply_note && <div className="note">{r.reply_note}</div>}
+      {r.guard && <div className="note">guard: {r.guard}</div>}
+      {r.reply_safe === false && (
+        <div className="warn">The placeholder guard could not make this draft safe to send.</div>
+      )}
+      {!r.reply && r.action === "no_action" && (
+        <div className="note">No reply drafted — policy says this needs none.</div>
+      )}
+
+      {r.grounded_on && r.grounded_on.length > 0 && (
+        <details>
+          <summary>Grounded on {r.grounded_on.length} past replies</summary>
+          <ul>
+            {r.grounded_on.map((g, i) => (
+              <li key={i}>sim {g.similarity} — “{g.past_reply}”</li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      {r.intent_reason && (
+        <details><summary>Why this intent</summary><p>{r.intent_reason}</p></details>
+      )}
+    </div>
+  );
+}
+
+function App() {
+  const [text, setText] = useState("");
+  const [noReply, setNoReply] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [results, setResults] = useState([]);
+
+  async function send(message) {
+    const msg = (message ?? text).trim();
+    if (!msg || busy) return;
+    setBusy(true);
+    setText("");
+    try {
+      const res = await fetch("/api/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: msg, no_reply: noReply }),
+      });
+      const data = await res.json();
+      setResults((prev) => [res.ok ? data : { error: data.error || "request failed", customer_text: msg }, ...prev]);
+    } catch (e) {
+      setResults((prev) => [{ error: String(e), customer_text: msg }, ...prev]);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="wrap">
+      <header>
+        <h1>DropboxSupport agent</h1>
+        <div className="sub">
+          Classify → route → draft a grounded reply. Same functions the evaluation scores.
+        </div>
+      </header>
+
+      <form onSubmit={(e) => { e.preventDefault(); send(); }}>
+        <input
+          type="text"
+          value={text}
+          placeholder="Type a customer message…"
+          onChange={(e) => setText(e.target.value)}
+          disabled={busy}
+          autoFocus
+        />
+        <button type="submit" disabled={busy || !text.trim()}>
+          {busy ? "Thinking…" : "Send"}
+        </button>
+      </form>
+
+      <div className="opts">
+        <label>
+          <input type="checkbox" checked={noReply} onChange={(e) => setNoReply(e.target.checked)} />
+          Classify and route only (skip drafting — 1 API call)
+        </label>
+      </div>
+
+      {results.length === 0 && !busy && (
+        <div>
+          <p className="empty">Try one of these:</p>
+          <div className="ex">
+            {EXAMPLES.map((ex, i) => (
+              <button key={i} onClick={() => send(ex)}>{ex.length > 46 ? ex.slice(0, 46) + "…" : ex}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {results.map((r, i) => <Result key={results.length - i} r={r} />)}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
